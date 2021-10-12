@@ -12,7 +12,7 @@ const profileSchema = new mongoose.Schema({
   description: {
     type: String,
   },
-  Availability: {
+  availability: {
     type: Array,
   },
 });
