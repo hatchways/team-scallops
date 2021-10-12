@@ -13,7 +13,7 @@ const profileSchema = new mongoose.Schema({
     type: String,
   },
   Availability: {
-    type: Object,
+    type: Array,
   },
 });
 
