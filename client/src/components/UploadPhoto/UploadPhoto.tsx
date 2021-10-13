@@ -26,8 +26,15 @@ export default function RecipeReviewCard() {
         <Typography className={`${classes.opacity} ${classes.width12}`}>
           Be sure to use a photo that clearly shows your face
         </Typography>
-
-        <input accept="image/*" className={classes.input} id="contained-button-file" multiple type="file" />
+        {/* TODO I added 'name=images' att to input which shoud match the name in config Multer package   */}
+        <input
+          className={classes.input}
+          id="contained-button-file"
+          accept="image/*"
+          multiple
+          type="file"
+          name="images"
+        />
         <label htmlFor="contained-button-file">
           <Button variant="outlined" color="secondary" component="span" className={classes.padding2}>
             Upload a file from your device

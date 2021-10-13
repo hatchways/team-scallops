@@ -8,8 +8,6 @@ import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
 
-import UploadPhoto from './components/UploadPhoto/UploadPhoto';
-
 import './App.css';
 
 function App(): JSX.Element {
@@ -25,7 +23,6 @@ function App(): JSX.Element {
 
                 <Route exact path="/dashboard">
                   <Dashboard />
-                  <UploadPhoto />
                 </Route>
                 <Route path="*">
                   <Redirect to="/login" />

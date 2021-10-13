@@ -17,6 +17,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     card: {
       height: '25rem',
+      width: '30rem',
       margin: '3rem',
     },
     mr1: {
