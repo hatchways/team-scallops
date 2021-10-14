@@ -2,15 +2,14 @@ const express = require("express");
 const router = express.Router();
 const protect = require("../middleware/auth");
 const {
-  ProfileCreatePost,
-  ProfileUpdatePost,
-  ProfileGet,
-  ProfileGetAll,
+  profileCreatePost,
+  profileUpdatePost,
+  profileGet,
+  profileGetAll,
 } = require("../controllers/profile");
-
-router.route("/create").post(protect, ProfileCreatePost);
-router.route("/update").post(protect, ProfileUpdatePost);
-router.route("/").get(protect, ProfileGet);
-router.route("/all").get(protect, ProfileGetAll);
+router.route("/create").post(protect, profileCreatePost);
+router.route("/update").put(protect, profileUpdatePost);
+router.route("/").get(protect, profileGet);
+router.route("/all").get(protect, profileGetAll);
 
 module.exports = router;

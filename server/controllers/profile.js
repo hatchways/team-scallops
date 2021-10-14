@@ -55,7 +55,7 @@ exports.profileGet = asyncHandler(async (req, res) => {
   res.status(200).json({ profile: profile });
 });
 
-exports.profileAllGet = function (req, res) {
+exports.profileGetAll = function (req, res) {
   const profiles = Profile.find();
   res.status(200).json({ profiles: profiles });
 };
