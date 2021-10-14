@@ -18,7 +18,7 @@ export default function Profile(): JSX.Element {
         </Grid>
         {/*Routes and component definitions */}
         <Grid item xs={8}>
-          <Paper className={classes.paper}>
+          <Paper className={`${classes.paper}`}>
             <Route path="/profile/edit" component={ProfileEdit} />
             <Route path="/profile/photo" />
             <Route path="/profile/availability" />
