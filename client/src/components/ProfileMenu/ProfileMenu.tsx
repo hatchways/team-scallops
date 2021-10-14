@@ -8,7 +8,7 @@ export default function ProfileMenu(): JSX.Element {
 
   return (
     <Typography>
-      <Grid item className={classes.menu}>
+      <Grid className={classes.menu}>
         <NavLink activeClassName={classes.active} className={classes.link} to="/profile/edit">
           Edit profile
         </NavLink>
