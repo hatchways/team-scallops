@@ -9,7 +9,7 @@ import { useAuth } from '../../../../context/useAuthContext';
 export default function ProfileEditForm(): JSX.Element {
   const { loggedInUser } = useAuth();
   const [state, setState] = useState();
-
+  const [hasProfile, setHasProfile] = useState(false);
   useEffect(() => {
     //get the data from profile
     async function fetchProfile() {
@@ -17,9 +17,11 @@ export default function ProfileEditForm(): JSX.Element {
         .get('/profile')
         .then((response) => {
           console.log(response.data);
+          setHasProfile(true);
         })
         .catch((error) => {
           console.log(error.response.data.error);
+          setHasProfile(false);
         });
     }
     fetchProfile();
@@ -36,6 +38,8 @@ export default function ProfileEditForm(): JSX.Element {
     return (
       <Grid container justify="center">
         <Typography variant="h4"> Edit Profile</Typography>
+        {console.log(hasProfile)}
+
         <Formik
           enableReinitialize={true}
           initialValues={{ firstName: '', lastName: '', email: '', userName: '', gender: '' }}
