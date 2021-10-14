@@ -19,10 +19,10 @@ exports.profileCreatePost = asyncHandler(async (req, res) => {
 
 exports.profileUpdatePost = function (req, res) {
   const { firstName, lastName, description, availability, email } = req.body;
-  const emailExists = await Profile.findOne({ email });
+  const emailExists = Profile.findOne({ email });
 
   if (emailExists) {
-    await Profile.updateOne(
+    Profile.updateOne(
       { email },
       {
         firstName,
@@ -43,7 +43,7 @@ exports.profileGet = asyncHandler(async (req, res) => {
 
   let profile;
   if (email) {
-    profile = await Profile.find({
+    profile = Profile.find({
       email,
     });
   }
@@ -56,6 +56,6 @@ exports.profileGet = asyncHandler(async (req, res) => {
 });
 
 exports.profileAllGet = function (req, res) {
-  const profiles = await Profile.find();
+  const profiles = Profile.find();
   res.status(200).json({ profiles: profiles });
 };
