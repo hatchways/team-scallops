@@ -6,14 +6,10 @@ import { useAuth } from '../../context/useAuthContext';
 import { useSocket } from '../../context/useSocketContext';
 import { useHistory } from 'react-router-dom';
 import ChatSideBanner from '../../components/ChatSideBanner/ChatSideBanner';
-import { useState, useEffect } from 'react';
-import UploadPhoto from '../../components/UploadPhoto/UploadPhoto';
-import { Button } from '@material-ui/core';
+import { useEffect } from 'react';
 
 export default function Dashboard(): JSX.Element {
   const classes = useStyles();
-
-  const [uploadPhoto, setUploadPhoto] = useState(false);
 
   const { loggedInUser } = useAuth();
   const { initSocket } = useSocket();
@@ -38,12 +34,6 @@ export default function Dashboard(): JSX.Element {
       <Grid item className={classes.drawerWrapper}>
         <ChatSideBanner loggedInUser={loggedInUser} />
       </Grid>
-      <Grid>
-        <Button color="secondary" onClick={() => setUploadPhoto(!uploadPhoto)}>
-          Profile Photos
-        </Button>
-      </Grid>
-      <Grid>{uploadPhoto && <UploadPhoto />}</Grid>
     </Grid>
   );
 }
