@@ -1,28 +1,29 @@
 const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
 
-exports.profile_create_post = asyncHandler(async (req, res, next) => {
-  const { firstName, lastName, description, availability } = req.query;
+exports.profileCreatePost = asyncHandler(async (req, res) => {
+  const { firstName, lastName, description, availability } = req.body;
 
   if (!firstName || !lastName) {
     res.status(400);
     throw new Error("Invalid name");
   }
-  await Profile.create({
+  const profile = await Profile.create({
     firstName,
     lastName,
     description,
     availability,
   });
+  res.status(201).json({ profile });
 });
 
-exports.profile_update_post = function (req, res) {
-  const { firstName, lastName, description, availability, id } = req.query;
-  const idExists = await Profile.findOne({ id });
+exports.profileUpdatePost = function (req, res) {
+  const { firstName, lastName, description, availability, email } = req.body;
+  const emailExists = await Profile.findOne({ email });
 
-  if (idExists) {
+  if (emailExists) {
     await Profile.updateOne(
-      { _id: id },
+      { email },
       {
         firstName,
         lastName,
@@ -30,31 +31,31 @@ exports.profile_update_post = function (req, res) {
         availability,
       }
     );
-    res.status(201);
+    res.status(200);
   } else {
-    res.status(400);
+    res.status(500);
     throw new Error("Invalid profile update");
   }
 };
 
-exports.profile_get = asyncHandler(async (req, res, next) => {
-  const { id } = req.query;
+exports.profileGet = asyncHandler(async (req, res) => {
+  const email = req.params.email;
 
   let profile;
-  if (id) {
+  if (email) {
     profile = await Profile.find({
-      _id: { id },
+      email,
     });
   }
 
-  if (!id) {
+  if (!email) {
     res.status(404);
     throw new Error("No profile found");
   }
   res.status(200).json({ profile: profile });
 });
 
-exports.profile_all_get = function (req, res) {
-  profiles = await Profile.find();
+exports.profileAllGet = function (req, res) {
+  const profiles = await Profile.find();
   res.status(200).json({ profiles: profiles });
 };
