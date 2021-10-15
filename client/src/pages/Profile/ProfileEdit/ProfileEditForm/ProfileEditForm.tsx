@@ -8,7 +8,17 @@ import { useAuth } from '../../../../context/useAuthContext';
 
 export default function ProfileEditForm(): JSX.Element {
   const { loggedInUser } = useAuth();
-  const [state, setState] = useState();
+  const [state, setState] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    gender: '',
+    birthday: '',
+    phone: '',
+    address: '',
+    description: '',
+  });
+
   const [hasProfile, setHasProfile] = useState(false);
 
   useEffect(() => {
@@ -21,7 +31,7 @@ export default function ProfileEditForm(): JSX.Element {
             if (profile === null) {
               setHasProfile(false);
             } else {
-              console.log(profile);
+              setState(profile);
               setHasProfile(true);
             }
           }
@@ -42,11 +52,19 @@ export default function ProfileEditForm(): JSX.Element {
     return (
       <Grid container justify="center">
         <Typography variant="h4"> Edit Profile</Typography>
-        {console.log(hasProfile)}
 
         <Formik
           enableReinitialize={true}
-          initialValues={{ firstName: '', lastName: '', email: '', userName: '', gender: '' }}
+          initialValues={{
+            firstName: state.firstName,
+            lastName: state.lastName,
+            email: state.email,
+            gender: state.gender,
+            birthday: state.birthday,
+            phone: state.phone,
+            address: state.address,
+            description: state.description,
+          }}
           onSubmit={(values, actions) => {
             setTimeout(() => {
               alert(JSON.stringify(values, null, 2));
@@ -55,7 +73,7 @@ export default function ProfileEditForm(): JSX.Element {
           }}
         >
           {(props) => (
-            <form>
+            <form onSubmit={props.handleSubmit}>
               <Grid item>
                 <label>
                   first name
@@ -97,29 +115,70 @@ export default function ProfileEditForm(): JSX.Element {
               </Grid>
               <Grid item>
                 <label>
-                  Birth Date<TextField variant="outlined" type="text" value={loggedInUser.username}></TextField>
+                  Birth Date
+                  <TextField
+                    id=""
+                    name=""
+                    onChange={props.handleChange}
+                    variant="outlined"
+                    type="text"
+                    value={props.values.birthday}
+                  ></TextField>
                 </label>
               </Grid>
               <Grid item>
                 <label>
-                  Email Address<TextField variant="outlined" type="text" value={loggedInUser.email}></TextField>
+                  Email Address
+                  <TextField
+                    id=""
+                    name=""
+                    onChange={props.handleChange}
+                    variant="outlined"
+                    type="text"
+                    value={props.values.email}
+                  ></TextField>
                 </label>
               </Grid>
               <Grid item>
                 <label>
-                  Phone Number<TextField variant="outlined" type="text" value={loggedInUser.username}></TextField>
+                  Phone Number
+                  <TextField
+                    id=""
+                    name=""
+                    onChange={props.handleChange}
+                    variant="outlined"
+                    type="text"
+                    value={props.values.phone}
+                  ></TextField>
                 </label>
               </Grid>
               <Grid item>
                 <label>
-                  Where you live<TextField variant="outlined" type="text" value={loggedInUser.username}></TextField>
+                  Where you live
+                  <TextField
+                    id=""
+                    name=""
+                    onChange={props.handleChange}
+                    variant="outlined"
+                    type="text"
+                    value={props.values.address}
+                  ></TextField>
                 </label>
               </Grid>
               <Grid item>
                 <label>
-                  Description<TextField variant="outlined" type="text" value={loggedInUser.username}></TextField>
+                  Description
+                  <TextField
+                    id=""
+                    name=""
+                    onChange={props.handleChange}
+                    variant="outlined"
+                    type="text"
+                    value={props.values.description}
+                  ></TextField>
                 </label>
               </Grid>
+              <button type="submit">Submit</button>
             </form>
           )}
         </Formik>
