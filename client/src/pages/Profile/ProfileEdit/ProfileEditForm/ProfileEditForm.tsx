@@ -15,9 +15,16 @@ export default function ProfileEditForm(): JSX.Element {
     async function fetchProfile() {
       await axios
         .get('/profile')
-        .then((response) => {
-          console.log(response.data);
-          setHasProfile(true);
+        .then((response: any) => {
+          if (typeof response.data.profile === 'object') {
+            const profile = response.data.profile;
+            if (profile === null) {
+              setHasProfile(false);
+            } else {
+              console.log(profile);
+              setHasProfile(true);
+            }
+          }
         })
         .catch((error) => {
           console.log(error.response.data.error);

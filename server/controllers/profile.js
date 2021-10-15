@@ -2,23 +2,19 @@ const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
 
 exports.profileCreatePost = asyncHandler(async (req, res) => {
-  const {
-    id,
-    firstName,
-    lastName,
-    description,
-    availability,
-    email,
-    username,
-  } = req.body;
+  const { firstName, lastName, description, availability, email, username } =
+    req.body;
+  const id = req.user.id;
+  console.log("request id" + id);
 
   if (!firstName || !lastName) {
     res.status(400);
     throw new Error("Invalid name");
   }
+  console.log(id);
   const profile = await Profile.create({
-    _id,
-    username,
+    id,
+    userName: username,
     firstName,
     email,
     lastName,
@@ -30,7 +26,8 @@ exports.profileCreatePost = asyncHandler(async (req, res) => {
 
 exports.profileUpdatePost = asyncHandler(async (req, res) => {
   const { firstName, lastName, description, availability, email } = req.params;
-  const idExists = await Profile.findOneById(id);
+  const id = req.user.id;
+  const idExists = await Profile.findOne({ _id: id });
 
   if (idExists) {
     const update = await Profile.updateOneById(
@@ -56,7 +53,7 @@ exports.profileGet = asyncHandler(async (req, res) => {
   console.log(req.params);
   let profile;
   if (id) {
-    profile = await Profile.findOneById(id);
+    profile = await Profile.findOne({ id });
   }
 
   if (!id) {
