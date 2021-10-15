@@ -6,7 +6,7 @@ const profileSchema = new mongoose.Schema({
     required: true,
     ref: "User",
   },
-  id: {
+  userId: {
     type: String,
     unique: true,
     required: true,
