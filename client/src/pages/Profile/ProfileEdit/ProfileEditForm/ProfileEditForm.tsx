@@ -10,10 +10,10 @@ export default function ProfileEditForm(): JSX.Element {
   const { loggedInUser } = useAuth();
   const [state, setState] = useState();
   const [hasProfile, setHasProfile] = useState(false);
+
   useEffect(() => {
-    //get the data from profile
     async function fetchProfile() {
-      const response = await axios
+      await axios
         .get('/profile')
         .then((response) => {
           console.log(response.data);
@@ -29,7 +29,6 @@ export default function ProfileEditForm(): JSX.Element {
 
   if (loggedInUser === undefined) return <CircularProgress />;
   {
-    console.log(loggedInUser);
   }
   if (!loggedInUser) {
     // loading for a split seconds until history.push works
