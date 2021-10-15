@@ -28,7 +28,7 @@ export default function UploadPhoto(): JSX.Element {
         </Typography>
 
         <UploadFileButton
-          id="uploadImage"
+          id="upload-image"
           accept="image/*"
           type="file"
           name="images"
