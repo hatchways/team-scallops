@@ -1,7 +1,9 @@
+import { Typography, Box } from '@material-ui/core';
+
 export default function ProfileEdit(): JSX.Element {
   return (
-    <div>
-      <p>Edit page</p>
-    </div>
+    <Box>
+      <Typography>Edit page</Typography>
+    </Box>
   );
 }

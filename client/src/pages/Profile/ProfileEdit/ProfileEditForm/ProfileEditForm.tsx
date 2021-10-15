@@ -10,9 +10,7 @@ export default function ProfileEditForm(): JSX.Element {
   const { loggedInUser } = useAuth();
 
   if (loggedInUser === undefined) return <CircularProgress />;
-  {
-    console.log(loggedInUser);
-  }
+
   if (!loggedInUser) {
     // loading for a split seconds until history.push works
     return <CircularProgress />;
