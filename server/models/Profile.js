@@ -1,7 +1,12 @@
 const mongoose = require("mongoose");
 
 const profileSchema = new mongoose.Schema({
-  userName: {
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
+  id: {
     type: String,
     unique: true,
     required: true,
@@ -20,10 +25,6 @@ const profileSchema = new mongoose.Schema({
   birthday: {
     type: Date,
   },
-  email: {
-    type: String,
-    required: true,
-  },
   phone: {
     type: String,
   },
@@ -34,7 +35,41 @@ const profileSchema = new mongoose.Schema({
     type: String,
   },
   availability: {
-    type: String,
+    monday: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    tuesday: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    wednesday: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    thursday: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    friday: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    saturday: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    sunday: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   available: {
     type: Boolean,
