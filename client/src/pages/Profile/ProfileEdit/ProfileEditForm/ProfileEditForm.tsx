@@ -35,8 +35,6 @@ export default function ProfileEditForm(): JSX.Element {
   }, []);
 
   if (loggedInUser === undefined) return <CircularProgress />;
-  {
-  }
   if (!loggedInUser) {
     // loading for a split seconds until history.push works
     return <CircularProgress />;
