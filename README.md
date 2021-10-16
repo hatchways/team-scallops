@@ -20,6 +20,7 @@ This is a little description about your project.
 2. Run `npm install` to install packages
 3. Create your environment variable (.env) file
 4. Run `npm run dev` to start the server
+5. Run `npm run test` to start test
 
 ---
 
