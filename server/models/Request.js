@@ -4,10 +4,24 @@ const { Schema, model } = mongoose;
 
 const requestSchema = new mongoose.Schema(
   {
-    owner: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    sitter: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    startDate: { type: Date, required: true },
-    endDate: { type: Date, required: true },
+    owner: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    sitter: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    startDate: {
+      type: Date,
+      required: true,
+    },
+    endDate: {
+      type: Date,
+      required: true,
+    },
     status: {
       type: String,
       enum: ["ACCEPTED", "DECLINED", "PAID"],
@@ -16,8 +30,12 @@ const requestSchema = new mongoose.Schema(
       type: String,
       enum: ["BOARDING", "HOUSE_SITTING", "DAY_CARE", "WALKING"],
     },
-    totalPrice: { type: Number },
-    rating: { type: Number },
+    totalPrice: {
+      type: Number,
+    },
+    rating: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );
