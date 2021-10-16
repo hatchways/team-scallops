@@ -21,4 +21,4 @@ const requestSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default model("request", requestSchema);
+export default model("Request", requestSchema);
