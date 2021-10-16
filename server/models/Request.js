@@ -1,24 +1,31 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const { Schema, model } = mongoose;
 
 const requestSchema = new mongoose.Schema(
   {
-    customer: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    provider: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    start: { type: Date, required: true },
-    end: { type: Date, required: true },
-    accepted: { type: Boolean, default: false },
-    declined: { type: Boolean, default: false },
-    paid: { type: Boolean, default: false },
+    owner: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    sitter: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    startDate: { type: Date, required: true },
+    endDate: { type: Date, required: true },
+    status: {
+      type: String,
+      enum: ["ACCEPTED", "DECLINED", "PAID"],
+    },
     serviceType: {
       type: String,
-      enum: ["Boarding", "House Sitting", "Day Care", "Walking"],
+      enum: ["BOARDING", "HOUSE_SITTING", "DAY_CARE", "WALKING"],
     },
-    totalPrice: { type: Number, required: true },
+    totalPrice: { type: Number },
     rating: { type: Number },
   },
   { timestamps: true }
 );
 
-export default model("Request", requestSchema);
+requestSchema.pre("validate", function (next) {
+  this.startDate > this.endDate
+    ? next(new Error("End date must be greater than start date"))
+    : next();
+});
+
+module.exports = Request = model("Request", requestSchema);
