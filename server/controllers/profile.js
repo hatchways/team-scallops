@@ -7,8 +7,6 @@ exports.profileCreatePost = asyncHandler(async (req, res) => {
     lastName,
     description,
     availability,
-    email,
-    username,
     gender,
     birthday,
     phone,
@@ -16,19 +14,20 @@ exports.profileCreatePost = asyncHandler(async (req, res) => {
     available,
   } = req.body;
   const id = req.user.id;
-
+  const email = req.user.email;
   if (!firstName || !lastName || !id) {
     res.status(400);
-    throw new Error("Invalid name");
+    throw new Error("Invalid name/ID");
   }
+  console.log(req.user.id);
+  console.log;
   const profile = await Profile.create({
+    user: id,
     userId: id,
     firstName,
     lastName,
     description,
     availability,
-    email,
-    username,
     gender,
     birthday,
     phone,
@@ -39,20 +38,33 @@ exports.profileCreatePost = asyncHandler(async (req, res) => {
 });
 
 exports.profileUpdatePost = asyncHandler(async (req, res) => {
-  const { firstName, lastName, description, availability, email } = req.body;
+  const {
+    firstName,
+    lastName,
+    description,
+    availability,
+    gender,
+    birthday,
+    phone,
+    address,
+    available,
+  } = req.body;
   const id = req.user.id;
-  const idExists = await Profile.findOne({ _id: id });
+  const idExists = await Profile.findOne({ userId: id });
 
   if (idExists) {
-    const update = await Profile.updateOneById(
-      { id },
+    const update = await Profile.updateOne(
+      { userId: id },
       {
-        username,
         firstName,
-        email,
         lastName,
         description,
         availability,
+        gender,
+        birthday,
+        phone,
+        address,
+        available,
       }
     );
     res.status(200).json({ update: update });
@@ -66,7 +78,7 @@ exports.profileGet = asyncHandler(async (req, res) => {
   const id = req.params.id ? req.params.id : req.user.id;
   let profile;
   if (id) {
-    profile = await Profile.findOne({ id });
+    profile = await Profile.findOne({ userId: id });
   }
 
   if (!id) {

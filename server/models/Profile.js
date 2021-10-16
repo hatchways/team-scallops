@@ -1,11 +1,13 @@
 const mongoose = require("mongoose");
 
 const profileSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
-  },
+  user: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
+  ],
   userId: {
     type: String,
     unique: true,
@@ -26,7 +28,7 @@ const profileSchema = new mongoose.Schema({
     type: Date,
   },
   phone: {
-    type: String,
+    type: Number,
   },
   address: {
     type: String,
@@ -73,6 +75,7 @@ const profileSchema = new mongoose.Schema({
   },
   available: {
     type: Boolean,
+    default: false,
   },
 });
 

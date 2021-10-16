@@ -67,6 +67,28 @@ export default function ProfileEditForm(): JSX.Element {
           }}
           onSubmit={(values, actions) => {
             setTimeout(() => {
+              if (!hasProfile) {
+                console.log('creating profile');
+                axios
+                  .post('/profile/create', values)
+                  .then((res) => {
+                    console.log(res);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              } else {
+                console.log('updating profile');
+
+                axios
+                  .post('/profile/update', values)
+                  .then((res) => {
+                    console.log(res);
+                  })
+                  .catch((error) => {
+                    console.log(error);
+                  });
+              }
               alert(JSON.stringify(values, null, 2));
               actions.setSubmitting(false);
             }, 1000);
@@ -117,8 +139,8 @@ export default function ProfileEditForm(): JSX.Element {
                 <label>
                   Birth Date
                   <TextField
-                    id=""
-                    name=""
+                    id="birthday"
+                    name="birthday"
                     onChange={props.handleChange}
                     variant="outlined"
                     type="text"
@@ -128,14 +150,15 @@ export default function ProfileEditForm(): JSX.Element {
               </Grid>
               <Grid item>
                 <label>
+                  {/*TODO: handle updating email */}
                   Email Address
                   <TextField
-                    id=""
-                    name=""
+                    id="email"
+                    name="email"
                     onChange={props.handleChange}
                     variant="outlined"
                     type="text"
-                    value={props.values.email}
+                    value={loggedInUser.email}
                   ></TextField>
                 </label>
               </Grid>
@@ -143,8 +166,8 @@ export default function ProfileEditForm(): JSX.Element {
                 <label>
                   Phone Number
                   <TextField
-                    id=""
-                    name=""
+                    id="phone"
+                    name="phone"
                     onChange={props.handleChange}
                     variant="outlined"
                     type="text"
@@ -156,8 +179,8 @@ export default function ProfileEditForm(): JSX.Element {
                 <label>
                   Where you live
                   <TextField
-                    id=""
-                    name=""
+                    id="address"
+                    name="address"
                     onChange={props.handleChange}
                     variant="outlined"
                     type="text"
@@ -169,8 +192,8 @@ export default function ProfileEditForm(): JSX.Element {
                 <label>
                   Description
                   <TextField
-                    id=""
-                    name=""
+                    id="description"
+                    name="description"
                     onChange={props.handleChange}
                     variant="outlined"
                     type="text"
