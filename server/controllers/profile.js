@@ -1,11 +1,7 @@
 const Profile = require( '../models/Profile')
 const asyncHandler = require("express-async-handler");
-const cloudinary = require('cloudinary');
-cloudinary.config({ 
-    cloud_name: 'dog-sitter', 
-    api_key: process.env.CLOUDINARY_API_KEY, 
-    api_secret: process.env.CLOUDINARY_API_SECRET
-  });
+const Cloudinary = require('cloudinary')
+const {convertBufferToString}=require('../middleware/multer')
 
 
 //@route  Post /Profile
@@ -13,20 +9,18 @@ cloudinary.config({
 //@access   private
 
 exports.createProfile = asyncHandler(async (req, res) => {
-  console.log(req.files)
-   req.body.profile.images=[]
-  for (const file of req.files) {
-   
-    let image = await cloudinary.v2.uploader.upload(file.path) 
-         req.body.profile.images.push({
-             url: image.secure_url,
-             public_id: image.public_id
-         })
+
+  if (req.file) {
+    cloudinaryImg = await Cloudinary.v2.uploader.upload(convertBufferToString(req).content);
+    req.body.profile.image = {
+      url: cloudinaryImg.secure_url,
+      public_id: cloudinaryImg.public_id
+     } 
   }
-     let profile = await Profile.create(req.body.profile)     
+  let profile = await Profile.create(req.body.profile)     
      res.json({
          profile
     });
- 
+    
   });
   

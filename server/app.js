@@ -12,6 +12,9 @@ const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const profileRouter = require("./routes/profile");
 
+const  { cloudinaryConfig } =require('./config/cloudinary')
+
+
 
 
 const { json, urlencoded } = express;
@@ -38,6 +41,7 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
+app.use('', cloudinaryConfig);
 
 
 app.use((req, res, next) => {

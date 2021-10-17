@@ -9,10 +9,10 @@ const ProfileSchema = new mongoose.Schema({
   firstName: {
     type: String
   },
-  images: [{
+  image: {
     url: String,
     public_id: String
-  }],
+  },
   
 });
 
