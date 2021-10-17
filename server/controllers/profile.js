@@ -13,18 +13,16 @@ cloudinary.config({
 //@access   private
 
 exports.createProfile = asyncHandler(async (req, res) => {
-req.body.images=[]
+req.body.profile.images=[]
   for (const file of req.files) {
    
-    let image = await cloudinary.v2.uploader.upload(file.path)
-   
-         req.body.images.push({
+    let image = await cloudinary.v2.uploader.upload(file.path) 
+         req.body.profile.images.push({
              url: image.secure_url,
              public_id: image.public_id
          })
   }
-  console.log(req.file)
-     let profile = await Profile.create(req.body)     
+     let profile = await Profile.create(req.body.profile)     
      res.json({
          profile
     });
