@@ -8,11 +8,10 @@ const connectDB = require("./db");
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const profileRouter = require("./routes/profile");
-const  fileupload = require("express-fileupload");
+
 
 
 const { json, urlencoded } = express;
@@ -34,11 +33,12 @@ io.on("connection", (socket) => {
 if (process.env.NODE_ENV === "development") {
   app.use(logger("dev"));
 }
+
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
-app.use(fileupload());
+
 
 app.use((req, res, next) => {
   req.io = io;

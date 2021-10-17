@@ -8,12 +8,13 @@ cloudinary.config({
   });
 
 
-//@route  Post api/Profile
+//@route  Post /Profile
 //@desc    Create or update users profile
 //@access   private
 
 exports.createProfile = asyncHandler(async (req, res) => {
-req.body.profile.images=[]
+  console.log(req.files)
+   req.body.profile.images=[]
   for (const file of req.files) {
    
     let image = await cloudinary.v2.uploader.upload(file.path) 
