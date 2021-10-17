@@ -1,24 +1,16 @@
-import { makeStyles, createStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles(() =>
+export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       maxWidth: 645,
       margin: '2rem auto',
     },
 
-    media: {
-      height: '100px',
-      width: '100px',
-      borderRadius: '50px',
-    },
     card: {
       height: '25rem',
       width: '30rem',
       margin: '3rem',
-    },
-    mr1: {
-      marginRight: '0.5rem',
     },
 
     fontWeight900: {
@@ -30,6 +22,10 @@ export const useStyles = makeStyles(() =>
     width12: {
       width: '12rem',
       textAlign: 'center',
+    },
+    large: {
+      width: theme.spacing(9),
+      height: theme.spacing(9),
     },
   }),
 );

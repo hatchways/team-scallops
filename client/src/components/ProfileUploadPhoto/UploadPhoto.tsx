@@ -1,10 +1,10 @@
 import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import DeleteIcon from '@material-ui/icons/DeleteForever';
 import { Box, Button } from '@material-ui/core';
 import { useStyles } from './useStyles';
 import UploadFileButton from '../UploadFileButton/UploadFileButton';
+import Avatar from '@material-ui/core/Avatar';
 
 export default function UploadPhoto(): JSX.Element {
   const classes = useStyles();
@@ -22,7 +22,8 @@ export default function UploadPhoto(): JSX.Element {
         <Typography className={classes.fontWeight900} variant="h5">
           Profile Photo
         </Typography>
-        <CardMedia className={classes.media} image="/1.jpeg" title="User-Image" />
+
+        <Avatar src="/avatar.jpeg" title="User-Image" className={classes.large} />
         <Typography className={`${classes.opacity} ${classes.width12}`}>
           Be sure to use a photo that clearly shows your face
         </Typography>
