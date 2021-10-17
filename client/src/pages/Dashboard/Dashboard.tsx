@@ -8,6 +8,8 @@ import { useHistory } from 'react-router-dom';
 import ChatSideBanner from '../../components/ChatSideBanner/ChatSideBanner';
 import { useEffect } from 'react';
 
+import UploadButtons from './TestUpload';
+
 export default function Dashboard(): JSX.Element {
   const classes = useStyles();
 
@@ -32,6 +34,7 @@ export default function Dashboard(): JSX.Element {
       <CssBaseline />
       <Grid item className={classes.drawerWrapper}>
         <ChatSideBanner loggedInUser={loggedInUser} />
+        <UploadButtons />
       </Grid>
     </Grid>
   );
