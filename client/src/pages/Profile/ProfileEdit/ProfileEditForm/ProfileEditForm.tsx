@@ -5,30 +5,37 @@ import axios from 'axios';
 import { useAuth } from '../../../../context/useAuthContext';
 import useStyles from './useStyles';
 import moment from 'moment';
+import { ViewDaySharp } from '@material-ui/icons';
 moment().format();
 
 export default function ProfileEditForm(): JSX.Element {
   const { loggedInUser } = useAuth();
   const [hasProfile, setHasProfile] = useState(false);
   const classes = useStyles();
+  const [getDays, setDays] = useState(31);
   const today = new Date();
-
-  const textboxSize = 7;
-  const labelSize = 3;
-
   const [state, setState] = useState({
     firstName: '',
     lastName: '',
     email: '',
     gender: '',
     birthday: '',
-    dobDay: '',
-    dobMonth: '',
-    dobYear: '',
+    dobDay: '10',
+    dobMonth: '10',
+    dobYear: '2020',
     phone: '',
     address: '',
     description: '',
+    profile: {},
   });
+  const [birthday, setBirthday] = useState({
+    day: '19',
+    month: '10',
+    year: '2020',
+  });
+
+  const textboxSize = 7;
+  const labelSize = 3;
 
   useEffect(() => {
     async function fetchProfile() {
@@ -58,9 +65,27 @@ export default function ProfileEditForm(): JSX.Element {
     // loading for a split seconds until history.push works
     return <CircularProgress />;
   } else {
+    const years = (back = 150) => {
+      const year = new Date().getFullYear();
+      return Array.from({ length: back }, (v, i) => year - back + i + 1);
+    };
+
+    const days = (year: any, month: any) => {
+      const { dobMonth, dobYear } = state;
+      console.log(state.dobMonth);
+
+      console.log(birthday.year);
+      const mnt = `${parseInt(year)} ${parseInt(month)}`;
+      const md = moment(mnt, 'YYYY-MM').daysInMonth();
+      console.log(md);
+
+      const test = [...Array(+md + 1).keys()];
+      test.shift();
+      console.log(test);
+      return test;
+    };
     return (
       <Grid container justify="center">
-        {console.log(state)}
         <Typography display="block" variant="h5" className={`${classes.title}`}>
           Edit Profile
         </Typography>
@@ -76,9 +101,9 @@ export default function ProfileEditForm(): JSX.Element {
               dobDay: state.birthday.slice(8, 10),
               dobMonth: state.birthday.slice(5, 7),
               dobYear: state.birthday.slice(0, 4),
-              dayArray: [...Array(32).keys()],
+              dayArray: days(birthday.year, birthday.month),
               monthArray: [...moment.months()],
-              yearArray: [...Array(today.getFullYear()).keys()],
+              yearArray: years(),
               phone: state.phone,
               address: state.address,
               description: state.description,
@@ -195,9 +220,9 @@ export default function ProfileEditForm(): JSX.Element {
                       value={+props.values.dobDay}
                     >
                       {props.values.dayArray &&
-                        Object.keys(props.values.dayArray).map((item, key) => {
+                        props.values.dayArray.map((item, key) => {
                           return (
-                            <MenuItem key={key} value={key}>
+                            <MenuItem key={key} value={item}>
                               {item}
                             </MenuItem>
                           );
@@ -221,7 +246,7 @@ export default function ProfileEditForm(): JSX.Element {
                           );
                         })}
                     </Select>
-                    {console.log(+props.values.dobDay)}
+
                     <Select
                       className={`${classes.birthday}`}
                       id="dobYear"
@@ -232,9 +257,9 @@ export default function ProfileEditForm(): JSX.Element {
                       value={props.values.dobYear}
                     >
                       {props.values.yearArray &&
-                        Object.keys(props.values.yearArray).map((item, key) => {
+                        props.values.yearArray.map((item, key) => {
                           return (
-                            <MenuItem key={key} value={key}>
+                            <MenuItem key={key} value={item}>
                               {item}
                             </MenuItem>
                           );
@@ -292,18 +317,19 @@ export default function ProfileEditForm(): JSX.Element {
                   </Grid>
                   <Grid item className={`${classes.textboxContainer}`} justify="flex-end" xs={textboxSize}>
                     <TextField
-                      className={`${classes.textbox}`}
+                      className={` ${classes.textbox}`}
                       multiline
                       id="description"
                       name="description"
                       onChange={props.handleChange}
                       variant="outlined"
                       type="text"
+                      rows={4}
                       value={props.values.description}
                     ></TextField>
                   </Grid>
                   <Grid container justify="center">
-                    <Button color="secondary" size="large" variant="contained" type="submit">
+                    <Button className={classes.button} color="secondary" size="large" variant="contained" type="submit">
                       Save
                     </Button>
                   </Grid>

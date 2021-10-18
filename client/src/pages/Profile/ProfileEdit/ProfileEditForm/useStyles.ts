@@ -30,6 +30,11 @@ const useStyles = makeStyles(() => ({
   birthday: {
     width: '10vw',
   },
+  button: {
+    paddingLeft: '3em',
+    paddingRight: '3em',
+    padding: '1em',
+  },
 }));
 
 export default useStyles;
