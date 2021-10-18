@@ -4,13 +4,18 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../../../context/useAuthContext';
 import useStyles from './useStyles';
+import moment from 'moment';
+moment().format();
 
 export default function ProfileEditForm(): JSX.Element {
   const { loggedInUser } = useAuth();
   const [hasProfile, setHasProfile] = useState(false);
   const classes = useStyles();
+  const today = new Date();
+
   const textboxSize = 7;
   const labelSize = 3;
+
   const [state, setState] = useState({
     firstName: '',
     lastName: '',
@@ -55,6 +60,7 @@ export default function ProfileEditForm(): JSX.Element {
   } else {
     return (
       <Grid container justify="center">
+        {console.log(state)}
         <Typography display="block" variant="h5" className={`${classes.title}`}>
           Edit Profile
         </Typography>
@@ -70,6 +76,9 @@ export default function ProfileEditForm(): JSX.Element {
               dobDay: state.birthday.slice(8, 10),
               dobMonth: state.birthday.slice(5, 7),
               dobYear: state.birthday.slice(0, 4),
+              dayArray: [...Array(32).keys()],
+              monthArray: [...moment.months()],
+              yearArray: [...Array(today.getFullYear()).keys()],
               phone: state.phone,
               address: state.address,
               description: state.description,
@@ -176,36 +185,61 @@ export default function ProfileEditForm(): JSX.Element {
                     <Typography className={classes.label}>Birthday</Typography>
                   </Grid>
                   <Grid item className={`${classes.textboxContainer}`} justify="flex-end" xs={textboxSize}>
-                    <TextField
+                    <Select
                       className={`${classes.birthday}`}
-                      size="medium"
                       id="dobDay"
                       name="dobDay"
                       onChange={props.handleChange}
                       variant="outlined"
                       type="text"
-                      value={props.values.dobDay}
-                    ></TextField>
-                    <TextField
+                      value={+props.values.dobDay}
+                    >
+                      {props.values.dayArray &&
+                        Object.keys(props.values.dayArray).map((item, key) => {
+                          return (
+                            <MenuItem key={key} value={key}>
+                              {item}
+                            </MenuItem>
+                          );
+                        })}
+                    </Select>
+                    <Select
                       className={`${classes.birthday}`}
-                      size="medium"
                       id="dobMonth"
                       name="dobMonth"
                       onChange={props.handleChange}
                       variant="outlined"
                       type="text"
-                      value={props.values.dobMonth}
-                    ></TextField>
-                    <TextField
+                      value={moment().month(props.values.dobMonth).format('MMMM')}
+                    >
+                      {props.values.monthArray &&
+                        props.values.monthArray.map((item, key) => {
+                          return (
+                            <MenuItem key={key} value={item}>
+                              {item}
+                            </MenuItem>
+                          );
+                        })}
+                    </Select>
+                    {console.log(+props.values.dobDay)}
+                    <Select
                       className={`${classes.birthday}`}
-                      size="medium"
                       id="dobYear"
                       name="dobYear"
                       onChange={props.handleChange}
                       variant="outlined"
                       type="text"
                       value={props.values.dobYear}
-                    ></TextField>
+                    >
+                      {props.values.yearArray &&
+                        Object.keys(props.values.yearArray).map((item, key) => {
+                          return (
+                            <MenuItem key={key} value={key}>
+                              {item}
+                            </MenuItem>
+                          );
+                        })}
+                    </Select>
                   </Grid>
                   <Grid item xs={labelSize}>
                     <Typography className={classes.label}>Email</Typography>
