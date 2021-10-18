@@ -4,8 +4,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../../../../context/useAuthContext';
 
-//This form needs to UPDATE to /profile/edit/update
-
 export default function ProfileEditForm(): JSX.Element {
   const { loggedInUser } = useAuth();
   const [state, setState] = useState({
