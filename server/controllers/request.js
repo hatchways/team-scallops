@@ -6,20 +6,17 @@ const asyncHandler = require("express-async-handler");
 // @access Private
 exports.getRequests = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
-  const isValidUser = await User.findById(userId);
+  const ownerRequests = await Request.find({ owner: userId });
+  const sitterRequests = await Request.find({ sitter: userId });
 
-  if (isValidUser) {
-    const ownerRequests = await Request.find({ owner: id });
-    const sitterRequests = await Request.find({ sitter: id });
-
-    res.status(200).json({
-      requestsSend: ownerRequests,
-      requestsReceived: sitterRequests,
-    });
+  if (!ownerRequests.length && !sitterRequests.length) {
+    res.status(404);
+    throw new Error("No requests found");
   }
-
-  res.status(404);
-  throw new Error("No requests found");
+  res.status(200).json({
+    requestsSend: ownerRequests,
+    requestsReceived: sitterRequests,
+  });
 });
 
 // @route POST /request/create
@@ -31,6 +28,11 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
 
   const ownerExists = await User.findById(ownerId);
   const sitterExists = await User.findById(sitterId);
+
+  if (!ownerId || !sitterId || !startDate || !endDate) {
+    res.status(400);
+    throw new Error("One of the required fields hasn't been completed");
+  }
 
   if (ownerExists && sitterExists && ownerId !== sitterId) {
     const request = new Request({
@@ -59,20 +61,15 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
   const requestId = req.params.id;
   const input = req.body;
 
-  console.log({ userId, requestId, input });
-  const isValidUser = await User.findById(userId);
-  const isOwner = await Request.find({ owner: userId });
+  const request = await Request.findById(requestId);
 
-  if (isValidUser && isOwner) {
-    const request = await Request.findById(requestId);
-
-    if (!request) {
-      res.status(400);
-      throw new Error("Request is not found.");
-    }
-
+  if (!request) {
+    res.status(404);
+    throw new Error("Request is not found.");
+  }
+  try {
     Object.entries(input).forEach(([key, value]) => {
-      if (value !== "" && value !== undefined) {
+      if (value) {
         if (key === "startDate") {
           request.startDate = new Date(value);
         }
@@ -86,8 +83,8 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
 
     await request.save();
     return res.status(200).json({ request });
+  } catch {
+    res.status(400);
+    throw new Error("Error updating request");
   }
-
-  res.status(400);
-  throw new Error("Error updating request");
 });
