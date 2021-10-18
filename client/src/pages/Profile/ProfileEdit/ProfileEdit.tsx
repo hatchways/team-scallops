@@ -1,5 +1,4 @@
 import ProfileEditForm from './ProfileEditForm/ProfileEditForm';
-import useStyles from './useStyles';
 
 export default function ProfileEdit(): JSX.Element {
   return (
