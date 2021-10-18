@@ -12,8 +12,8 @@ const useStyles = makeStyles(() => ({
     margin: '0',
   },
   paper: {
-    minHeight: '80vh',
-    padding: '3em',
+    minHeight: '70vh',
+    padding: '1em',
   },
 }));
 
