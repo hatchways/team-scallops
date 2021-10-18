@@ -5,6 +5,7 @@ import { Box, Button } from '@material-ui/core';
 import { useStyles } from './useStyles';
 import UploadFileButton from '../UploadFileButton/UploadFileButton';
 import Avatar from '@material-ui/core/Avatar';
+import { useState } from 'react';
 
 export default function UploadPhoto(): JSX.Element {
   const classes = useStyles();
@@ -32,7 +33,7 @@ export default function UploadPhoto(): JSX.Element {
           id="upload-image"
           accept="image/*"
           type="file"
-          name="images"
+          name="image"
           text="Upload a file from your device"
         />
         <Button startIcon={<DeleteIcon />}>Delete Photo</Button>
