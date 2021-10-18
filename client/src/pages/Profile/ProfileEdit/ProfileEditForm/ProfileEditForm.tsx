@@ -23,30 +23,23 @@ export default function ProfileEditForm(): JSX.Element {
 
   useEffect(() => {
     async function fetchProfile() {
-      await axios
-        .get('/profile')
-        .then((response: any) => {
-          if (typeof response.data.profile === 'object') {
-            const profile = response.data.profile;
-            if (profile === null) {
-              setHasProfile(false);
-            } else {
-              setState(profile);
-              setHasProfile(true);
-            }
+      await axios.get('/profile').then((response: any) => {
+        if (typeof response.data.profile === 'object') {
+          const profile = response.data.profile;
+          if (profile === null) {
+            setHasProfile(false);
+          } else {
+            setState(profile);
+            setHasProfile(true);
           }
-        })
-        .catch((error) => {
-          console.log(error.response.data.error);
-          setHasProfile(false);
-        });
+        }
+      });
     }
     fetchProfile();
   }, []);
 
   if (loggedInUser === undefined) return <CircularProgress />;
   if (!loggedInUser) {
-    // loading for a split seconds until history.push works
     return <CircularProgress />;
   } else {
     return (
@@ -66,32 +59,12 @@ export default function ProfileEditForm(): JSX.Element {
             description: state.description,
           }}
           onSubmit={(values, actions) => {
-            setTimeout(() => {
-              if (!hasProfile) {
-                console.log('creating profile');
-                axios
-                  .post('/profile/create', values)
-                  .then((res) => {
-                    console.log(res);
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-              } else {
-                console.log('updating profile');
-
-                axios
-                  .post('/profile/update', values)
-                  .then((res) => {
-                    console.log(res);
-                  })
-                  .catch((error) => {
-                    console.log(error);
-                  });
-              }
-              alert(JSON.stringify(values, null, 2));
-              actions.setSubmitting(false);
-            }, 1000);
+            if (!hasProfile) {
+              axios.post('/profile/create', values);
+            } else {
+              axios.post('/profile/update', values);
+            }
+            actions.setSubmitting(false);
           }}
         >
           {(props) => (
