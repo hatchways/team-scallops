@@ -24,6 +24,12 @@ const useStyles = makeStyles(() => ({
   textbox: {
     width: '30vw',
   },
+  gender: {
+    width: '10em',
+  },
+  birthday: {
+    width: '10vw',
+  },
 }));
 
 export default useStyles;

@@ -1,4 +1,4 @@
-import { Typography, Button, TextField, Box, CircularProgress, Grid } from '@material-ui/core';
+import { Typography, Button, TextField, Select, CircularProgress, Grid, MenuItem } from '@material-ui/core';
 import { Formik } from 'formik';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -17,6 +17,9 @@ export default function ProfileEditForm(): JSX.Element {
     email: '',
     gender: '',
     birthday: '',
+    dobDay: '',
+    dobMonth: '',
+    dobYear: '',
     phone: '',
     address: '',
     description: '',
@@ -64,16 +67,34 @@ export default function ProfileEditForm(): JSX.Element {
               email: state.email,
               gender: state.gender,
               birthday: state.birthday,
+              dobDay: state.birthday.slice(8, 10),
+              dobMonth: state.birthday.slice(5, 7),
+              dobYear: state.birthday.slice(0, 4),
               phone: state.phone,
               address: state.address,
               description: state.description,
             }}
             onSubmit={(values, actions) => {
+              const { firstName, lastName, email, gender, dobDay, dobMonth, dobYear, phone, address, description } =
+                values;
+              const birthdayString = `${dobYear}-${dobMonth}-${dobDay}`;
+
+              const modifiedValues = {
+                firstName,
+                lastName,
+                email,
+                gender,
+                birthday: birthdayString,
+                phone,
+                address,
+                description,
+              };
+
               setTimeout(() => {
                 if (!hasProfile) {
                   console.log('creating profile');
                   axios
-                    .post('/profile/create', values)
+                    .post('/profile/create', modifiedValues)
                     .then((res) => {
                       console.log(res);
                     })
@@ -84,7 +105,7 @@ export default function ProfileEditForm(): JSX.Element {
                   console.log('updating profile');
 
                   axios
-                    .post('/profile/update', values)
+                    .post('/profile/update', modifiedValues)
                     .then((res) => {
                       console.log(res);
                     })
@@ -92,7 +113,7 @@ export default function ProfileEditForm(): JSX.Element {
                       console.log(error);
                     });
                 }
-                alert(JSON.stringify(values, null, 2));
+                alert(JSON.stringify(modifiedValues, null, 2));
                 actions.setSubmitting(false);
               }, 1000);
             }}
@@ -106,6 +127,7 @@ export default function ProfileEditForm(): JSX.Element {
                   <Grid item className={`${classes.textboxContainer}`} justify="flex-end" xs={textboxSize}>
                     <TextField
                       className={`${classes.textbox}`}
+                      placeholder="John"
                       size="medium"
                       id="firstName"
                       name="firstName"
@@ -121,6 +143,7 @@ export default function ProfileEditForm(): JSX.Element {
 
                   <Grid item className={`${classes.textboxContainer}`} justify="flex-end" xs={textboxSize}>
                     <TextField
+                      placeholder="Doe"
                       className={`${classes.textbox}`}
                       size="medium"
                       id="lastName"
@@ -135,30 +158,53 @@ export default function ProfileEditForm(): JSX.Element {
                     <Typography className={classes.label}>Gender</Typography>
                   </Grid>
                   <Grid item className={`${classes.textboxContainer}`} justify="flex-end" xs={textboxSize}>
-                    <TextField
-                      className={`${classes.textbox}`}
-                      size="medium"
+                    <Select
+                      className={`${classes.gender}`}
                       id="gender"
                       name="gender"
                       onChange={props.handleChange}
                       variant="outlined"
-                      type="text"
+                      type="dropdown"
                       value={props.values.gender}
-                    ></TextField>
+                    >
+                      <MenuItem value={'Male'}>Male</MenuItem>
+                      <MenuItem value={'Female'}>Female</MenuItem>
+                      <MenuItem value={undefined}>Prefer not to say</MenuItem>
+                    </Select>
                   </Grid>
                   <Grid item xs={labelSize}>
                     <Typography className={classes.label}>Birthday</Typography>
                   </Grid>
                   <Grid item className={`${classes.textboxContainer}`} justify="flex-end" xs={textboxSize}>
                     <TextField
-                      className={`${classes.textbox}`}
+                      className={`${classes.birthday}`}
                       size="medium"
-                      id="birthday"
-                      name="birthday"
+                      id="dobDay"
+                      name="dobDay"
                       onChange={props.handleChange}
                       variant="outlined"
                       type="text"
-                      value={props.values.birthday}
+                      value={props.values.dobDay}
+                    ></TextField>
+                    <TextField
+                      className={`${classes.birthday}`}
+                      size="medium"
+                      id="dobMonth"
+                      name="dobMonth"
+                      onChange={props.handleChange}
+                      variant="outlined"
+                      type="text"
+                      value={props.values.dobMonth}
+                    ></TextField>
+                    <TextField
+                      className={`${classes.birthday}`}
+                      size="medium"
+                      id="dobYear"
+                      name="dobYear"
+                      onChange={props.handleChange}
+                      variant="outlined"
+                      type="text"
+                      value={props.values.dobYear}
                     ></TextField>
                   </Grid>
                   <Grid item xs={labelSize}>
