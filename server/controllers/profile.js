@@ -5,54 +5,63 @@ exports.profileCreatePost = asyncHandler(async (req, res) => {
   const {
     firstName,
     lastName,
-    description,
-    availability,
-    email,
-    username,
     gender,
     birthday,
     phone,
     address,
+    description,
+    availability,
     available,
   } = req.body;
   const id = req.user.id;
 
   if (!firstName || !lastName || !id) {
     res.status(400);
-    throw new Error("Invalid name");
+    throw new Error("Invalid request");
   }
   const profile = await Profile.create({
-    userId: id,
+    user: id,
     firstName,
     lastName,
-    description,
-    availability,
-    email,
-    username,
     gender,
     birthday,
     phone,
     address,
+    description,
+    availability,
     available,
   });
   res.status(201).json({ profile });
 });
 
-exports.profileUpdatePost = asyncHandler(async (req, res) => {
-  const { firstName, lastName, description, availability, email } = req.body;
+exports.profileUpdatePatch = asyncHandler(async (req, res) => {
+  const {
+    firstName,
+    lastName,
+    gender,
+    birthday,
+    phone,
+    address,
+    description,
+    availability,
+    available,
+  } = req.body;
   const id = req.user.id;
-  const idExists = await Profile.findOne({ _id: id });
+  const idExists = await Profile.findOne({ user: id });
 
   if (idExists) {
-    const update = await Profile.updateOneById(
-      { id },
+    const update = await Profile.updateOne(
+      { user: id },
       {
-        username,
         firstName,
-        email,
         lastName,
+        gender,
+        birthday,
+        phone,
+        address,
         description,
         availability,
+        available,
       }
     );
     res.status(200).json({ update: update });
@@ -63,10 +72,11 @@ exports.profileUpdatePost = asyncHandler(async (req, res) => {
 });
 
 exports.profileGet = asyncHandler(async (req, res) => {
-  const id = req.params.id ? req.params.id : req.user.id;
+  const id = req.user.id;
   let profile;
   if (id) {
-    profile = await Profile.findOne({ id });
+    console.log(id);
+    profile = await Profile.findOne({ user: id });
   }
 
   if (!id) {
