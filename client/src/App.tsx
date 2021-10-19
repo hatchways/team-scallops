@@ -22,6 +22,7 @@ function App(): JSX.Element {
                 <Route path="/profile" component={Profile} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={Signup} />
+
                 <Route exact path="/dashboard">
                   <Dashboard />
                 </Route>
