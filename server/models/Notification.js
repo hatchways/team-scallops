@@ -2,13 +2,22 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const notificationSchema = new Schema({
-    sender: {type:mongoose.Schema.Types.ObjectId, ref:'User'}, 
+    
     receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    enum:['serviceRequest', 'serviceAvailable'],
-    title: String,
-    message: String,
-    isRead: Boolean,
-    created_at:{type: Date, default: Date.now},
+    notifications: [{
+        type: {
+            type: String,
+            enum: ['serviceRequest', 'serviceAvailable'], 
+        },
+        sender: {type:mongoose.Schema.Types.ObjectId, ref:'User'}, 
+        title: {type: String},
+        message: {type: String},
+        isRead: {type: Boolean,default: false},
+        created_at:{type: Date, default: Date.now},
+    }
+        
+  ]
+    
     
 });
 
