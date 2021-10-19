@@ -4,8 +4,6 @@ import { CircularProgress } from '@material-ui/core';
 
 import { useAuth } from '../../../../context/useAuthContext';
 
-//This for needs to UPDATE to /profile/edit/update
-
 export default function ProfileEditForm(): JSX.Element {
   const { loggedInUser } = useAuth();
 

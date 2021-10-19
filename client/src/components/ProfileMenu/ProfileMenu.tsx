@@ -1,13 +1,12 @@
-import Grid from '@material-ui/core/Grid';
+import { Grid, Box, Typography } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
-import { Typography } from '@material-ui/core';
 import useStyles from './useStyles';
 
 export default function ProfileMenu(): JSX.Element {
   const classes = useStyles();
 
   return (
-    <Typography>
+    <Box>
       <Grid item className={classes.menu}>
         <NavLink activeClassName={classes.active} className={classes.link} to="/profile/edit">
           Edit profile
@@ -28,6 +27,6 @@ export default function ProfileMenu(): JSX.Element {
           Settings
         </NavLink>
       </Grid>
-    </Typography>
+    </Box>
   );
 }
