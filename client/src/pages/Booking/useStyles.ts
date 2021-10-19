@@ -2,16 +2,11 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // flexGrow: 1,
-    // textAlign: 'left',
-    paddingTop: theme.spacing(12),
+    paddingTop: theme.spacing(8),
     paddingLeft: theme.spacing(12),
     paddingRight: theme.spacing(12),
+    placeItems: 'center',
   },
-  // paper: {
-  //   textAlign: 'center',
-  //   color: theme.palette.text.secondary,
-  // },
   bullet: {
     display: 'inline-block',
     margin: '0 2px',
@@ -41,9 +36,12 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  // calendar: {
-  //   width: 100%
-  // }
+  upcomingBookingFormat: {
+    width: '35px',
+    height: '35px',
+    color: 'white',
+    backgroundColor: '#f04545',
+  },
 }));
 
 export default useStyles;
