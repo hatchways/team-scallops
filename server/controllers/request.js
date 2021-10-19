@@ -1,7 +1,8 @@
 const Request = require("../models/Request");
 const asyncHandler = require("express-async-handler");
+const mongoose = require("mongoose");
 
-// @route GET /request/all
+// @route GET /request/
 // @desc List of requests for logged in user
 // @access Private
 exports.getRequests = asyncHandler(async (req, res, next) => {
@@ -19,7 +20,7 @@ exports.getRequests = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @route POST /request/create
+// @route POST /request/
 // @desc Create a new request
 // @access Private
 exports.createRequest = asyncHandler(async (req, res, next) => {
@@ -29,7 +30,7 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
   const ownerExists = await User.findById(ownerId);
   const sitterExists = await User.findById(sitterId);
 
-  if (!ownerId || !sitterId || !startDate || !endDate) {
+  if (!sitterId || !startDate || !endDate) {
     res.status(400);
     throw new Error("One of the required fields hasn't been completed");
   }
@@ -48,11 +49,11 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
     res.status(201).json({ request });
   }
 
-  res.status(400);
+  res.status(500);
   throw new Error("Error creating request");
 });
 
-// @route PUT /request/update/:id
+// @route PUT /request/:id
 // @desc Update request dates, satus, serviceType and rating
 // @access Private
 
@@ -61,13 +62,19 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
   const requestId = req.params.id;
   const input = req.body;
 
+  if (!mongoose.Types.ObjectId.isValid(requestId)) {
+    return res.status(400).send("Bad Request");
+  }
+
   const request = await Request.findById(requestId);
+  const isOwnByUser = request.owner === userId || request.sitter === userId;
 
   if (!request) {
     res.status(404);
     throw new Error("Request is not found.");
   }
-  try {
+
+  if (isOwnByUser) {
     Object.entries(input).forEach(([key, value]) => {
       if (value) {
         if (key === "startDate") {
@@ -83,8 +90,8 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
 
     await request.save();
     return res.status(200).json({ request });
-  } catch {
-    res.status(400);
-    throw new Error("Error updating request");
   }
+
+  res.status(500);
+  throw new Error("Error updating request");
 });
