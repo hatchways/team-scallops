@@ -24,16 +24,17 @@ const requestSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ["ACCEPTED", "DECLINED", "PAID"],
+      enum: ["ACCEPTED", "DECLINED", "PAID", "PENDING"],
+      required: true,
+      uppercase: true,
+      default: "PENDING",
     },
     serviceType: {
       type: String,
       enum: ["BOARDING", "HOUSE_SITTING", "DAY_CARE", "WALKING"],
+      uppercase: true,
     },
     totalPrice: {
-      type: Number,
-    },
-    rating: {
       type: Number,
     },
   },
