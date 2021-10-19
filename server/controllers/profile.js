@@ -5,65 +5,64 @@ exports.profileCreatePost = asyncHandler(async (req, res) => {
   const {
     firstName,
     lastName,
-    description,
-    availability,
     gender,
     birthday,
     phone,
     address,
+    description,
+    availability,
     available,
   } = req.body;
   const id = req.user.id;
   const email = req.user.email;
   if (!firstName || !lastName || !id) {
     res.status(400);
-    throw new Error("Invalid name/ID");
+    throw new Error("Invalid request");
   }
   console.log(req.user.id);
   console.log;
   const profile = await Profile.create({
     user: id,
-    userId: id,
     firstName,
     lastName,
-    description,
-    availability,
     gender,
     birthday,
     phone,
     address,
+    description,
+    availability,
     available,
   });
   res.status(201).json({ profile });
 });
 
-exports.profileUpdatePost = asyncHandler(async (req, res) => {
+exports.profileUpdatePatch = asyncHandler(async (req, res) => {
   const {
     firstName,
     lastName,
-    description,
-    availability,
     gender,
     birthday,
     phone,
     address,
+    description,
+    availability,
     available,
   } = req.body;
   const id = req.user.id;
-  const idExists = await Profile.findOne({ userId: id });
+  const idExists = await Profile.findOne({ user: id });
 
   if (idExists) {
     const update = await Profile.updateOne(
-      { userId: id },
+      { user: id },
       {
         firstName,
         lastName,
-        description,
-        availability,
         gender,
         birthday,
         phone,
         address,
+        description,
+        availability,
         available,
       }
     );
@@ -75,10 +74,11 @@ exports.profileUpdatePost = asyncHandler(async (req, res) => {
 });
 
 exports.profileGet = asyncHandler(async (req, res) => {
-  const id = req.params.id ? req.params.id : req.user.id;
+  const id = req.user.id;
   let profile;
   if (id) {
-    profile = await Profile.findOne({ userId: id });
+    console.log(id);
+    profile = await Profile.findOne({ user: id });
   }
 
   if (!id) {
