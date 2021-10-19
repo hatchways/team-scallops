@@ -33,6 +33,10 @@ function App(): JSX.Element {
                 <Route exact path="/dashboard">
                   <Dashboard />
                 </Route>
+<<<<<<< HEAD
+=======
+                <Route path="/booking" component={Booking} />
+>>>>>>> 8f0faab... Add Booking page Route
                 <Route path="*">
                   <Redirect to="/login" />
                 </Route>
