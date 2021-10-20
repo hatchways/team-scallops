@@ -19,8 +19,7 @@ exports.profileCreatePost = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Invalid request");
   }
-  console.log(req.user.id);
-  console.log;
+
   const profile = await Profile.create({
     user: id,
     firstName,
@@ -77,7 +76,6 @@ exports.profileGet = asyncHandler(async (req, res) => {
   const id = req.user.id;
   let profile;
   if (id) {
-    console.log(id);
     profile = await Profile.findOne({ user: id });
   }
 
