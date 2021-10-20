@@ -1,9 +1,17 @@
-const  express= require('express');
+const express = require("express");
 const router = express.Router();
-const {multerUploads} =require('../middleware/multer')
-const { createProfile } = require("../controllers/profile");
+const protect = require("../middleware/auth");
+const { multerUploads } = require("../middleware/multer");
+const {
+  profileCreatePost,
+  profileUpdatePatch,
+  profileGet,
+  profileGetAll,
+} = require("../controllers/profile");
 
-
-router.route('/').post(multerUploads,createProfile);
+router.route("/").post(protect, multerUploads, profileCreatePost);
+router.route("/").patch(protect, profileUpdatePatch);
+router.route("/").get(protect, profileGet);
+router.route("/all").get(protect, profileGetAll);
 
 module.exports = router;
