@@ -3,16 +3,18 @@ const Schema = mongoose.Schema;
 
 const notificationSchema = new Schema({
     
-    receiver: {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
     },
+  
     notifications: [
         {
         type: {
             type: String,
-            enum: ['serviceRequest', 'serviceAvailable'], 
+            enum: ['serviceRequest', 'serviceAvailable'],
+            
         },
         sender: {
             type: mongoose.Schema.Types.ObjectId,
