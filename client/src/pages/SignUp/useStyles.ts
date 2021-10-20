@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { theme } from '../../themes/theme';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -12,15 +13,13 @@ const useStyles = makeStyles(() => ({
     alignItems: 'flex-start',
     justifyContent: 'space-between',
     flexDirection: 'column',
-    minHeight: '100vh',
-    paddingTop: 23,
   },
-  welcome: {
-    fontSize: 26,
+  title: {
+    fontSize: 32,
     paddingBottom: 20,
     color: '#000000',
-    fontWeight: 700,
-    fontFamily: "'Open Sans'",
+    fontWeight: 900,
+    fontFamily: theme.typography.fontFamily,
   },
 }));
 

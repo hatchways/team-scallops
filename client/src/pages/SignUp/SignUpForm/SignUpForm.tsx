@@ -5,7 +5,8 @@ import { Formik, FormikHelpers } from 'formik';
 import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
-import { CircularProgress } from '@material-ui/core';
+import { CircularProgress, InputLabel } from '@material-ui/core';
+import { NavLink } from 'react-router-dom';
 
 interface Props {
   handleSubmit: (
@@ -51,9 +52,11 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
     >
       {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
+          <InputLabel htmlFor="username">
+            <Typography className={classes.label}>NAME</Typography>
+          </InputLabel>
           <TextField
             id="username"
-            label={<Typography className={classes.label}>Username</Typography>}
             fullWidth
             margin="normal"
             InputLabelProps={{
@@ -68,11 +71,15 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             helperText={touched.username ? errors.username : ''}
             error={touched.username && Boolean(errors.username)}
             value={values.username}
+            placeholder="Your name"
+            variant="outlined"
             onChange={handleChange}
           />
+          <InputLabel htmlFor="email">
+            <Typography className={classes.label}>EMAIL ADDRESS</Typography>
+          </InputLabel>
           <TextField
             id="email"
-            label={<Typography className={classes.label}>E-mail address</Typography>}
             fullWidth
             margin="normal"
             InputLabelProps={{
@@ -86,11 +93,15 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             helperText={touched.email ? errors.email : ''}
             error={touched.email && Boolean(errors.email)}
             value={values.email}
+            placeholder="Your email"
+            variant="outlined"
             onChange={handleChange}
           />
+          <InputLabel htmlFor="password">
+            <Typography className={classes.label}>PASSWORD</Typography>
+          </InputLabel>
           <TextField
             id="password"
-            label={<Typography className={classes.label}>Password</Typography>}
             fullWidth
             margin="normal"
             InputLabelProps={{
@@ -104,13 +115,21 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             helperText={touched.password ? errors.password : ''}
             error={touched.password && Boolean(errors.password)}
             value={values.password}
+            placeholder="Create a password"
+            variant="outlined"
             onChange={handleChange}
           />
 
           <Box textAlign="center">
-            <Button type="submit" size="large" variant="contained" color="primary" className={classes.submit}>
+            <Button type="submit" size="large" variant="contained" color="secondary" className={classes.submit}>
               {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Create'}
             </Button>
+          </Box>
+          <Box mt={3} style={{ display: 'flex' }} textAlign="center" alignItems="center" justifyContent="center">
+            <Typography style={{ fontWeight: 'bold' }}>Already a member?&nbsp;</Typography>
+            <NavLink to="/login" color="secondary">
+              <Typography color="secondary">Login</Typography>
+            </NavLink>
           </Box>
         </form>
       )}

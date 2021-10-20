@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import { CircularProgress, InputLabel } from '@material-ui/core';
+import { NavLink } from 'react-router-dom';
 
 interface Props {
   handleSubmit: (
@@ -96,6 +97,12 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
             <Button type="submit" size="large" variant="contained" color="secondary" className={classes.submit}>
               {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Login'}
             </Button>
+          </Box>
+          <Box mt={3} textAlign="center" alignItems="center" justifyContent="center">
+            <Typography> Don&apos;t have account? </Typography>
+            <NavLink to="/signup" color="secondary">
+              <Typography color="secondary">Create an account</Typography>
+            </NavLink>
           </Box>
         </form>
       )}

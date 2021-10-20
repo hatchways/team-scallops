@@ -6,8 +6,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(1),
   },
   label: {
+    position: 'relative',
+    top: '1rem',
     color: 'rgb(0,0,0)',
-    fontWeight: theme.typography.fontWeightBold,
+    fontWeight: 900,
   },
   inputs: {
     height: '1rem',
