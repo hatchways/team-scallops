@@ -1,8 +1,6 @@
 import { MuiThemeProvider } from '@material-ui/core';
 import { theme } from './themes/theme';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
-
-// Pages routes
 import Login from './pages/Login/Login';
 import Signup from './pages/SignUp/SignUp';
 import Dashboard from './pages/Dashboard/Dashboard';
@@ -10,11 +8,7 @@ import Profile from './pages/Profile/Profile';
 import MyJobs from './pages/MyJobs/MyJobs';
 import MySitters from './pages/MySitters/MySitters';
 import Messages from './pages/Messages/Messages';
-
-// Support components
 import NavBar from './components/NavBar/NavBar';
-
-// Context APIs
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';

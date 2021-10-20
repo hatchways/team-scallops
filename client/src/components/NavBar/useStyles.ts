@@ -12,9 +12,6 @@ const useStyles = makeStyles((theme) => ({
   logo: {
     maxWidth: 200,
   },
-  link: {
-    textDecoration: 'none',
-  },
   sitterText: {
     fontFamily: theme.typography.fontFamily,
     marginRight: '2rem',

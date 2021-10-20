@@ -1,13 +1,7 @@
 import { useState, MouseEvent } from 'react';
 import { useHistory } from 'react-router-dom';
-
-// Context APIs
 import { useAuth } from '../../context/useAuthContext';
-
-// Material
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
-
-// Supporting
 import AvatarDisplay from '../AvatarDisplay/AvatarDisplay';
 
 const AuthMenu = (): JSX.Element => {
