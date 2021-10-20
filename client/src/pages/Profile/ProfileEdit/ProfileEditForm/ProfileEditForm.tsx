@@ -5,7 +5,6 @@ import axios from 'axios';
 import { useAuth } from '../../../../context/useAuthContext';
 import useStyles from './useStyles';
 import moment from 'moment';
-import { ViewDaySharp } from '@material-ui/icons';
 moment().format();
 
 export default function ProfileEditForm(): JSX.Element {
@@ -13,7 +12,6 @@ export default function ProfileEditForm(): JSX.Element {
   const [hasProfile, setHasProfile] = useState(false);
   const classes = useStyles();
   const [getDays, setDays] = useState(31);
-  const today = new Date();
   const [state, setState] = useState({
     firstName: '',
     lastName: '',
@@ -64,17 +62,11 @@ export default function ProfileEditForm(): JSX.Element {
     };
 
     const days = (year: any, month: any) => {
-      const { dobMonth, dobYear } = state;
-      console.log(state.dobMonth);
-
-      console.log(birthday.year);
       const mnt = `${parseInt(year)} ${parseInt(month)}`;
       const md = moment(mnt, 'YYYY-MM').daysInMonth();
-      console.log(md);
 
       const test = [...Array(+md + 1).keys()];
       test.shift();
-      console.log(test);
       return test;
     };
     return (
@@ -119,28 +111,10 @@ export default function ProfileEditForm(): JSX.Element {
 
               setTimeout(() => {
                 if (!hasProfile) {
-                  console.log('creating profile');
-                  axios
-                    .post('/profile/create', modifiedValues)
-                    .then((res) => {
-                      console.log(res);
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                    });
+                  axios.post('/profile/create', modifiedValues);
                 } else {
-                  console.log('updating profile');
-
-                  axios
-                    .post('/profile/update', modifiedValues)
-                    .then((res) => {
-                      console.log(res);
-                    })
-                    .catch((error) => {
-                      console.log(error);
-                    });
+                  axios.post('/profile/update', modifiedValues);
                 }
-                alert(JSON.stringify(modifiedValues, null, 2));
                 actions.setSubmitting(false);
               }, 1000);
             }}
