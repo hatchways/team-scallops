@@ -8,14 +8,9 @@ const connectDB = require("./db");
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
-const profileRouter = require("./routes/profile");
-
-const  { cloudinaryConfig } =require('./config/cloudinary')
-
-
-
 
 const { json, urlencoded } = express;
 
@@ -36,13 +31,10 @@ io.on("connection", (socket) => {
 if (process.env.NODE_ENV === "development") {
   app.use(logger("dev"));
 }
-
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
-app.use('', cloudinaryConfig);
-
 
 app.use((req, res, next) => {
   req.io = io;
@@ -51,7 +43,6 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
-app.use("/profile", profileRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));
