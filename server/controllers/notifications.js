@@ -2,45 +2,50 @@ const express = require("express");
 const router = express.Router();
 const Notification = require("../models/Notification");
 const asyncHandler = require("express-async-handler");
- const UserModel = require("../models/User");
-
+const UserModel = require("../models/User");
 
 exports.getNotifi = asyncHandler(async (req, res) => {
-
   const { id } = req.params;
- 
 
   const user = await Notification.findOne({ receiver: id })
-  .populate("notifications.user")
-  .populate("notifications.post");
-  
-return res.json(user.notifications);
+    .populate("notifications.user")
+    .populate("notifications.post");
 
- 
+  return res.json(user.notifications);
 });
 
-exports.postNotifi = asyncHandler(async (req, res) => {
+const setIsReadtoTrue = async (id) => {
+  const user = await Notification.findOne({ receiver: id });
 
+  user.notifications.isRead = true;
+  await user.save();
+};
+exports.postNotifi = asyncHandler(async (req, res) => {
   const { revId, sendId } = req.params;
-  const {title,message}= req.body
+  const { title, message } = req.body;
 
   const notificationTest = {
-    type:"serviceRequest",
-    receiver:revId,
-    sender:sendId,
+    type: "serviceRequest",
+    receiver: revId,
+    sender: sendId,
     title,
-    message
+    message,
+  };
+  const user = await Notification.findOne({ receiver: revId });
+  if (!user) {
+    await new Notification({
+      receiver: revId,
+      notifications: [],
+    }).save();
   }
-  const user = await Notification.findOne({ user: revId })
 
-  await user.notifications.push(notificationTest)
-  await user.save()
-  
-return res.json(user);
+  await user.notifications.unshift(notificationTest);
+  await user.save();
 
- 
+  await setIsReadtoTrue(revId);
+
+  return res.json(user);
 });
-
 
 // router.post("/", authMiddleware, async (req, res) => {
 //   try {
@@ -58,5 +63,3 @@ return res.json(user);
 //     return res.status(500).send("Server Error");
 //   }
 // });
-
-
