@@ -1,7 +1,7 @@
 const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
 
-exports.profileCreatePost = asyncHandler(async (req, res) => {
+exports.post = asyncHandler(async (req, res) => {
   const {
     firstName,
     lastName,
@@ -35,7 +35,7 @@ exports.profileCreatePost = asyncHandler(async (req, res) => {
   res.status(201).json({ profile });
 });
 
-exports.profileUpdatePatch = asyncHandler(async (req, res) => {
+exports.patch = asyncHandler(async (req, res) => {
   const {
     firstName,
     lastName,
@@ -66,13 +66,14 @@ exports.profileUpdatePatch = asyncHandler(async (req, res) => {
       }
     );
     res.status(200).json({ update: update });
+    i;
   } else {
     res.status(500);
     throw new Error("Invalid profile update");
   }
 });
 
-exports.profileGet = asyncHandler(async (req, res) => {
+exports.get = asyncHandler(async (req, res) => {
   const id = req.user.id;
   let profile;
   if (id) {
@@ -86,7 +87,7 @@ exports.profileGet = asyncHandler(async (req, res) => {
   res.status(200).json({ profile: profile });
 });
 
-exports.profileGetAll = asyncHandler(async (req, res) => {
+exports.all = asyncHandler(async (req, res) => {
   const profiles = await Profile.find();
   res.status(200).json({ profiles: profiles });
 });
