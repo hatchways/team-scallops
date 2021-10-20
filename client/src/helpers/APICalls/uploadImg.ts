@@ -7,19 +7,18 @@ export const uploadImage = async (url: string, image: any): Promise<string> => {
     method: 'POST',
     body: formData,
   };
-  // Save image in cloudinary
-  return await fetch(url, fetchOptions)
+
+  const res = await fetch(url, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({
       error: { message: 'Unable to connect to server. Please try again' },
     }));
 
-  // Save the image url in DB
-  //const imageUrl = res.secure_url;
+  const imageUrl = res.secure_url;
 
-  // return await fetch('/profile', imageUrl)
-  //   .then((res) => res.json())
-  //   .catch(() => ({
-  //     error: { message: 'Unable to save the image in database. Please try again' },
-  //   }));
+  return await fetch('/profile', imageUrl)
+    .then((res) => res.json())
+    .catch(() => ({
+      error: { message: 'Unable to save the image in database. Please try again' },
+    }));
 };
