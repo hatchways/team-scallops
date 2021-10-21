@@ -1,5 +1,6 @@
 import { useState, MouseEvent } from 'react';
 
+import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardContent from '@material-ui/core/CardContent';
 import Paper from '@material-ui/core/Paper';
@@ -37,7 +38,7 @@ function BookingItem(props: Props): JSX.Element {
   return (
     <>
       {upcoming ? (
-        <>
+        <Card>
           <CardHeader
             action={
               <>
@@ -68,9 +69,9 @@ function BookingItem(props: Props): JSX.Element {
               </Typography>
             </Box>
           </CardContent>
-        </>
+        </Card>
       ) : (
-        <>
+        <Card>
           <CardHeader title={title.toUpperCase()} disableTypography />
           <CardContent>
             <Paper variant="outlined" square>
@@ -107,7 +108,7 @@ function BookingItem(props: Props): JSX.Element {
               </CardContent>
             </Paper>
           </CardContent>
-        </>
+        </Card>
       )}
     </>
   );
