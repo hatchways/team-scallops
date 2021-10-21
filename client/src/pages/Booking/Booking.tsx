@@ -7,6 +7,8 @@ import { createMuiTheme } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
 
 import BookingItem from '../../components/BookingItem/BookingItem';
 import useStyles from './useStyles';
@@ -68,7 +70,12 @@ function Booking(): JSX.Element {
       <Grid container spacing={6} direction="row" alignContent="center" alignItems="center" className={classes.root}>
         <Grid item xs={12} sm={6}>
           <Paper elevation={3}>
-            <BookingItem title="your next booking:" upcoming />
+            <Card>
+              <Typography variant="h6" className={classes.title}>
+                YOUR NEXT BOOKING:
+              </Typography>
+              <BookingItem upcoming />
+            </Card>
           </Paper>
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -89,8 +96,16 @@ function Booking(): JSX.Element {
         </Grid>
         <Grid item xs={12} sm={6}>
           <Paper elevation={3}>
-            <BookingItem title="current bookings:" />
-            <BookingItem title="past bookings:" />
+            <Card>
+              <Typography variant="h6" className={classes.title}>
+                CURRENT BOOKINGS:
+              </Typography>
+              <BookingItem />
+              <Typography variant="h6" className={classes.title}>
+                PAST BOOKINGS:
+              </Typography>
+              <BookingItem />
+            </Card>
           </Paper>
         </Grid>
       </Grid>
