@@ -6,7 +6,6 @@ import useStyles from './useStyles';
 import { User } from '../../interface/User';
 import AvatarDisplay from '../AvatarDisplay/AvatarDisplay';
 import Search from '../Search/Search';
-import AuthMenu from '../AuthMenu/AuthMenu';
 
 interface Props {
   loggedInUser: User;
@@ -33,7 +32,6 @@ const ChatSideBanner = ({ loggedInUser }: Props): JSX.Element => {
         <Typography className={classes.userText} variant="h5">
           {loggedInUser.username}
         </Typography>
-        <AuthMenu />
       </Box>
       <Box>
         <Typography className={classes.chatTitle} variant="h5">
