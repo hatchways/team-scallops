@@ -10,6 +10,6 @@ const {
 
 router.route("/").get(protect, getRequests);
 router.route("/").post(protect, createRequest);
-router.route("/:id").put(protect, updateRequest);
+router.route("/:id").post(protect, updateRequest);
 
 module.exports = router;

@@ -27,13 +27,12 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
   const ownerId = req.user.id;
   const { sitterId, startDate, endDate, serviceType, totalPrice } = req.body;
 
-  const ownerExists = await User.findById(ownerId);
-  const sitterExists = await User.findById(sitterId);
-
   if (!sitterId || !startDate || !endDate) {
     res.status(400);
     throw new Error("One of the required fields hasn't been completed");
   }
+  const ownerExists = await User.findById(ownerId);
+  const sitterExists = await User.findById(sitterId);
 
   if (ownerExists && sitterExists && ownerId !== sitterId) {
     const request = new Request({
@@ -53,7 +52,7 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
   throw new Error("Error creating request");
 });
 
-// @route PUT /request/:id
+// @route POST /request/:id
 // @desc Update request dates, satus, serviceType and rating
 // @access Private
 
@@ -67,14 +66,15 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
   }
 
   const request = await Request.findById(requestId);
-  const isOwnByUser = request.owner === userId || request.sitter === userId;
 
   if (!request) {
     res.status(404);
     throw new Error("Request is not found.");
   }
 
-  if (isOwnByUser) {
+  const isOwnedByUser = request.owner == userId || request.sitter == userId;
+
+  if (isOwnedByUser) {
     Object.entries(input).forEach(([key, value]) => {
       if (value) {
         if (key === "startDate") {
