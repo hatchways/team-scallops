@@ -13,8 +13,8 @@ exports.getNotifications = asyncHandler(async (req, res) => {
       data: userNotification.notifications,
     });
   } else {
-    res.status(400);
-    throw new Error("No notifications found");
+    res.status(500);
+    throw new Error("Something went wrong");
   }
 });
 
