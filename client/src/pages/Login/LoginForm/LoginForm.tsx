@@ -71,7 +71,7 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
             variant="outlined"
           />
           <InputLabel htmlFor="password">
-            <Typography className={classes.label}>Password</Typography>
+            <Typography className={classes.label}>PASSWORD</Typography>
           </InputLabel>
           <TextField
             id="password"
