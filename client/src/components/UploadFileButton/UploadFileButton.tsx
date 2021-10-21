@@ -7,8 +7,8 @@ import { uploadImage } from '../../helpers/APICalls/uploadImg';
 export default function UploadFileButton({ ...inputProps }: IUploadFile): JSX.Element {
   const classes = useStyles();
   const URL = 'https://api.cloudinary.com/v1_1/dog-sitter/image/upload';
-  const [image, setImage] = useState<any>('');
-  const [url, setUrl] = useState<any>('');
+  const [image, setImage] = useState<File | undefined>(undefined);
+  const [url, setUrl] = useState<string>('');
 
   const onChange = (event: ChangeEvent) => {
     const target = event.target as HTMLInputElement;
