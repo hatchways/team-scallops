@@ -53,7 +53,9 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
       {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <InputLabel htmlFor="username">
-            <Typography className={classes.label}>NAME</Typography>
+            <Typography className={classes.label} color="textPrimary">
+              name
+            </Typography>
           </InputLabel>
           <TextField
             id="username"
@@ -76,7 +78,9 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             onChange={handleChange}
           />
           <InputLabel htmlFor="email">
-            <Typography className={classes.label}>EMAIL ADDRESS</Typography>
+            <Typography className={classes.label} color="textPrimary">
+              email address
+            </Typography>
           </InputLabel>
           <TextField
             id="email"
@@ -98,7 +102,9 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             onChange={handleChange}
           />
           <InputLabel htmlFor="password">
-            <Typography className={classes.label}>PASSWORD</Typography>
+            <Typography className={classes.label} color="textPrimary">
+              password
+            </Typography>
           </InputLabel>
           <TextField
             id="password"
@@ -122,11 +128,13 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
 
           <Box textAlign="center">
             <Button type="submit" size="large" variant="contained" color="secondary" className={classes.submit}>
-              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Create'}
+              {isSubmitting ? <CircularProgress className={classes.circleColor} /> : 'Create'}
             </Button>
           </Box>
-          <Box mt={3} style={{ display: 'flex' }} textAlign="center" alignItems="center" justifyContent="center">
-            <Typography style={{ fontWeight: 'bold' }}>Already a member?&nbsp;</Typography>
+          <Box mt={3} display="flex" textAlign="center" alignItems="center" justifyContent="center">
+            <Typography className={classes.boldText} color="textPrimary">
+              Already a member?&nbsp;
+            </Typography>
             <NavLink to="/login" color="secondary">
               <Typography color="secondary">Login</Typography>
             </NavLink>

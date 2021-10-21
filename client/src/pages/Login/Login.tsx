@@ -41,7 +41,7 @@ export default function Login(): JSX.Element {
       <Grid item xs={12} sm={8} md={7} elevation={6} component={Paper} className={classes.wrapper}>
         <Box width="100%" maxWidth={450} p={3} mt={5}>
           <Grid container justify="center" alignItems="center">
-            <Typography className={classes.welcome} component="h1">
+            <Typography className={classes.welcome} component="h1" color="textPrimary">
               Welcome back!
             </Typography>
           </Grid>

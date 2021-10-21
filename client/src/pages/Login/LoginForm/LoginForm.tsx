@@ -48,7 +48,9 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
       {({ handleSubmit, handleChange, values, touched, errors, isSubmitting }) => (
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <InputLabel htmlFor="email">
-            <Typography className={classes.label}>E-MAIL ADDRESS</Typography>
+            <Typography className={classes.label} color="textPrimary">
+              e-mail address
+            </Typography>
           </InputLabel>
           <TextField
             id="email"
@@ -71,7 +73,9 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
             variant="outlined"
           />
           <InputLabel htmlFor="password">
-            <Typography className={classes.label}>PASSWORD</Typography>
+            <Typography className={classes.label} color="textPrimary">
+              password
+            </Typography>
           </InputLabel>
           <TextField
             id="password"
@@ -83,7 +87,6 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
             }}
             InputProps={{
               classes: { input: classes.inputs },
-              // endAdornment: <Typography className={classes.forgot}>Forgot?</Typography>,
             }}
             type="password"
             autoComplete="current-password"
@@ -95,11 +98,11 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
           />
           <Box textAlign="center">
             <Button type="submit" size="large" variant="contained" color="secondary" className={classes.submit}>
-              {isSubmitting ? <CircularProgress style={{ color: 'white' }} /> : 'Login'}
+              {isSubmitting ? <CircularProgress className={classes.circleColor} /> : 'Login'}
             </Button>
           </Box>
           <Box mt={3} textAlign="center" alignItems="center" justifyContent="center">
-            <Typography style={{ fontWeight: 'bold' }}> Don&apos;t have account? </Typography>
+            <Typography className={classes.boldText}> Don&apos;t have account? </Typography>
             <NavLink to="/signup" color="secondary">
               <Typography color="secondary">Create an account</Typography>
             </NavLink>

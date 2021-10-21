@@ -19,9 +19,8 @@ const useStyles = makeStyles(() => ({
   title: {
     fontSize: 32,
     paddingBottom: 20,
-    color: '#000000',
     fontWeight: 900,
-    fontFamily: theme.typography.fontFamily,
+    fontFamily: "'Open Sans'",
   },
 }));
 

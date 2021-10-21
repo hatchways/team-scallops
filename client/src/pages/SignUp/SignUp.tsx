@@ -42,7 +42,9 @@ export default function Register(): JSX.Element {
       <Grid item xs={12} sm={8} md={7} elevation={6} component={Paper} className={classes.wrapper}>
         <Box width="100%" maxWidth={450} p={3} mt={5}>
           <Grid container justify="center" alignItems="center">
-            <Typography className={classes.title}>Sign Up</Typography>
+            <Typography className={classes.title} color="textPrimary">
+              Sign Up
+            </Typography>
           </Grid>
           <SignUpForm handleSubmit={handleSubmit} />
         </Box>
