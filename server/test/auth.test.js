@@ -31,13 +31,13 @@ describe("Test for all auth endpoints", () => {
         });
     });
 
-    it("register should return 400 code when user already exists", (pass) => {
+    it("register should return 409 code when user already exists", (pass) => {
       chai
         .request(app)
         .post("/auth/register")
         .send(newUser)
         .end((err, res) => {
-          res.should.have.status(400);
+          res.should.have.status(409);
           res.should.have.property("error");
           pass();
         });
