@@ -99,7 +99,7 @@ export default function Login({ handleSubmit }: Props): JSX.Element {
             </Button>
           </Box>
           <Box mt={3} textAlign="center" alignItems="center" justifyContent="center">
-            <Typography> Don&apos;t have account? </Typography>
+            <Typography style={{ fontWeight: 'bold' }}> Don&apos;t have account? </Typography>
             <NavLink to="/signup" color="secondary">
               <Typography color="secondary">Create an account</Typography>
             </NavLink>

@@ -39,15 +39,12 @@ export default function Register(): JSX.Element {
   return (
     <Grid container component="main" className={classes.root} justify="center" alignItems="center">
       <CssBaseline />
-      <Grid item xs={12} sm={8} md={7} elevation={6} component={Paper} style={{ height: '80vh', minHeight: '40rem' }}>
-        <Box className={classes.authWrapper}>
-          <Box width="100%" maxWidth={450} p={3} alignSelf="center">
-            <Grid container justify="center" alignItems="center">
-              <Typography className={classes.title}>Sign Up</Typography>
-            </Grid>
-            <SignUpForm handleSubmit={handleSubmit} />
-          </Box>
-          <Box p={1} alignSelf="center" />
+      <Grid item xs={12} sm={8} md={7} elevation={6} component={Paper} className={classes.wrapper}>
+        <Box width="100%" maxWidth={450} p={3} mt={5}>
+          <Grid container justify="center" alignItems="center">
+            <Typography className={classes.title}>Sign Up</Typography>
+          </Grid>
+          <SignUpForm handleSubmit={handleSubmit} />
         </Box>
       </Grid>
     </Grid>

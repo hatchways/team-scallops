@@ -8,10 +8,12 @@ const useStyles = makeStyles(() => ({
       borderBottom: '1.2px solid rgba(0, 0, 0, 0.2)',
     },
   },
-  authWrapper: {
+  wrapper: {
+    height: '80vh',
+    minHeight: '40rem',
     display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'start',
     flexDirection: 'column',
   },
   title: {
