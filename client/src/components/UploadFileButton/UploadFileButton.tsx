@@ -3,19 +3,21 @@ import { useStyles } from './useStyles';
 import { IUploadFile } from '../../interface/UploadFileButton';
 import { ChangeEvent, useState } from 'react';
 import { uploadImage } from '../../helpers/APICalls/uploadImg';
+import { useSnackBar } from '../../context/useSnackbarContext';
 
 export default function UploadFileButton({ ...inputProps }: IUploadFile): JSX.Element {
   const classes = useStyles();
   const URL = 'https://api.cloudinary.com/v1_1/dog-sitter/image/upload';
   const [image, setImage] = useState<File | undefined>(undefined);
-  const [url, setUrl] = useState<string>('');
+  const { updateSnackBarImage } = useSnackBar();
 
   const onChange = (event: ChangeEvent) => {
     const target = event.target as HTMLInputElement;
     const file: File = (target.files as FileList)[0];
-    setImage(file);
-
-    uploadImage(URL, image).then((data: any) => setUrl(data.secure_url));
+    if (file) {
+      setImage(file);
+      uploadImage(URL, image).then((data: any) => updateSnackBarImage(data.secure_url));
+    }
   };
 
   return (

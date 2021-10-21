@@ -5,19 +5,25 @@ import CloseIcon from '@material-ui/icons/Close';
 
 interface ISnackBarContext {
   updateSnackBarMessage: (message: string) => void;
+  updateSnackBarImage: (image: string) => void;
 }
 
 export const SnackBarContext = createContext<ISnackBarContext>({
   updateSnackBarMessage: () => null,
+  updateSnackBarImage: () => null,
 });
 
 export const SnackBarProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [message, setMessage] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
+  const [image, setImage] = useState<string>('');
 
   const updateSnackBarMessage = useCallback((message: string) => {
     setMessage(message);
     setOpen(true);
+  }, []);
+  const updateSnackBarImage = useCallback((image: string) => {
+    setImage(image);
   }, []);
 
   const handleClose = useCallback(() => {
@@ -30,7 +36,7 @@ export const SnackBarProvider: FunctionComponent = ({ children }): JSX.Element =
   }, []);
 
   return (
-    <SnackBarContext.Provider value={{ updateSnackBarMessage }}>
+    <SnackBarContext.Provider value={{ updateSnackBarMessage, updateSnackBarImage }}>
       {children}
       <Snackbar
         anchorOrigin={{
