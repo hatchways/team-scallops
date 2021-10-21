@@ -7,12 +7,11 @@ const notificationSchema = new Schema({
     ref: "User",
     required: true,
   },
-
   notifications: [
     {
       type: {
         type: String,
-        enum: ["serviceRequest", "serviceAvailable"],
+        enum: ["serviceRequest", "serviceAvailable", "message"],
       },
       sender: {
         type: mongoose.Schema.Types.ObjectId,
@@ -35,6 +34,6 @@ const notificationSchema = new Schema({
   ],
 });
 module.exports = Notification = mongoose.model(
-  "notification",
+  "Notification",
   notificationSchema
 );
