@@ -21,7 +21,7 @@ const profileSchema = new mongoose.Schema({
     type: Date,
   },
   phone: {
-    type: String,
+    type: Number,
   },
   address: {
     type: String,
@@ -68,6 +68,7 @@ const profileSchema = new mongoose.Schema({
   },
   available: {
     type: Boolean,
+    default: false,
   },
 });
 
