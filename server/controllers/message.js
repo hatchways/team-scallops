@@ -1,5 +1,5 @@
+const Conversation = require("../models/Conversation");
 const Message = require("../models/Message");
-const User = require("../models/User");
 const asyncHandler = require("express-async-handler");
 
 // @route POST /message/
@@ -7,7 +7,7 @@ const asyncHandler = require("express-async-handler");
 // @access Private
 exports.postMessage = asyncHandler(async (req, res, next) => {
   const { conversationId, text } = req.body;
-  const conversation = await User.findOne({ _id: conversationId });
+  const conversation = await Conversation.findOne({ _id: conversationId });
   const userId = req.user.id;
 
   if (!conversation) {
@@ -26,6 +26,6 @@ exports.postMessage = asyncHandler(async (req, res, next) => {
   });
   conversation.save();
 
-  res.status(200);
+  res.status(201);
   res.json(lastMessage);
 });

@@ -6,7 +6,7 @@ const {
   getConversation,
   postConversation,
   getAllConversations,
-} = require("../controllers/message");
+} = require("../controllers/conversation");
 
 router.route("/").get(protect, getConversation);
 
