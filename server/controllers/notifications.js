@@ -45,6 +45,10 @@ exports.createNotification = asyncHandler(async (req, res) => {
   const { id } = req.user;
   const { senderId } = req.params;
   const { title, message, type } = req.body;
+  if (!senderId || !title || !message || !type) {
+    res.status(400);
+    throw new Error("Invalid request");
+  }
   const userNotification = await Notification.findOne({ receiver: id });
 
   if (!userNotification) {
