@@ -12,6 +12,7 @@ import {
   CardMedia,
   CardActionArea,
   Avatar,
+  Input,
 } from '@material-ui/core';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
@@ -43,12 +44,15 @@ export default function List(): JSX.Element {
     return (
       <Box>
         <Grid justify="center" container>
-          <Grid item>
-            <TextField
-              variant="outlined"
-              className={`${classes.search}`}
-              placeholder="Search by location..."
-            ></TextField>
+          <Grid item className={`${classes.searchContainer}`}>
+            <Paper>
+              <Input
+                className={`${classes.search}`}
+                disableUnderline={true}
+                placeholder="Search by location..."
+              ></Input>
+              <Input className={`${classes.date}`} disableUnderline={true} placeholder="Search by location..."></Input>
+            </Paper>
           </Grid>
         </Grid>
         <Grid container justify="center" spacing={6} className={`${classes.root}`}>
@@ -57,7 +61,7 @@ export default function List(): JSX.Element {
             return (
               userId && (
                 <Grid item key={key}>
-                  <Card variant="outlined" key={key}>
+                  <Card style={{ height: '100%' }} variant="outlined" key={key}>
                     <CardActionArea>
                       <Grid
                         justify="center"
@@ -66,23 +70,21 @@ export default function List(): JSX.Element {
                         container
                         className={`${classes.card}`}
                       >
-                        <Avatar src={profileImg} />
+                        <Avatar src={profileImg} className={classes.avatar} />
 
                         <CardContent>
-                          <Typography>
-                            <Link to={`profile?user=${userId}`}> {userId}</Link>
-                          </Typography>
+                          <Typography>{/* <Link to={`profile?user=${userId}`}> {userId}</Link>*/}</Typography>
                           <Typography>
                             {firstName} {lastName}
                           </Typography>
                           <Typography> Rating</Typography>
 
-                          <Typography>{description}</Typography>
+                          <Typography>{description ? description : 'Default description'}</Typography>
                         </CardContent>
                       </Grid>
                     </CardActionArea>
                     <Divider light />
-                    <Grid container spacing={2}>
+                    <Grid container className={`${classes.bottom}`} spacing={2}>
                       <Grid item>
                         <Typography> Regina, Saskatchewan</Typography>
                       </Grid>
