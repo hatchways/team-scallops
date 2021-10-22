@@ -72,7 +72,7 @@ function Booking(): JSX.Element {
           <Paper elevation={3}>
             <Card>
               <Typography variant="h6" className={classes.title}>
-                YOUR NEXT BOOKING:
+                your next booking:
               </Typography>
               <BookingItem upcoming />
             </Card>
@@ -98,11 +98,11 @@ function Booking(): JSX.Element {
           <Paper elevation={3}>
             <Card>
               <Typography variant="h6" className={classes.title}>
-                CURRENT BOOKINGS:
+                current bookings:
               </Typography>
               <BookingItem />
               <Typography variant="h6" className={classes.title}>
-                PAST BOOKINGS:
+                past bookings:
               </Typography>
               <BookingItem />
             </Card>

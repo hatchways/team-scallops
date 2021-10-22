@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
   title: {
     padding: theme.spacing(2),
     fontSize: 14,
+    textTransform: 'uppercase',
   },
 }));
 
