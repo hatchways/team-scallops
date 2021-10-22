@@ -10,14 +10,26 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import SettingsIcon from '@material-ui/icons/Settings';
+import { format } from 'date-fns';
 
 import person from '../../Images/68f55f7799df6c8078a874cfe0a61a5e6e9e1687.png';
+import { updateRequest } from '../../helpers/APICalls/requests';
 import useStyles from './useStyles';
 
-function OngoingAndPastBookingItem(): JSX.Element {
+interface Props {
+  requestId: string;
+  from: Date;
+  to: Date;
+  status: string;
+}
+
+function OngoingAndPastBookingItem(props: Props): JSX.Element {
   const classes = useStyles();
 
+  const { requestId, from, to, status } = props;
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [currentStatus, setCurrentStatus] = useState<string>(status);
   const open = Boolean(anchorEl);
 
   const handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -26,6 +38,26 @@ function OngoingAndPastBookingItem(): JSX.Element {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleAccept = async () => {
+    setAnchorEl(null);
+    const result = await updateRequest(requestId, 'ACCEPTED');
+    const {
+      request: { status },
+    } = result;
+
+    setCurrentStatus(status);
+  };
+
+  const handleDecline = async () => {
+    setAnchorEl(null);
+    const result = await updateRequest(requestId, 'DECLINED');
+    const {
+      request: { status },
+    } = result;
+
+    setCurrentStatus(status);
   };
 
   return (
@@ -39,19 +71,17 @@ function OngoingAndPastBookingItem(): JSX.Element {
                   <SettingsIcon />
                 </IconButton>
                 <Menu anchorEl={anchorEl} keepMounted open={open} onClose={handleClose} elevation={0}>
-                  <MenuItem>Accept</MenuItem>
-                  <MenuItem>Decline</MenuItem>
+                  <MenuItem onClick={handleAccept}>Accept</MenuItem>
+                  <MenuItem onClick={handleDecline}>Decline</MenuItem>
                 </Menu>
               </>
             }
-            // TODO: Change harcoded date to booking(request) start date inside props.
-            title="5 April 2020, 10-12 AM"
+            title={`${format(new Date(from), 'd MMMM yyyy')} - ${format(new Date(to), 'd MMMM yyyy')}`}
             disableTypography
           />
           <CardContent>
-            {/* TODO: Change harcoded status to booking(request) status inside props. */}
             <Typography color="textSecondary" align="right">
-              Accepted
+              {currentStatus}
             </Typography>
             <Box className={classes.details}>
               {/* TODO: Change mock image to user profile photo inside props. */}
