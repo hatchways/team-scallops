@@ -8,9 +8,9 @@ export async function getRequestList(): Promise<RequestsList> {
     credentials: 'include',
   };
 
-  return await fetch('/request/', fetchOptions).then((res) =>
-    res.json().catch(() => ({ error: { message: 'Unable to connect to server. Please try again' } })),
-  );
+  return await fetch('/request/', fetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({ error: { message: 'Unable to connect to server. Please try again' } }));
 }
 
 export async function createRequest(
@@ -26,9 +26,9 @@ export async function createRequest(
     body: JSON.stringify({ sitterId, startDate, endDate, serviceType, totalPrice }),
     credentials: 'include',
   };
-  return await fetch('/request/', fetchOptions).then((res) =>
-    res.json().catch(() => ({ error: { message: 'Unable to connect to server. Please try again' } })),
-  );
+  return await fetch('/request/', fetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({ error: { message: 'Unable to connect to server. Please try again' } }));
 }
 
 export async function updateRequest(
@@ -40,12 +40,12 @@ export async function updateRequest(
   totalPrice?: number,
 ): Promise<{ request: Request }> {
   const fetchOptions: FetchOptions = {
-    method: 'PUT',
+    method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ status, startDate, endDate, serviceType, totalPrice }),
     credentials: 'include',
   };
-  return await fetch(`/request/${requestId}`, fetchOptions).then((res) =>
-    res.json().catch(() => ({ error: { message: 'Unable to connect to server. Please try again' } })),
-  );
+  return await fetch(`/request/${requestId}`, fetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({ error: { message: 'Unable to connect to server. Please try again' } }));
 }
