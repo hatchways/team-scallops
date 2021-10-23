@@ -16,14 +16,14 @@ export const SnackBarContext = createContext<ISnackBarContext>({
 export const SnackBarProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [message, setMessage] = useState<string | null>(null);
   const [open, setOpen] = useState<boolean>(false);
-  const [image, setImage] = useState<string>('');
+  // const [image, setImage] = useState<string>('');
 
   const updateSnackBarMessage = useCallback((message: string) => {
     setMessage(message);
     setOpen(true);
   }, []);
   const updateSnackBarImage = useCallback((image: string) => {
-    setImage(image);
+    // setImage(image);
   }, []);
 
   const handleClose = useCallback(() => {
