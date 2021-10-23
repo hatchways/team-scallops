@@ -50,7 +50,6 @@ app.use("/notification", notificationRouter);
 app.use("/profile", profileRouter);
 app.use("/request", requestRouter);
 
-
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));
 
