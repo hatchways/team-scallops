@@ -79,6 +79,7 @@ exports.get = asyncHandler(async (req, res) => {
   if (id) {
     profile = await Profile.findOne({ user: id });
   }
+  console.log(profile);
 
   if (!id) {
     res.status(404);

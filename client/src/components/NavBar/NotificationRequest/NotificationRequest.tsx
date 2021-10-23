@@ -2,29 +2,26 @@ import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import { Box, Typography } from '@material-ui/core';
 import useStyles from './useStyles';
+import { Notification } from '../../../interface/Notification';
 interface IProps {
-  user: IUser;
+  notification: Notification;
 }
-interface IUser {
-  name: string;
-  date: string;
-  serviceType: string;
-  time: string;
-  image: string;
-}
-const NotificationRequest: React.FC<IProps> = ({ user: { name, date, serviceType, image, time } }) => {
+
+const NotificationRequest: React.FC<IProps> = ({
+  notification: { type, title, message, created_at, isRead, sender },
+}) => {
   const classes = useStyles();
 
   return (
     <Box display="flex" alignItems="center">
-      <Avatar variant="square" src={`/${image}`} className={classes.large} />
+      <Avatar variant="square" src={`/${isRead}`} className={classes.large} />
       <Box>
         <Typography variant="h6" className={classes.bold}>
-          {`${name}`} has requested your service for {`${time}`} hours
+          {`${title}`} has requested your service for hours
         </Typography>
-        <Typography className={` ${classes.bold} ${classes.opacity}`}> {`${serviceType}`}</Typography>
+        <Typography className={` ${classes.bold} ${classes.opacity}`}> </Typography>
         <Typography variant="h6" className={classes.bold}>
-          {`${date}`}
+          {`${created_at}`}
         </Typography>
       </Box>
     </Box>

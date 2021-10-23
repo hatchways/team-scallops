@@ -1,35 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import useStyles from './useSyles';
 import { Box } from '@material-ui/core';
 import NotificationRequest from '../NotificationRequest/NotificationRequest';
-
+import getUnreadNotifications from '../../../helpers/APICalls/getUnreadNotifications';
+import { Notification } from '../../../interface/Notification';
 export default function NotificationButton() {
-  const testProps = [
+  const [unReadNotifications, setUnReadNotifications] = useState<Notification[]>([]);
+  useEffect(() => {
+    getUnreadNotifications().then((data) => 'done');
+  }, []);
+  const testNotifi = [
     {
-      name: 'Mary',
-      time: '2',
-      serviceType: 'Dog Sitter',
-      date: ' 09/09/2019',
-      image: '1.jpeg',
+      id: '123',
+      type: 'message',
+      isRead: false,
+      sender: '12265eu56eutr',
+      title: 'hello',
+      message: 'waht',
+      created_at: '2/3/2020',
     },
     {
-      name: 'Joe',
-      time: '12',
-      serviceType: 'Dog Sitter',
-      date: ' 09/10/2020',
-      image: '2.jpeg',
+      id: '123',
+      type: 'message',
+      isRead: false,
+      sender: '98u098y7yt07t7',
+      title: 'hello',
+      message: 'waht',
+      created_at: '2/3/2020',
     },
   ];
-  interface Props {
-    name: string;
-    date: string;
-    serviceType: string;
-    time: string;
-    image: string;
-  }
+
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
@@ -65,8 +68,8 @@ export default function NotificationButton() {
           color="textPrimary"
           className={`${classes.menuBarButton} ${classes.mobileView} ${classes.typography}`}
         >
-          {testProps.map((user, i) => (
-            <NotificationRequest user={user} key={i} />
+          {testNotifi.map((notification, i) => (
+            <NotificationRequest notification={notification} key={i} />
           ))}
         </Typography>
       </Popover>
