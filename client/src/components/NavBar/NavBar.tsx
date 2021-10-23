@@ -10,22 +10,15 @@ import {
   Badge,
   Link as MaterialLink,
 } from '@material-ui/core';
-import { Notifications } from '@material-ui/icons';
 import AuthMenu from '../AuthMenu/AuthMenu';
 import Logo from '../../Images/logo.png';
 import useStyles from './useStyles';
+import NotificationButton from './NotificationButton/NotificationButton';
 
 function LoggedInBar({ classes, loggedInUser }: any): JSX.Element {
   return (
-    <Box>
-      <Button component={NavLink} to="/dashboard" className={classes.menuBarButton}>
-        <Badge color="primary" variant="dot">
-          <Typography variant="h6" color="textPrimary" className={`${classes.menuBarText} ${classes.mobileView}`}>
-            Notifications
-          </Typography>
-          <Notifications className={`${classes.desktopView}`} />
-        </Badge>
-      </Button>
+    <Box display="flex" alignItems="center">
+      <NotificationButton />
       <Button
         component={NavLink}
         to={loggedInUser.isSitter ? '/my-jobs' : 'my-sitters'}
