@@ -21,17 +21,13 @@ const profileSchema = new mongoose.Schema({
     type: Date,
   },
   phone: {
-    type: String,
+    type: Number,
   },
   address: {
     type: String,
   },
   description: {
     type: String,
-  },
-  image: {
-    url: String,
-    public_id: String,
   },
   availability: {
     monday: {
@@ -72,6 +68,7 @@ const profileSchema = new mongoose.Schema({
   },
   available: {
     type: Boolean,
+    default: false,
   },
 });
 

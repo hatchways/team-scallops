@@ -1,22 +1,7 @@
 const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
-const Cloudinary = require("cloudinary");
-const { convertBufferToString } = require("../middleware/multer");
 
-//@route  Post /Profile
-//@desc    Create or update users profile
-//@access   private
-
-exports.profileCreatePost = asyncHandler(async (req, res) => {
-  if (req.file) {
-    cloudinaryImg = await Cloudinary.v2.uploader.upload(
-      convertBufferToString(req).content
-    );
-    req.body.image = {
-      url: cloudinaryImg.secure_url,
-      public_id: cloudinaryImg.public_id,
-    };
-  }
+exports.post = asyncHandler(async (req, res) => {
   const {
     firstName,
     lastName,
@@ -27,9 +12,13 @@ exports.profileCreatePost = asyncHandler(async (req, res) => {
     description,
     availability,
     available,
-    image,
   } = req.body;
   const id = req.user.id;
+  const email = req.user.email;
+  if (!firstName || !lastName || !id) {
+    res.status(400);
+    throw new Error("Invalid request");
+  }
 
   const profile = await Profile.create({
     user: id,
@@ -42,12 +31,11 @@ exports.profileCreatePost = asyncHandler(async (req, res) => {
     description,
     availability,
     available,
-    image,
   });
   res.status(201).json({ profile });
 });
 
-exports.profileUpdatePatch = asyncHandler(async (req, res) => {
+exports.patch = asyncHandler(async (req, res) => {
   const {
     firstName,
     lastName,
@@ -78,17 +66,17 @@ exports.profileUpdatePatch = asyncHandler(async (req, res) => {
       }
     );
     res.status(200).json({ update: update });
+    i;
   } else {
     res.status(500);
     throw new Error("Invalid profile update");
   }
 });
 
-exports.profileGet = asyncHandler(async (req, res) => {
+exports.get = asyncHandler(async (req, res) => {
   const id = req.user.id;
   let profile;
   if (id) {
-    console.log(id);
     profile = await Profile.findOne({ user: id });
   }
 
@@ -99,7 +87,7 @@ exports.profileGet = asyncHandler(async (req, res) => {
   res.status(200).json({ profile: profile });
 });
 
-exports.profileGetAll = asyncHandler(async (req, res) => {
+exports.all = asyncHandler(async (req, res) => {
   const profiles = await Profile.find();
   res.status(200).json({ profiles: profiles });
 });
