@@ -34,7 +34,7 @@ exports.getConversation = asyncHandler(async (req, res, next) => {
 
   const messagesArray = await Message.find({
     conversation: conversation._id,
-  }).populate("sendByUser", "usename email");
+  }).populate("sendByUser", "username email");
 
   res.status(200);
   res.json(messagesArray);
