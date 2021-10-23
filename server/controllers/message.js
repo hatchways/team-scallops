@@ -7,6 +7,12 @@ const asyncHandler = require("express-async-handler");
 // @access Private
 exports.postMessage = asyncHandler(async (req, res, next) => {
   const { conversationId, text } = req.body;
+
+  if (!conversationId || !text) {
+    res.status(400);
+    throw new Error(`conversationId or text not supplied with the request`);
+  }
+
   const conversation = await Conversation.findOne({ _id: conversationId });
   const userId = req.user.id;
 

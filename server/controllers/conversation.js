@@ -7,6 +7,13 @@ const asyncHandler = require("express-async-handler");
 // @access Private
 exports.getConversation = asyncHandler(async (req, res, next) => {
   const { conversationId } = req.body;
+  const userId = req.user.id;
+
+  if (!conversationId) {
+    res.status(400);
+    throw new Error(`conversationId not supplied`);
+  }
+
   const conversation = await Conversation.findOne({
     _id: conversationId,
   });
@@ -16,6 +23,13 @@ exports.getConversation = asyncHandler(async (req, res, next) => {
     throw new Error(
       `could not find a conversation for the provided id ${conversationId}`
     );
+  }
+
+  if (
+    !(conversation.firstUser === userId || conversation.secondUser === userId)
+  ) {
+    res.status(400);
+    throw new Error(`logged in user is not a member of conversation`);
   }
 
   const messagesArray = await Message.find({
@@ -32,6 +46,11 @@ exports.getConversation = asyncHandler(async (req, res, next) => {
 exports.postConversation = asyncHandler(async (req, res, next) => {
   const { receiverId } = req.body;
   const userId = req.user.id;
+
+  if (!receiverId) {
+    res.status(400);
+    throw new Error(`receiverId not supplied`);
+  }
 
   const checkOldConversation = await Conversation.findOne({
     $or: [
@@ -56,7 +75,7 @@ exports.postConversation = asyncHandler(async (req, res, next) => {
   await newConversation
     .populate("firstUser", "username email")
     .populate("secondUser", "username email")
-    .execPopulate();
+    .exec();
 
   res.status(201);
   res.json(newConversation);
