@@ -66,7 +66,6 @@ function Booking(): JSX.Element {
   }, []);
 
   const requestsReceived = requests?.requestsReceived;
-  console.log({ requestsReceived });
   const today = new Date();
   const pastBookings = requestsReceived?.filter((request) => isPast(new Date(request.endDate)));
   const currentBookings = requestsReceived?.filter((request) =>
@@ -146,7 +145,8 @@ function Booking(): JSX.Element {
               ) : (
                 <Alert severity="info">
                   <AlertTitle>Info</AlertTitle>
-                  You will not have pet visits in the near future 🔮 — <strong>BE PATIENT!</strong>
+                  You will not have pet visits in the near future 🔮
+                  <strong className={classes.title}>be patient!</strong>
                 </Alert>
               )}
             </Card>
@@ -186,7 +186,7 @@ function Booking(): JSX.Element {
               ) : (
                 <Alert severity="info">
                   <AlertTitle>Info</AlertTitle>
-                  You are not taking care of any pets for now. 🛀 — <strong>RELAX!</strong>
+                  You are not taking care of any pets for now 🛀 <strong className={classes.title}>relax!</strong>
                 </Alert>
               )}
               <Typography variant="h6" className={classes.title}>
@@ -205,7 +205,8 @@ function Booking(): JSX.Element {
               ) : (
                 <Alert severity="info">
                   <AlertTitle>Info</AlertTitle>
-                  Do not worry, you will be able to see your memories 🐾 — <strong>SOON!</strong>
+                  Do not worry, you will be able to see your memories 🐾
+                  <strong className={classes.title}>soon!</strong>
                 </Alert>
               )}
             </Card>
