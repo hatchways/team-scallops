@@ -53,14 +53,18 @@ export default function List(): JSX.Element {
   } else {
     return (
       <Box>
-        <Grid justify="center" container>
+        <Grid justify="center" container sm>
           <Grid item className={`${classes.searchContainer}`}>
-            <Typography variant="h4">Your search results</Typography>
-            <Paper>
+            <Typography align="center" variant="h4">
+              Your search results
+            </Typography>
+            <Paper className={classes.searchbar}>
               <Input disableUnderline={true} placeholder="Search by location..."></Input>
-              <Button onClick={() => setHidden(!hidden)}>{`
-              ${selection.startDate.getDate().toString()}-${`${moment(selection.endDate).format('DD MMMM YYYY')}`}
+              <Box display="inline" className={classes.search}>
+                <Button onClick={() => setHidden(!hidden)}>{`
+              ${moment(selection.startDate).format('DD-')}${`${moment(selection.endDate).format('DD MMMM YYYY')}`}
                 `}</Button>
+              </Box>
             </Paper>
             <Box display="inline" className={classes.datePicker}>
               <Paper hidden={hidden}>

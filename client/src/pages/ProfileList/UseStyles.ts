@@ -10,7 +10,10 @@ const useStyles = makeStyles(() => ({
     paddingBottom: '2em',
     textAlign: 'center',
   },
-  search: {},
+  search: {
+    borderLeft: '2px solid grey',
+    height: '100%',
+  },
   date: {
     borderLeft: '1px !important',
     borderColor: 'black',
@@ -30,6 +33,9 @@ const useStyles = makeStyles(() => ({
   datePicker: {
     zIndex: 10,
     position: 'absolute',
+  },
+  searchbar: {
+    marginTop: '1em',
   },
 }));
 
