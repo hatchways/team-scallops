@@ -37,6 +37,7 @@ function App(): JSX.Element {
                 <Route exact path="/dashboard">
                   <Dashboard />
                 </Route>
+                <Route path="/sitter/detail" component={ProfileDetails} />
                 <Route path="/booking" component={Booking} />
                 <Route path="*">
                   <Redirect to="/login" />
