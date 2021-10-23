@@ -2,11 +2,11 @@ const Conversation = require("../models/Conversation");
 const Message = require("../models/Message");
 const asyncHandler = require("express-async-handler");
 
-// @route GET /conversation/
+// @route GET /conversation/:conversationId
 // @desc Get the requested conversation of the current user (with messages)
 // @access Private
 exports.getConversation = asyncHandler(async (req, res, next) => {
-  const { conversationId } = req.body;
+  const { conversationId } = req.params;
   const userId = req.user.id;
 
   if (!conversationId) {
@@ -26,7 +26,10 @@ exports.getConversation = asyncHandler(async (req, res, next) => {
   }
 
   if (
-    !(conversation.firstUser === userId || conversation.secondUser === userId)
+    !(
+      String(conversation.firstUser) === userId ||
+      String(conversation.secondUser) === userId
+    )
   ) {
     res.status(400);
     throw new Error(`logged in user is not a member of conversation`);
@@ -34,7 +37,7 @@ exports.getConversation = asyncHandler(async (req, res, next) => {
 
   const messagesArray = await Message.find({
     conversation: conversation._id,
-  }).populate("sendByUser", "username email");
+  }).populate("sender", "username email");
 
   res.status(200);
   res.json(messagesArray);
@@ -81,7 +84,7 @@ exports.postConversation = asyncHandler(async (req, res, next) => {
   res.json(newConversation);
 });
 
-// @route GET /conversation/all
+// @route GET /conversation/
 // @desc Get all conversations of the current user (without messages)
 // @access Private
 exports.getAllConversations = asyncHandler(async (req, res, next) => {
@@ -94,7 +97,7 @@ exports.getAllConversations = asyncHandler(async (req, res, next) => {
     .populate("secondUser", "username email")
     .populate({
       path: "lastMessage",
-      populate: { path: "sendByUser", select: "username email" },
+      populate: { path: "sender", select: "username email" },
     });
 
   if (!allConversations) {

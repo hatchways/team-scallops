@@ -7,10 +7,10 @@ const {
   getAllConversations,
 } = require("../controllers/conversation");
 
-router.route("/").get(protect, getConversation);
+router.route("/:conversationId").get(protect, getConversation);
+
+router.route("/").get(protect, getAllConversations);
 
 router.route("/").post(protect, postConversation);
-
-router.route("/all").get(protect, getAllConversations);
 
 module.exports = router;

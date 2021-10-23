@@ -22,13 +22,13 @@ exports.postMessage = asyncHandler(async (req, res, next) => {
   }
 
   const lastMessage = await Message.create({
-    sendByUser: userId,
+    sender: userId,
     text: text,
     conversation: conversation._id,
   });
 
   conversation.set({
-    lastMessage: lastMessage,
+    lastMessage: lastMessage._id,
   });
   conversation.save();
 
