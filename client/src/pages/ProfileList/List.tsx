@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import useStyles from './useStyles';
 import DatePicker from '../../components/DateRangePicker/DatePicker';
+import SearchIcon from '@material-ui/icons/Search';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+
 import moment from 'moment';
 import {
   Grid,
@@ -58,9 +61,12 @@ export default function List(): JSX.Element {
             <Typography align="center" variant="h4">
               Your search results
             </Typography>
+
             <Paper className={classes.searchbar}>
+              <SearchIcon />
               <Input disableUnderline={true} placeholder="Search by location..."></Input>
               <Box display="inline" className={classes.search}>
+                <CalendarTodayIcon />
                 <Button onClick={() => setHidden(!hidden)}>{`
               ${moment(selection.startDate).format('DD-')}${`${moment(selection.endDate).format('DD MMMM YYYY')}`}
                 `}</Button>
