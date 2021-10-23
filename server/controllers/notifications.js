@@ -43,8 +43,7 @@ exports.getUnReadNotifications = asyncHandler(async (req, res) => {
 // @access  Private
 exports.createNotification = asyncHandler(async (req, res) => {
   const { id } = req.user;
-  const { senderId } = req.params;
-  const { title, message, type } = req.body;
+  const { senderId, title, message, type } = req.body;
   if (!senderId || !title || !message || !type) {
     res.status(400);
     throw new Error("Invalid request");
@@ -52,7 +51,7 @@ exports.createNotification = asyncHandler(async (req, res) => {
   const userNotification = await Notification.findOne({ receiver: id });
 
   if (!userNotification) {
-    await new Notification({
+    const newNotification = await new Notification({
       receiver: id,
       notifications: [
         {
@@ -62,7 +61,8 @@ exports.createNotification = asyncHandler(async (req, res) => {
           message,
         },
       ],
-    }).save();
+    });
+    newNotification.save();
     return res.status(201).json({ data: userNotification });
   }
   const newNotification = {
@@ -82,6 +82,10 @@ exports.createNotification = asyncHandler(async (req, res) => {
 exports.updateNotificationToRead = asyncHandler(async (req, res) => {
   const { id } = req.user;
   const { notificationId } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(notificationId)) {
+    return res.status(400).send("Bad Request");
+  }
 
   const userNotification = await Notification.findOne({ receiver: id });
 
