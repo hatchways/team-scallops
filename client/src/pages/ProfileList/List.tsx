@@ -1,3 +1,9 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import useStyles from './useStyles';
+import DatePicker from '../../components/DateRangePicker/DatePicker';
+import moment from 'moment';
 import {
   Grid,
   Paper,
@@ -14,19 +20,25 @@ import {
   Avatar,
   Input,
 } from '@material-ui/core';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom';
+
 const profileImg = '775db5e79c5294846949f1f55059b53317f51e30.png';
-import useStyles from './useStyles';
 
 export default function List(): JSX.Element {
   const classes = useStyles();
-
   const [state, setState] = useState({
     profiles: [],
   });
+  const [selection, setSelection] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection',
+  });
+  const profiles = state.profiles;
+  const [hidden, setHidden] = useState(true);
 
+  const handleSelect = (ranges: any) => {
+    setSelection(ranges.selection);
+  };
   useEffect(() => {
     function fetchProfile() {
       axios.get('profile/all').then((response: any) => {
@@ -35,24 +47,26 @@ export default function List(): JSX.Element {
     }
     fetchProfile();
   }, []);
-  const profiles = state.profiles;
 
   if (!profiles) {
     return <Box>loading</Box>;
   } else {
-    console.log(state);
     return (
       <Box>
         <Grid justify="center" container>
           <Grid item className={`${classes.searchContainer}`}>
+            <Typography variant="h4">Your search results</Typography>
             <Paper>
-              <Input
-                className={`${classes.search}`}
-                disableUnderline={true}
-                placeholder="Search by location..."
-              ></Input>
-              <Input className={`${classes.date}`} disableUnderline={true} placeholder="Search by location..."></Input>
+              <Input disableUnderline={true} placeholder="Search by location..."></Input>
+              <Button onClick={() => setHidden(!hidden)}>{`
+              ${selection.startDate.getDate().toString()}-${`${moment(selection.endDate).format('DD MMMM YYYY')}`}
+                `}</Button>
             </Paper>
+            <Box display="inline" className={classes.datePicker}>
+              <Paper hidden={hidden}>
+                <DatePicker handleSelect={handleSelect} />
+              </Paper>
+            </Box>
           </Grid>
         </Grid>
         <Grid container justify="center" spacing={6} className={`${classes.root}`}>

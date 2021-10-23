@@ -27,6 +27,10 @@ const useStyles = makeStyles(() => ({
     marginTop: '20vh',
     marginBottom: '5vh',
   },
+  datePicker: {
+    zIndex: 10,
+    position: 'absolute',
+  },
 }));
 
 export default useStyles;
