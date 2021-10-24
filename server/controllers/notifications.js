@@ -26,12 +26,14 @@ exports.getUnReadNotifications = asyncHandler(async (req, res) => {
   const { id } = req.user;
   const userNotification = await Notification.findOne({
     user: id,
-  });
+  }).populate("notifications.senderProfile", "firstName image");
+  // .select('firstName');
 
   if (userNotification && userNotification.notifications.length > 0) {
     const unReadNotifications = userNotification.notifications.filter(
       (notification) => notification.isRead === false
     );
+
     return res.status(200).json({
       result: unReadNotifications.length,
       data: unReadNotifications,
@@ -47,8 +49,9 @@ exports.getUnReadNotifications = asyncHandler(async (req, res) => {
 // @access  Private
 exports.createNotification = asyncHandler(async (req, res) => {
   const { id } = req.user;
-  const { senderId, title, message, type } = req.body;
-  if (!senderId || !title || !message || !type) {
+  const { senderProfile, title, message, type } = req.body;
+
+  if (!senderProfile || !title || !message || !type) {
     res.status(400);
     throw new Error("Invalid request");
   }
@@ -60,7 +63,7 @@ exports.createNotification = asyncHandler(async (req, res) => {
       notifications: [
         {
           type,
-          sender: senderId,
+          senderProfile,
           title,
           message,
         },
@@ -71,7 +74,7 @@ exports.createNotification = asyncHandler(async (req, res) => {
   }
   const newNotification = {
     type,
-    sender: senderId,
+    senderProfile,
     title,
     message,
   };
