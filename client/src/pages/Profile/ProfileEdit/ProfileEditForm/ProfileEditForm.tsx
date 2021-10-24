@@ -111,9 +111,9 @@ export default function ProfileEditForm(): JSX.Element {
 
               setTimeout(() => {
                 if (!hasProfile) {
-                  axios.post('/profile/create', modifiedValues);
+                  axios.post('/profile/', modifiedValues);
                 } else {
-                  axios.post('/profile/update', modifiedValues);
+                  axios.patch('/profile/', modifiedValues);
                 }
                 actions.setSubmitting(false);
               }, 1000);

@@ -87,9 +87,9 @@ export default function List(): JSX.Element {
         </Grid>
         <Grid container justify="center" spacing={6} className={`${classes.root}`}>
           {profiles.map((profile, key) => {
-            const { firstName, lastName, userId, description } = profile;
+            const { firstName, lastName, user, description } = profile;
             return (
-              userId && (
+              user && (
                 <Grid item key={key}>
                   <Card style={{ height: '100%' }} variant="outlined" key={key}>
                     <CardActionArea>
@@ -119,7 +119,7 @@ export default function List(): JSX.Element {
                         <Typography className={classes.location}> Regina, Saskatchewan</Typography>
                       </Grid>
                       <Grid item>
-                        <Typography className={classes.price}>$15/hr</Typography>
+                        <Typography className={classes.price}>$20/hr</Typography>
                       </Grid>
                     </Grid>
                   </Card>
