@@ -19,6 +19,7 @@ function LoggedInBar({ classes, loggedInUser }: any): JSX.Element {
   return (
     <Box display="flex" alignItems="center">
       <NotificationButton />
+
       <Button
         component={NavLink}
         to={loggedInUser.isSitter ? '/my-jobs' : 'my-sitters'}

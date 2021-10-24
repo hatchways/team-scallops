@@ -6,4 +6,7 @@ export interface Notification {
   title: string;
   message: string;
   created_at: string;
+  name: string;
+  image: string;
+  service: string;
 }

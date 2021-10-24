@@ -8,18 +8,18 @@ interface IProps {
 }
 
 const NotificationRequest: React.FC<IProps> = ({
-  notification: { type, title, message, created_at, isRead, sender },
+  notification: { type, title, message, created_at, name, image, service },
 }) => {
   const classes = useStyles();
 
   return (
     <Box display="flex" alignItems="center">
-      <Avatar variant="square" src={`/${isRead}`} className={classes.large} />
+      <Avatar variant="square" src={`/${image}`} className={classes.large} />
       <Box>
         <Typography variant="h6" className={classes.bold}>
-          {`${title}`} has requested your service for hours
+          {`${name}`} has requested your service for hours {`${created_at}`}
         </Typography>
-        <Typography className={` ${classes.bold} ${classes.opacity}`}> </Typography>
+        <Typography className={` ${classes.bold} ${classes.opacity}`}> {`${service}`}</Typography>
         <Typography variant="h6" className={classes.bold}>
           {`${created_at}`}
         </Typography>

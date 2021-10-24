@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, MouseEvent } from 'react';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import useStyles from './useSyles';
-import { Box } from '@material-ui/core';
+import { Badge, Box } from '@material-ui/core';
 import NotificationRequest from '../NotificationRequest/NotificationRequest';
 import getUnreadNotifications from '../../../helpers/APICalls/getUnreadNotifications';
 import { Notification } from '../../../interface/Notification';
@@ -21,6 +21,9 @@ export default function NotificationButton() {
       title: 'hello',
       message: 'waht',
       created_at: '2/3/2020',
+      image: '1.jpeg',
+      name: 'Mary',
+      service: 'Dag Sitter',
     },
     {
       id: '123',
@@ -30,13 +33,16 @@ export default function NotificationButton() {
       title: 'hello',
       message: 'waht',
       created_at: '2/3/2020',
+      image: '2.jpeg',
+      name: 'Joe',
+      service: 'Dag Sitter',
     },
   ];
 
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -50,9 +56,11 @@ export default function NotificationButton() {
   return (
     <Box>
       <Button aria-describedby={id} onClick={handleClick} className={classes.menuBarButton}>
-        <Typography variant="h6" color="textPrimary" className={` ${classes.mobileView}`}>
-          Notifications
-        </Typography>
+        <Badge color="primary" variant="dot" invisible={false}>
+          <Typography variant="h6" color="textPrimary" className={` ${classes.mobileView}`}>
+            Notifications
+          </Typography>
+        </Badge>
       </Button>
       <Popover
         id={id}
