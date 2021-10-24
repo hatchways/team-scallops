@@ -13,14 +13,9 @@ const notificationSchema = new Schema({
         type: String,
         enum: ["serviceRequest", "serviceAvailable", "message"],
       },
-      // sender: {
-      //   type: mongoose.Schema.Types.ObjectId,
-      //   ref: 'user',
-      //   required: true,
-      // },
-      profile: {
+      sender: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Profile",
+        ref: "user",
         required: true,
       },
       title: {

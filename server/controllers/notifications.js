@@ -26,7 +26,7 @@ exports.getUnReadNotifications = asyncHandler(async (req, res) => {
   const { id } = req.user;
   const userNotification = await Notification.findOne({
     user: id,
-  }).populate("notifications.profile");
+  });
 
   if (userNotification && userNotification.notifications.length > 0) {
     const unReadNotifications = userNotification.notifications.filter(
@@ -60,7 +60,7 @@ exports.createNotification = asyncHandler(async (req, res) => {
       notifications: [
         {
           type,
-          profile: senderId,
+          sender: senderId,
           title,
           message,
         },
@@ -71,7 +71,7 @@ exports.createNotification = asyncHandler(async (req, res) => {
   }
   const newNotification = {
     type,
-    profile: senderId,
+    sender: senderId,
     title,
     message,
   };
@@ -100,7 +100,7 @@ exports.updateNotificationToRead = asyncHandler(async (req, res) => {
 
     if (foundNotification) {
       foundNotification.isRead = true;
-      const updatedNotification = await userNotification.save();
+      await userNotification.save();
       res.status(200).json({ data: foundNotification });
     } else {
       res.status(400);
