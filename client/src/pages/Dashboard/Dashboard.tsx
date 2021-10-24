@@ -32,7 +32,7 @@ export default function Dashboard(): JSX.Element {
   return (
     <Grid container component="main" className={`${classes.root} ${classes.dashboard}`}>
       <CssBaseline />
-      <Link to="/search"> Profile</Link>
+      <Link to="/search"> Search</Link>
       <Grid item className={classes.drawerWrapper}>
         <ChatSideBanner loggedInUser={loggedInUser} />
       </Grid>
