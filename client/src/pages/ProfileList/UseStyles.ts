@@ -18,10 +18,7 @@ const useStyles = makeStyles(() => ({
     borderLeft: '1px !important',
     borderColor: 'black',
   },
-  bottom: {
-    marginBottom: '.5em',
-    maxHeight: '1em',
-  },
+  bottom: {},
   avatar: {
     height: '6em',
     width: '6em',
@@ -36,6 +33,17 @@ const useStyles = makeStyles(() => ({
   },
   searchbar: {
     marginTop: '1em',
+  },
+  location: {
+    padding: '1em',
+    color: 'grey',
+  },
+  price: {
+    padding: '1em',
+    fontWeight: 900,
+  },
+  fullName: {
+    fontWeight: 900,
   },
 }));
 

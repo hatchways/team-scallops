@@ -63,14 +63,20 @@ export default function List(): JSX.Element {
             </Typography>
 
             <Paper className={classes.searchbar}>
-              <SearchIcon />
-              <Input disableUnderline={true} placeholder="Search by location..."></Input>
-              <Box display="inline" className={classes.search}>
-                <CalendarTodayIcon />
-                <Button onClick={() => setHidden(!hidden)}>{`
+              <Grid alignItems="center" container>
+                <Grid item>
+                  <SearchIcon />
+                  <Input disableUnderline={true} placeholder="Search by location..."></Input>
+                </Grid>
+                <Grid item>
+                  <Box display="inline" className={classes.search}>
+                    <CalendarTodayIcon />
+                    <Button onClick={() => setHidden(!hidden)}>{`
               ${moment(selection.startDate).format('DD-')}${`${moment(selection.endDate).format('DD MMMM YYYY')}`}
                 `}</Button>
-              </Box>
+                  </Box>
+                </Grid>
+              </Grid>
             </Paper>
             <Box display="inline" className={classes.datePicker}>
               <Paper hidden={hidden}>
@@ -98,7 +104,7 @@ export default function List(): JSX.Element {
 
                         <CardContent>
                           <Typography>{/* <Link to={`profile?user=${userId}`}> {userId}</Link>*/}</Typography>
-                          <Typography>
+                          <Typography className={classes.fullName} variant="h6">
                             {firstName} {lastName}
                           </Typography>
                           <Typography> Rating</Typography>
@@ -110,10 +116,10 @@ export default function List(): JSX.Element {
                     <Divider light />
                     <Grid container className={`${classes.bottom}`} spacing={2}>
                       <Grid item>
-                        <Typography> Regina, Saskatchewan</Typography>
+                        <Typography className={classes.location}> Regina, Saskatchewan</Typography>
                       </Grid>
                       <Grid item>
-                        <Typography>$15/hr</Typography>
+                        <Typography className={classes.price}>$15/hr</Typography>
                       </Grid>
                     </Grid>
                   </Card>
