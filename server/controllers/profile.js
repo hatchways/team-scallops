@@ -1,5 +1,6 @@
 const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
+const { convertBufferToString } = require("../middleware/multer");
 
 exports.post = asyncHandler(async (req, res) => {
   const {
@@ -19,6 +20,15 @@ exports.post = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Invalid request");
   }
+  if (req.file) {
+    cloudinaryImg = await Cloudinary.v2.uploader.upload(
+      convertBufferToString(req).content
+    );
+    req.body.image = {
+      url: cloudinaryImg.secure_url,
+      public_id: cloudinary.public_id,
+    };
+  }
 
   const profile = await Profile.create({
     user: id,
@@ -31,6 +41,7 @@ exports.post = asyncHandler(async (req, res) => {
     description,
     availability,
     available,
+    image,
   });
   res.status(201).json({ profile });
 });
