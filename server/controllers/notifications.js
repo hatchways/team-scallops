@@ -1,12 +1,13 @@
 const Notification = require("../models/Notification");
 const asyncHandler = require("express-async-handler");
+const mongoose = require("mongoose");
 
 // @desc    Get all Notifications
 // @route   GET /notifications
 // @access  Private
 exports.getNotifications = asyncHandler(async (req, res) => {
   const { id } = req.user;
-  const userNotification = await Notification.findOne({ receiver: id });
+  const userNotification = await Notification.findOne({ user: id });
   if (userNotification && userNotification.notifications.length > 0) {
     return res.status(200).json({
       result: userNotification.notifications.length,
@@ -24,10 +25,8 @@ exports.getNotifications = asyncHandler(async (req, res) => {
 exports.getUnReadNotifications = asyncHandler(async (req, res) => {
   const { id } = req.user;
   const userNotification = await Notification.findOne({
-    receiver: id,
-  })
-    .populate("notifications.sender")
-    .select("email");
+    user: id,
+  }).populate("notifications.profile");
 
   if (userNotification && userNotification.notifications.length > 0) {
     const unReadNotifications = userNotification.notifications.filter(
@@ -35,7 +34,7 @@ exports.getUnReadNotifications = asyncHandler(async (req, res) => {
     );
     return res.status(200).json({
       result: unReadNotifications.length,
-      data: userNotification,
+      data: unReadNotifications,
     });
   } else {
     res.status(400);
@@ -53,15 +52,15 @@ exports.createNotification = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Invalid request");
   }
-  const userNotification = await Notification.findOne({ receiver: id });
+  const userNotification = await Notification.findOne({ user: id });
 
   if (!userNotification) {
     const newNotification = await new Notification({
-      receiver: id,
+      user: id,
       notifications: [
         {
           type,
-          sender: senderId,
+          profile: senderId,
           title,
           message,
         },
@@ -72,7 +71,7 @@ exports.createNotification = asyncHandler(async (req, res) => {
   }
   const newNotification = {
     type,
-    sender: senderId,
+    profile: senderId,
     title,
     message,
   };
@@ -82,7 +81,7 @@ exports.createNotification = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update notification to read
-// @route   Patch /notification/:receiverId/:notificationId
+// @route   Patch /notification/:userId/:notificationId
 // @access  Private
 exports.updateNotificationToRead = asyncHandler(async (req, res) => {
   const { id } = req.user;
@@ -92,7 +91,7 @@ exports.updateNotificationToRead = asyncHandler(async (req, res) => {
     return res.status(400).send("Bad Request");
   }
 
-  const userNotification = await Notification.findOne({ receiver: id });
+  const userNotification = await Notification.findOne({ user: id });
 
   if (userNotification && userNotification.notifications.length > 0) {
     const foundNotification = userNotification.notifications.find(
@@ -102,7 +101,7 @@ exports.updateNotificationToRead = asyncHandler(async (req, res) => {
     if (foundNotification) {
       foundNotification.isRead = true;
       const updatedNotification = await userNotification.save();
-      res.status(200).json({ data: updatedNotification });
+      res.status(200).json({ data: foundNotification });
     } else {
       res.status(400);
       throw new Error("No notification found");
