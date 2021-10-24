@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard/Dashboard';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
+import { ConversationProvider } from './context/useConversationContext';
 
 import './App.css';
 
@@ -17,20 +18,22 @@ function App(): JSX.Element {
       <BrowserRouter>
         <SnackBarProvider>
           <AuthProvider>
-            <SocketProvider>
-              <Switch>
-                <Route path="/profile" component={Profile} />
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/signup" component={Signup} />
+            <ConversationProvider>
+              <SocketProvider>
+                <Switch>
+                  <Route path="/profile" component={Profile} />
+                  <Route exact path="/login" component={Login} />
+                  <Route exact path="/signup" component={Signup} />
 
-                <Route exact path="/dashboard">
-                  <Dashboard />
-                </Route>
-                <Route path="*">
-                  <Redirect to="/login" />
-                </Route>
-              </Switch>
-            </SocketProvider>
+                  <Route exact path="/dashboard">
+                    <Dashboard />
+                  </Route>
+                  <Route path="*">
+                    <Redirect to="/login" />
+                  </Route>
+                </Switch>
+              </SocketProvider>
+            </ConversationProvider>
           </AuthProvider>
         </SnackBarProvider>
       </BrowserRouter>
