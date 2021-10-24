@@ -19,18 +19,23 @@ exports.getNotifications = asyncHandler(async (req, res) => {
 });
 
 // @desc    Get Unread Notifications
-// @route   GET /unreadnotifications
+// @route   GET /notifications/unread
 // @access  Private
 exports.getUnReadNotifications = asyncHandler(async (req, res) => {
   const { id } = req.user;
-  const userNotification = await Notification.findOne({ receiver: id });
+  const userNotification = await Notification.findOne({
+    receiver: id,
+  })
+    .populate("notifications.sender")
+    .select("email");
+
   if (userNotification && userNotification.notifications.length > 0) {
     const unReadNotifications = userNotification.notifications.filter(
       (notification) => notification.isRead === false
     );
     return res.status(200).json({
       result: unReadNotifications.length,
-      data: unReadNotifications,
+      data: userNotification,
     });
   } else {
     res.status(400);
@@ -62,8 +67,8 @@ exports.createNotification = asyncHandler(async (req, res) => {
         },
       ],
     });
-    newNotification.save();
-    return res.status(201).json({ data: userNotification });
+    await newNotification.save();
+    return res.status(201).json({ data: newNotification });
   }
   const newNotification = {
     type,
