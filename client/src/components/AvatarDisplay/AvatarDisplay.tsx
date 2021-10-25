@@ -4,10 +4,17 @@ import { User } from '../../interface/User';
 interface Props {
   loggedIn: boolean;
   user: User | undefined | null;
+  size?: number;
 }
 
-const AvatarDisplay = ({ user }: Props): JSX.Element => {
-  return <Avatar alt="Profile Image" src={`https://robohash.org/${user?.email}.png`} />;
+const AvatarDisplay = (props: Props): JSX.Element => {
+  return (
+    <Avatar
+      alt="Profile Image"
+      style={{ width: props.size, height: props.size }}
+      src={`https://robohash.org/${props.user?.email}.png`}
+    />
+  );
 };
 
 export default AvatarDisplay;

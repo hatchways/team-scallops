@@ -10,13 +10,13 @@ export interface Conversation {
   _id: string;
   firstUser: User;
   secondUser: User;
-  lastMessage: string | Message;
+  lastMessage: Message;
   createdAt: Date;
   updatedAt: Date;
 }
 
 export interface Message {
-  sendByUser: User;
+  sender: User;
   text: string;
   conversation?: string | Conversation;
   createdAt?: string;

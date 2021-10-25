@@ -5,9 +5,11 @@ const useStyles = makeStyles(() => ({
     height: '100vh',
   },
   sideBar: {
-    border: '1px solid hsl(0deg 0% 86%)',
+    height: '100%',
+    border: '1px solid #EEEEEE',
   },
-  sideBarEmpty: {
+  sideBarInactive: {
+    height: '100%',
     display: 'flex',
     alignItems: ' center',
     justifyContent: 'space-around',

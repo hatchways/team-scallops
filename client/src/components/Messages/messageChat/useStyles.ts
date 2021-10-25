@@ -1,71 +1,52 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
-  chatContainer: {
-    height: 'calc(100vh - 137px);',
-  },
-  chatContentWrap: {
-    height: 'calc(100vh - 307px);',
-    overflowY: 'scroll',
-  },
   chatTitle: {
-    display: 'flex',
-    alignItems: 'flex-start;',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    padding: '0px 2%',
-    height: 80,
-    borderBottom: '1px solid hsl(0deg 0% 86%)',
+    padding: '0 2rem',
+    height: 75,
+    borderBottom: '1px solid #EEEEEE',
   },
-  chatReceiverName: {
+  chatTitleUsername: {
     margin: '0px!important',
     fontSize: '1.2rem',
     fontWeight: 'bold',
-    paddingBottom: '2%',
+    paddingBottom: '1rem',
   },
-  noMargin: {
-    margin: '0px!important',
-  },
-  userMessages: {
-    background: '#5565c1',
-    color: 'white',
-    padding: '0px 16px',
-    borderRadius: '15px',
+  chatBoxWrapper: {
+    height: 'calc(100vh - 175px);',
+    padding: '0 2rem',
+    overflowY: 'scroll',
   },
   chatContentBox: {
-    display: 'flex',
-    flexDirection: 'column',
-    paddingTop: '2%',
+    minHeight: '100%',
+    paddingTop: '1rem',
   },
-  senderAvatar: {
-    width: 46,
-    height: 46,
-    borderRadius: '50%',
-  },
-  messagerWrap: {
+  receiverLeftMessage: {
     display: 'flex',
+    paddingBottom: '1rem',
   },
-  messagerWrapRight: {
+  senderRightMessage: {
     display: 'flex',
+    paddingBottom: '1rem',
     marginLeft: 'auto',
   },
+  userMessageBox: {
+    wordBreak: 'break-word',
+    maxWidth: '40vw',
+    width: 'max-content',
+    padding: '0px 1rem',
+    borderRadius: '1rem',
+  },
+  grayUserMessages: {
+    backgroundColor: '#EEEEEE',
+  },
   messageText: {
-    padding: '0px 16px',
-    background: 'rgb(236 236 236);',
-    borderRadius: '15px',
-  },
-  textStyle: {
-    fontSize: '1.2rem',
-    padding: '10px',
-    margin: 0,
-  },
-  sentTimeStyleLeft: {
     fontSize: '0.9rem',
-    textAlign: 'left',
+    padding: '0.5rem',
   },
-  sentTimeStyleRight: {
-    fontSize: '0.9rem',
-    textAlign: 'right',
+  sentTimeText: {
+    color: 'gray',
+    fontSize: '0.7rem',
   },
 }));
 

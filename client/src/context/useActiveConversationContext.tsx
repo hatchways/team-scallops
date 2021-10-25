@@ -17,7 +17,7 @@ export const ActiveConversationContext = createContext<ActiveConversationContext
   updateActiveMessages: () => null,
 });
 
-export const ConversationProvider: FunctionComponent = ({ children }): JSX.Element => {
+export const ActiveConversationProvider: FunctionComponent = ({ children }): JSX.Element => {
   // const [conversations, setConversations] = useState<Conversation[] | null | undefined>();
   const [activeConversation, setActiveConversation] = useState<undefined | null | Conversation>();
   const [activeMessages, setActiveMessages] = useState<undefined | null | Message[]>();
@@ -35,8 +35,9 @@ export const ConversationProvider: FunctionComponent = ({ children }): JSX.Eleme
   };
   //get all conversations
   useEffect(() => {
+    console.log('New messages fetched!');
     getMessages(activeConversation?._id).then((data: Message[]) => {
-      if (!data || data.length) return;
+      if (!data || !data.length) return;
       updateActiveMessages(data);
     });
   }, [updateActiveConversation, activeConversation]);

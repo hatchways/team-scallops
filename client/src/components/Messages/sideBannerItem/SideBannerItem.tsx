@@ -5,7 +5,6 @@ import { Box, Typography } from '@material-ui/core';
 import { Conversation } from '../../../interface/Conversation';
 import { useConversation } from '../../../context/useConversationContext';
 import { useActiveConversation } from '../../../context/useActiveConversationContext';
-import { useSocket } from '../../../context/useSocketContext';
 import { useAuth } from '../../../context/useAuthContext';
 import moment from 'moment';
 interface Props {
@@ -16,55 +15,39 @@ interface Props {
 
 const SideBannerItem = ({ conversation }: Props): JSX.Element => {
   const classes = useStyles();
-  const { updateActiveConversation } = useActiveConversation();
+  const { activeConversation, updateActiveConversation } = useActiveConversation();
   const { updateConversationContext, conversations } = useConversation();
   const { loggedInUser } = useAuth();
-  const otherUser = loggedInUser?._id === conversation.firstUser._id ? conversation.secondUser : loggedInUser;
-  // const { socket } = useSocket();
-  const [haveNewMessages, setHaveNewMessages] = useState(false);
+  const isUserOnline = true;
+  const otherUser = loggedInUser?.id === conversation.firstUser._id ? conversation.secondUser : conversation.firstUser;
+
   const setCurrentConverstion = () => {
     updateActiveConversation(conversation);
-    setHaveNewMessages(false);
   };
 
-  useEffect(() => {
-    if (conversations?.length || !loggedInUser) return;
-    // socket.on('updateCoversation', (updatedConversation: Conversation, senderId: string) => {
-    //   if (senderId === loggedInUser._id) return;
-    //   if (conversations && conversation._id === updatedConversation._id) {
-    //     const updated = conversations.map((c) => (c._id === updatedConversation._id ? updatedConversation : c));
-    //     updateConversationContext(updated);
-    //     setHaveNewMessages(true);
-    //   }
-    // });
-    return () => {
-      // socket.off();
-    };
-  }, [updateConversationContext, conversations, conversation, loggedInUser]);
-
-  // if (!loggedInUser || !conversation || !conversation.recieverId._id) return <Box></Box>;
-
   return (
-    <Box onClick={setCurrentConverstion} className={classes.conversationRow} key={conversation._id}>
+    <Box
+      onClick={setCurrentConverstion}
+      display="flex"
+      alignItems="center"
+      justifyContent="center"
+      className={`${classes.conversationBox} ${
+        activeConversation?._id === conversation._id && classes.activeConversationBox
+      }`}
+    >
       <Box className={classes.userAvatarBox}>
-        {/* <img
-          className={classes.userAvatar}
-          src={
-            loggedInUser._id === conversation.recieverId._id
-              ? conversation.senderId.avatar
-              : conversation.recieverId.avatar
-          }
-        /> */}
         <AvatarDisplay loggedIn user={otherUser} />
+        {isUserOnline ? <Box className={classes.userOnline}></Box> : ''}
       </Box>
       <Box className={classes.userNameBox}>
         <Typography className={classes.userName}>{otherUser?.username}</Typography>
-        <Typography>{conversation.lastMessage}</Typography>
+        <Typography className={classes.userLastMessage}>
+          {conversation.lastMessage ? conversation.lastMessage.text : ''}
+        </Typography>
       </Box>
       <Box className={classes.userMessageDate}>
         <Typography>{moment(conversation.updatedAt).fromNow()}</Typography>
       </Box>
-      {/* {haveNewMessages ? <Box className={classes.newMessages}></Box> : ''} */}
     </Box>
   );
 };

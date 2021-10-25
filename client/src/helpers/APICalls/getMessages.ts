@@ -5,11 +5,8 @@ const getMessages = async (conversationId: string | undefined) => {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
-    body: JSON.stringify({
-      conversationId: conversationId,
-    }),
   };
-  return await fetch(`/conversation/`, fetchOptions)
+  return await fetch(`/conversation/${conversationId}`, fetchOptions)
     .then((res) => res.json())
     .catch((err) => ({ err: { message: err } }));
 };

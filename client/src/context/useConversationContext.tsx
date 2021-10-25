@@ -1,6 +1,7 @@
 import { useState, useContext, createContext, FunctionComponent, useEffect, useCallback } from 'react';
 import { Conversation } from '../interface/Conversation';
 import getConversations from '../helpers/APICalls/getConversations';
+import { useActiveConversation } from './useActiveConversationContext';
 
 interface IConversationContext {
   // currentConversation: Conversation | null | undefined;
@@ -18,9 +19,9 @@ export const ConversationContext = createContext<IConversationContext>({
 
 export const ConversationProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [conversations, setConversations] = useState<Conversation[] | null | undefined>();
+  const { activeMessages } = useActiveConversation();
   // const [currentConversation, setCurrentConversation] = useState<Conversation>();
   const updateConversationContext = useCallback((data: Conversation[]) => {
-    console.log('conversations added!');
     setConversations(data);
   }, []);
   // const updateCurrentConversation = (data: Conversation) => {
@@ -28,14 +29,12 @@ export const ConversationProvider: FunctionComponent = ({ children }): JSX.Eleme
   // };
   //get all conversations
   useEffect(() => {
+    console.log('New conversations fetched!');
     getConversations().then((data: Conversation[]) => {
-      console.log(data);
-      console.log('Came before here');
-      if (!data || data.length) return;
-      console.log('Came until here');
+      if (!data || !data.length) return;
       updateConversationContext(data);
     });
-  }, [updateConversationContext]);
+  }, [updateConversationContext, activeMessages]);
 
   return (
     // <ConversationContext.Provider

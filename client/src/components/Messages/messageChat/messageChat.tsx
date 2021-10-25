@@ -1,128 +1,78 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useStyles from './useStyles';
 import MessageInput from '../MessageInput/MessageInput';
-import { Box, Container, Typography } from '@material-ui/core';
+import { Box, IconButton, Paper, Typography } from '@material-ui/core';
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { User } from '../../../interface/User';
-import getMessages from '../../../helpers/APICalls/getMessages';
-// import sendAndSavaMessage from '../../../helpers/APICalls/sendMessage';
 import { useAuth } from '../../../context/useAuthContext';
-import { useSocket } from '../../../context/useSocketContext';
-import { useConversation } from '../../../context/useConversationContext';
+import { useActiveConversation } from '../../../context/useActiveConversationContext';
+import AvatarDisplay from '../../AvatarDisplay/AvatarDisplay';
 import moment from 'moment';
-import './chat.css';
+import { Message } from '../../../interface/Conversation';
 
-const ConversationChat = (): JSX.Element => {
-  // const classes = useStyles();
-  // const { socket } = useSocket();
+const MessageChat = (): JSX.Element => {
+  const classes = useStyles();
+  const { activeConversation, updateActiveConversation, activeMessages } = useActiveConversation();
+  const { loggedInUser } = useAuth();
+  const otherUser =
+    loggedInUser?.id === activeConversation?.firstUser._id
+      ? activeConversation?.secondUser
+      : activeConversation?.firstUser;
+  const [sender, setSender] = useState<User | null | undefined>();
+  const [receiver, setReceiver] = useState<User | null | undefined>();
 
-  // const { currentConversation, conversations, updateConversationContext } = useConversation();
-  // const { loggedInUser } = useAuth();
-  // const [sender, setSender] = useState<User | undefined>();
-  // const [reciever, setReciever] = useState<User | undefined>();
-  // const [messages, setMessages] = React.useState<
-  //   Array<{
-  //     senderId?: string;
-  //     text?: string;
-  //     sentTime?: string;
-  //   }>
-  // >([]);
+  useEffect(() => {
+    if (!activeConversation) return;
+    setSender(loggedInUser);
+    setReceiver(otherUser);
+  }, [otherUser, activeConversation, loggedInUser]);
 
-  // useEffect(() => {
-  //   if (!currentConversation) return;
-  //   if (loggedInUser?._id === currentConversation.senderId?._id) {
-  //     setSender(currentConversation.senderId);
-  //     setReciever(currentConversation.recieverId);
-  //   } else {
-  //     setSender(currentConversation.recieverId);
-  //     setReciever(currentConversation.senderId);
-  //   }
-  //   getMessages(currentConversation._id).then((data) => {
-  //     data.success.messages ? setMessages(data.success.messages) : setMessages([]);
-  //   });
-  // }, [currentConversation, loggedInUser]);
+  const renderMessage = (message: Message, messageIndex: number) => {
+    const isSenderMessage = message.sender._id === sender?.id;
+    return (
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems={isSenderMessage ? 'flex-end' : 'flex-start'}
+        key={messageIndex}
+        className={isSenderMessage ? classes.senderRightMessage : classes.receiverLeftMessage}
+      >
+        <Box mb={'0.5rem'} display="flex">
+          {!isSenderMessage && <AvatarDisplay loggedIn user={receiver} />}
+          <Box
+            component={Paper}
+            className={`${classes.userMessageBox} ${isSenderMessage ? '' : classes.grayUserMessages}`}
+          >
+            <Typography className={classes.messageText}>{message.text}</Typography>
+          </Box>
+        </Box>
+        <Box className={classes.sentTimeText}>{moment(message.updatedAt).format('h:mm a, MMMM Do YYYY')}</Box>
+      </Box>
+    );
+  };
 
-  // useEffect(() => {
-  //   if (!socket || !currentConversation) return;
-  //   socket.on('message', (newMessage, conversation) => {
-  //     conversation._id === currentConversation._id ? setMessages([...messages, newMessage]) : '';
-  //     if (conversations) {
-  //       const updated = conversations.map((c) => (c._id === conversation._id ? conversation : c));
-  //       updateConversationContext(updated);
-  //     }
-  //   });
-  //   return () => {
-  //     socket.off();
-  //   };
-  // }, [messages, socket, updateConversationContext, currentConversation, conversations]);
-
-  // const sendMessage = (e: { preventDefault: () => void }, message: string, setMessage: (arg0: string) => any) => {
-  //   e.preventDefault();
-  //   if (!loggedInUser || !loggedInUser._id || !currentConversation) return;
-  //   if (message) {
-  //     sendAndSavaMessage(currentConversation._id, loggedInUser._id, message).then(() => {
-  //       setMessage('');
-  //     });
-  //   }
-  // };
-
-  // const renderTitleInfo = () => {
-  //   if (!loggedInUser || !currentConversation) return;
-  //   return (
-  //     <Box>
-  //       <Typography className={classes.chatReceiverName}>
-  //         {loggedInUser._id === currentConversation.senderId._id
-  //           ? currentConversation.recieverId.username
-  //           : currentConversation.senderId.username}
-  //       </Typography>
-  //     </Box>
-  //   );
-  // };
-  // const renderMessages = () => {
-  //   if (!sender || !reciever) return;
-  //   return messages.map((m, i) => {
-  //     if (m.senderId === sender._id) {
-  //       return (
-  //         <Box key={i.toString()} className={classes.messagerWrapRight}>
-  //           <Box>
-  //             <Box className={classes.userMessages}>
-  //               <Typography className={classes.textStyle}>{m.text}</Typography>
-  //             </Box>
-  //             <Box className={classes.sentTimeStyleRight}>{moment(m.sentTime).format('h:mm a')}</Box>
-  //           </Box>
-  //           <Box>
-  //             <img className={classes.senderAvatar} src={sender.avatar} />
-  //           </Box>
-  //         </Box>
-  //       );
-  //     } else {
-  //       return (
-  //         <Box key={i.toString()} className={classes.messagerWrap}>
-  //           <Box>
-  //             <img className={classes.senderAvatar} src={reciever.avatar} />
-  //           </Box>
-  //           <Box>
-  //             <Box className={classes.messageText}>
-  //               <Typography className={classes.textStyle}>{m.text} </Typography>
-  //             </Box>
-  //             <Box className={classes.sentTimeStyleLeft}>{moment(m.sentTime).format('h:mm a')}</Box>
-  //           </Box>
-  //         </Box>
-  //       );
-  //     }
-  //   });
-  // };
   return (
-    // <Box className={classes.chatContainer}>
-    //   <Box className={classes.chatTitle}>{renderTitleInfo()}</Box>
-    //   <Box className={classes.chatContentWrap}>
-    //     <Container>
-    //       <Box className={classes.chatContentBox}>{renderMessages()}</Box>
-    //     </Container>
-    //   </Box>
-    //   <MessageInput sendMessage={sendMessage} />
-    // </Box>
-    <></>
+    <>
+      {sender && receiver && (
+        <>
+          <Box display="flex" alignItems="center" className={classes.chatTitle}>
+            <AvatarDisplay loggedIn size={60} user={receiver} />
+            <Typography className={classes.chatTitleUsername}>{receiver?.username}</Typography>
+            <Box flexGrow={1} />
+            <IconButton aria-label="show auth menu" aria-controls="auth-menu" aria-haspopup="true" onClick={() => null}>
+              <MoreHorizIcon />
+            </IconButton>
+          </Box>
+          <Box className={classes.chatBoxWrapper}>
+            <Box display="flex" justifyContent="flex-start" flexDirection="column" className={classes.chatContentBox}>
+              {activeMessages?.map((message, messageIndex) => renderMessage(message, messageIndex))}
+            </Box>
+          </Box>
+          <MessageInput activeConversation={activeConversation} />
+        </>
+      )}
+    </>
   );
 };
 
-export default ConversationChat;
+export default MessageChat;

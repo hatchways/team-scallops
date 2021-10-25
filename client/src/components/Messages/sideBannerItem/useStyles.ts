@@ -1,60 +1,58 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
-  conversationBody: {
-    '$:first-child': {
-      marginTop: '0px!important',
+  conversationBox: {
+    '&:hover': {
+      cursor: 'pointer',
+      backgroundColor: '#E5E5E5',
     },
+    padding: '1rem',
+    borderBottom: '1px solid #EEEEEE',
   },
-  conversationTitle: {
-    height: 80,
-    borderBottom: '1px solid hsl(0deg 0% 86%)',
-    display: 'flex',
-    alignItems: 'center',
-    padding: '0px 5%',
-  },
-  conversationTitleH: {
-    margin: '0px!important',
+  activeConversationBox: {
+    backgroundColor: '#E5E5E5',
   },
   userAvatarBox: {
     flex: 1,
+    position: 'relative',
   },
   userNameBox: {
-    flex: 2,
+    flex: 5,
+    overflow: 'hidden',
+    padding: '0 0.5rem',
   },
   userName: {
-    margin: '0px!important',
-    fontSize: '1.3rem',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    fontSize: '1.5rem',
     fontWeight: 'bold',
+  },
+  userLastMessage: {
+    maxHeight: '1rem',
+    textOverflow: 'ellipsis',
+    color: 'gray',
+    overflow: 'hidden',
+  },
+  userMessageDate: {
+    flex: 3,
+    color: 'gray',
   },
   userSubtitle: {
     color: 'gray',
     margin: 'none',
   },
-  userMessageDate: {
-    flex: 1,
-    color: 'gray',
-  },
-  conversationRow: {
-    '&:hover': {
-      cursor: 'pointer',
-      background: '#f7f7f7',
-    },
-    '&:fucos': {
-      cursor: 'pointer',
-      background: '#f7f7f7',
-    },
-    padding: '3% 5%',
-    borderRadius: '5%',
-    margin: '2px',
-    display: 'flex',
-    alignItems: 'center',
-    borderBottom: '1px solid gray',
-    position: 'relative',
-  },
   userAvatar: {
     width: 60,
     height: 60,
+    borderRadius: '50%',
+  },
+  userOnline: {
+    width: 10,
+    height: 10,
+    position: 'absolute',
+    background: '#5DFC0A',
+    top: 5,
+    right: 5,
     borderRadius: '50%',
   },
   newMessages: {
@@ -62,9 +60,9 @@ const useStyles = makeStyles(() => ({
     height: 10,
     position: 'absolute',
     background: 'red',
-    top: '5px',
-    right: '10px',
-    borderRadius: '50%',
+    top: 5,
+    right: 10,
+    borderRadius: '5',
   },
 }));
 

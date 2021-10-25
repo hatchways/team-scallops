@@ -6,7 +6,7 @@ const getConversations = async () => {
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
   };
-  return await fetch(`/conversation/all`, fetchOptions)
+  return await fetch(`/conversation/`, fetchOptions)
     .then((res) => res.json())
     .catch((err) => ({ err: { message: err } }));
 };
