@@ -12,6 +12,8 @@ const logger = require("morgan");
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const profileRouter = require("./routes/profile");
+const messageRouter = require("./routes/message");
+const conversationRouter = require("./routes/conversation");
 const requestRouter = require("./routes/request");
 
 
@@ -47,6 +49,8 @@ app.use((req, res, next) => {
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/profile", profileRouter);
+app.use("/message", messageRouter);
+app.use("/conversation", conversationRouter);
 app.use("/request", requestRouter);
 
 if (process.env.NODE_ENV === "production") {
