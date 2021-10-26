@@ -8,12 +8,13 @@ const connectDB = require("./db");
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
-
+const { env } = require("process");
 
 const { json, urlencoded } = express;
 
