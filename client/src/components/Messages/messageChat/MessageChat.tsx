@@ -55,7 +55,7 @@ const MessageChat = (): JSX.Element => {
 
   return (
     <>
-      {sender && receiver && (
+      {!!sender && !!receiver && (
         <>
           <Box display="flex" alignItems="center" className={classes.chatTitle}>
             <AvatarDisplay loggedIn size={60} user={receiver} />

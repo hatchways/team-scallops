@@ -13,7 +13,6 @@ const SideBannerItem = ({ conversation }: Props): JSX.Element => {
   const classes = useStyles();
   const { activeConversation, updateActiveConversation } = useActiveConversation();
   const { loggedInUser } = useAuth();
-  // Hard coding user online value to true, must be replaced by socket.io logic later
   const isUserOnline = true;
   const otherUser = loggedInUser?.id === conversation.firstUser._id ? conversation.secondUser : conversation.firstUser;
 

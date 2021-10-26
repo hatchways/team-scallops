@@ -13,7 +13,7 @@ const ChatSideBanner = (): JSX.Element => {
       <Box display="flex" alignItems="center" className={classes.chatSideBannerTitle}>
         <Typography variant={'h4'}>Inbox Messages</Typography>
       </Box>
-      {conversations?.length &&
+      {!!conversations?.length &&
         conversations?.map((conversation, elId) => <SideBannerItem key={elId} conversation={conversation} />)}
     </Box>
   );

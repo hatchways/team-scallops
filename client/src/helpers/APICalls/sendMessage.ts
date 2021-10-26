@@ -1,6 +1,5 @@
 import { FetchOptions } from '../../interface/FetchOptions';
 
-// Fix this too!!!
 const sendMessage = async (conversationId: string | undefined, text: string) => {
   const fetchOptions: FetchOptions = {
     method: 'POST',

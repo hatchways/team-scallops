@@ -1,9 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(() => ({
-  // messageInputWrap: {
-  //   height: '10rem',
-  // },
   inputForm: {
     width: '100%',
     maxHeight: '6rem',
