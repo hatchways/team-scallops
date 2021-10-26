@@ -24,7 +24,7 @@ function App(): JSX.Element {
         <SnackBarProvider>
           <AuthProvider>
             <SocketProvider>
-              {/* <NavBar /> */}
+              <NavBar />
 
               <Switch>
                 <Route exact path="/login" component={Login} />
