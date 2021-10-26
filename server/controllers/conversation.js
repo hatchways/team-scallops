@@ -40,7 +40,11 @@ exports.getConversation = asyncHandler(async (req, res, next) => {
   }).populate("sender", "username email");
 
   res.status(200);
-  res.json(messagesArray);
+  res.json({
+    success: {
+      messages: messagesArray,
+    },
+  });
 });
 
 // @route POST /conversation/
@@ -81,7 +85,11 @@ exports.postConversation = asyncHandler(async (req, res, next) => {
     .exec();
 
   res.status(201);
-  res.json(newConversation);
+  res.json({
+    success: {
+      conversation: newConversation,
+    },
+  });
 });
 
 // @route GET /conversation/
@@ -106,5 +114,9 @@ exports.getAllConversations = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200);
-  res.json(allConversations);
+  res.json({
+    success: {
+      conversations: allConversations,
+    },
+  });
 });
