@@ -1,48 +1,43 @@
 import { useState, useContext, createContext, FunctionComponent, useEffect, useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
 import { NotificationApiData, NotificationApiDataSuccess } from '../interface/NotificationApiData';
 import { Notification } from '../interface/Notification';
 import getUnreadNotifications from '../helpers/APICalls/getUnreadNotifications';
 
 interface INotificationContext {
   updateNotificationContext: (data: NotificationApiDataSuccess) => void;
+  unReadNotifications: Notification[] | null;
 }
 
 export const NotificationContext = createContext<INotificationContext>({
   updateNotificationContext: () => null,
+  unReadNotifications: null,
 });
 
 export const NotificationProvider: FunctionComponent = ({ children }): JSX.Element => {
-  // default undefined before loading, once loaded provide user or null if logged out
-  const [loggedInUser, setLoggedInUser] = useState<Notification[] | null | undefined>();
-  const history = useHistory();
+  const [unReadNotifications, setUnReadNotifications] = useState<Notification[] | null>([]);
 
-  const updateNotificationContext = useCallback(
-    (data: NotificationApiDataSuccess) => {
-      setLoggedInUser(data.notifications);
-      history.push('/dashboard');
-    },
-    [history],
-  );
+  const updateNotificationContext = useCallback((data: NotificationApiDataSuccess) => {
+    setUnReadNotifications(data.unReadNotifications);
+  }, []);
 
-  // use our cookies to check if we can login straight away
   useEffect(() => {
     const getNotifications = async () => {
       await getUnreadNotifications().then((data: NotificationApiData) => {
         if (data.success) {
           updateNotificationContext(data.success);
-          history.push('/dashboard');
         } else {
-          // don't need to provide error feedback as this just means user doesn't have saved cookies or the cookies have not been authenticated on the backend
-          setLoggedInUser(null);
-          history.push('/login');
+          setUnReadNotifications(null);
         }
       });
     };
     getNotifications();
-  }, [updateNotificationContext, history]);
+  }, [updateNotificationContext]);
 
-  return <NotificationContext.Provider value={{ updateNotificationContext }}>{children}</NotificationContext.Provider>;
+  return (
+    <NotificationContext.Provider value={{ unReadNotifications, updateNotificationContext }}>
+      {children}
+    </NotificationContext.Provider>
+  );
 };
 
 export function useNotification(): INotificationContext {

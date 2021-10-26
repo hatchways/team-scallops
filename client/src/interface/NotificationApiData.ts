@@ -1,7 +1,7 @@
 import { Notification } from './Notification';
 
 export interface NotificationApiDataSuccess {
-  notifications: Notification[];
+  unReadNotifications: Notification[];
 }
 
 export interface NotificationApiData {
