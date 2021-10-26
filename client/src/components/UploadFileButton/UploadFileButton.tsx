@@ -8,7 +8,7 @@ import { useSnackBar } from '../../context/useSnackbarContext';
 export default function UploadFileButton({ ...inputProps }: IUploadFile): JSX.Element {
   const classes = useStyles();
   const URL = 'https://api.cloudinary.com/v1_1/dog-sitter/image/upload';
-  const [image, setImage] = useState<string>('');
+
   const { updateSnackBarMessage } = useSnackBar();
 
   const onChange = (event: ChangeEvent) => {
@@ -18,7 +18,6 @@ export default function UploadFileButton({ ...inputProps }: IUploadFile): JSX.El
       uploadImage(URL, file)
         .then((data: string) => {
           updateSnackBarMessage('Image has been successfully uploaded');
-          setImage(data);
         })
         .catch((err) => updateSnackBarMessage(err.message));
     }
