@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
+import { theme } from '../../themes/theme';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -7,19 +8,18 @@ const useStyles = makeStyles(() => ({
       borderBottom: '1.2px solid rgba(0, 0, 0, 0.2)',
     },
   },
-  authWrapper: {
+  wrapper: {
+    height: '80vh',
+    minHeight: '40rem',
     display: 'flex',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    justifyContent: 'start',
     flexDirection: 'column',
-    minHeight: '100vh',
-    paddingTop: 23,
   },
-  welcome: {
-    fontSize: 26,
+  title: {
+    fontSize: 32,
     paddingBottom: 20,
-    color: '#000000',
-    fontWeight: 700,
+    fontWeight: 900,
     fontFamily: "'Open Sans'",
   },
 }));
