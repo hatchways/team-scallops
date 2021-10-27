@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
     width: '6em',
   },
   searchContainer: {
-    marginTop: '20vh',
+    marginTop: '10vh',
     marginBottom: '5vh',
   },
   datePicker: {
