@@ -3,6 +3,8 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
+const socketAuthVerify = require("./middleware/socketAuthVerify");
+const onlineUserLog = require("./utils/onlineUserLog");
 const { notFound, errorHandler } = require("./middleware/error");
 const connectDB = require("./db");
 const { join } = require("path");
@@ -16,7 +18,6 @@ const messageRouter = require("./routes/message");
 const conversationRouter = require("./routes/conversation");
 const requestRouter = require("./routes/request");
 
-
 const { json, urlencoded } = express;
 
 connectDB();
@@ -26,11 +27,25 @@ const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
     origin: "*",
+    credentials: true,
   },
 });
 
+io.use(socketAuthVerify);
+
 io.on("connection", (socket) => {
-  console.log("connected");
+  socket.on("disconnect", () => {
+    onlineUserLog.removeUser(socket.user);
+  });
+
+  socket.on("online", () => {
+    if (!onlineUserLog.checkInLog(socket.user)) {
+      const newUser = onlineUserLog.addUser(socket.user, socket.id);
+      socket.join("online");
+      socket.to("online").emit("newUserOnline", newUser);
+    }
+    return;
+  });
 });
 
 if (process.env.NODE_ENV === "development") {
