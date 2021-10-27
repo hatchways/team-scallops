@@ -7,28 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { useStyles } from './useStyles';
 import { Formik, FormikHelpers } from 'formik';
-
-interface Props {
-  handleSubmit: (
-    {
-      where,
-      dropIn,
-      dropOff,
-    }: {
-      where: string;
-      dropIn: string;
-      dropOff: string;
-    },
-    {
-      setStatus,
-      setSubmitting,
-    }: FormikHelpers<{
-      where: string;
-      dropIn: string;
-      dropOff: string;
-    }>,
-  ) => void;
-}
+import InputField from '../../components/InputField/InputField';
 
 export default function LandingPage(): JSX.Element {
   const classes = useStyles();
@@ -37,6 +16,7 @@ export default function LandingPage(): JSX.Element {
     { where, dropIn, dropOff }: { where: string; dropIn: string; dropOff: string },
     { setSubmitting }: FormikHelpers<{ where: string; dropIn: string; dropOff: string }>,
   ): void => {
+    //TODO here we have all user inputs values(where,dropIn,dropOff) and ready to make a req to server
     setSubmitting(false);
   };
 
@@ -50,50 +30,43 @@ export default function LandingPage(): JSX.Element {
             Find the care your dog deserves
           </Typography>
           <Formik initialValues={{ where: '', dropIn: '', dropOff: '' }} onSubmit={handleSubmit}>
-            {({ handleChange, values }) => (
+            {({ handleChange, values, touched, errors }) => (
               <form className={classes.form} noValidate>
-                <TextField
-                  id="outlined-full-width"
+                <InputField
+                  name="where"
+                  id="where"
                   label="Where"
                   placeholder="Anywhere"
-                  fullWidth
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
+                  error={false}
+                  helperText=""
                   variant="outlined"
                   value={values.where}
-                  onChange={handleChange}
-                  name="where"
+                  handleChange={handleChange}
                 />
-                <TextField
-                  className={classes.width50}
-                  id="outlined-full-width"
-                  label="Drop in"
-                  placeholder="mm/dd/yyyy"
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  variant="outlined"
-                  value={values.dropIn}
-                  onChange={handleChange}
-                  name="dropIn"
-                />
-                <TextField
-                  className={classes.width50}
-                  id="outlined-full-width"
-                  label="Drop off"
-                  placeholder="mm/dd/yyyy"
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  variant="outlined"
-                  value={values.dropOff}
-                  onChange={handleChange}
-                  name="dropOff"
-                />
+                <Box display="flex">
+                  <InputField
+                    name="dropIn"
+                    id="outlined-full-width"
+                    label="Drop In"
+                    placeholder="mm/dd/yyyy"
+                    error={false}
+                    helperText=""
+                    variant="outlined"
+                    value={values.dropIn}
+                    handleChange={handleChange}
+                  />
+                  <InputField
+                    name="DropOff"
+                    id="outlined-full-width"
+                    label="Drop Off"
+                    placeholder="mm/dd/yyyy"
+                    error={false}
+                    helperText=""
+                    variant="outlined"
+                    value={values.dropOff}
+                    handleChange={handleChange}
+                  />
+                </Box>
 
                 <Button type="submit" variant="contained" color="secondary" className={classes.submit}>
                   FIND MY DOG SITTER
