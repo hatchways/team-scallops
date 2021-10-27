@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useStyles = makeStyles((theme) => ({
   root: {
-    height: '90vh',
+    height: '80vh',
   },
   image: {
     backgroundImage: 'url(/33.jpeg)',
@@ -11,7 +11,7 @@ export const useStyles = makeStyles((theme) => ({
     backgroundPosition: 'center',
   },
   paper: {
-    margin: theme.spacing(8, 10),
+    margin: theme.spacing(5, 10),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flexStart',
@@ -19,7 +19,7 @@ export const useStyles = makeStyles((theme) => ({
 
   form: {
     width: '70%',
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(5),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),

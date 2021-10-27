@@ -1,6 +1,5 @@
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -27,7 +26,7 @@ export default function LandingPage(): JSX.Element {
     <Grid container component="main" className={classes.root}>
       <CssBaseline />
 
-      <Grid item xs={12} sm={8} md={6} component={Paper}>
+      <Grid item xs={12} sm={8} md={6} component={Paper} elevation={0}>
         <Box className={classes.paper}>
           <Typography className={classes.fontBold} variant="h2">
             Find the care your dog deserves
@@ -36,11 +35,11 @@ export default function LandingPage(): JSX.Element {
             initialValues={{ where: '', dropIn: '', dropOff: '' }}
             validationSchema={Yup.object().shape({
               where: Yup.string().required('Where is required'),
-              dropIn: Yup.date().min(today, 'Date cannot be in the past').required(''),
+              dropIn: Yup.date().min(today, 'Drop in cannot be in the past').required(''),
               dropOff: Yup.date().when(
                 'dropIn',
                 (dropIn: string, schema: any) =>
-                  dropIn && schema.min(dropIn, 'Drop off date must be greater than Drop in date'),
+                  dropIn && schema.min(dropIn, 'Drop off date must be greater than Drop in.'),
               ),
             })}
             onSubmit={handleSubmit}
