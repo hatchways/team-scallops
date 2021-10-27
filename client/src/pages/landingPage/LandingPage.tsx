@@ -58,32 +58,36 @@ export default function LandingPage(): JSX.Element {
                   value={values.where}
                   handleChange={handleChange}
                 />
-                <Box display="flex">
-                  <InputField
-                    name="dropIn"
-                    type="date"
-                    id="outlined-full-width"
-                    label="Drop In"
-                    placeholder="mm/dd/yyyy"
-                    helperText={touched.dropIn ? errors.dropIn : ''}
-                    error={touched.dropIn && Boolean(errors.dropIn)}
-                    variant="outlined"
-                    value={values.dropIn}
-                    handleChange={handleChange}
-                  />
-                  <InputField
-                    name="dropOff"
-                    type="date"
-                    id="outlined-full-width"
-                    label="Drop Off"
-                    placeholder="mm/dd/yyyy"
-                    helperText={touched.dropOff ? errors.dropOff : ''}
-                    error={touched.dropOff && Boolean(errors.dropOff)}
-                    variant="outlined"
-                    value={values.dropOff}
-                    handleChange={handleChange}
-                  />
-                </Box>
+                <Grid container direction="row">
+                  <Grid item xs={12} md={6} lg={6}>
+                    <InputField
+                      name="dropIn"
+                      type="date"
+                      id="outlined-full-width"
+                      label="Drop In"
+                      placeholder="mm/dd/yyyy"
+                      helperText={touched.dropIn ? errors.dropIn : ''}
+                      error={touched.dropIn && Boolean(errors.dropIn)}
+                      variant="outlined"
+                      value={values.dropIn}
+                      handleChange={handleChange}
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6} lg={6}>
+                    <InputField
+                      name="dropOff"
+                      type="date"
+                      id="outlined-full-width"
+                      label="Drop Off"
+                      placeholder="mm/dd/yyyy"
+                      helperText={touched.dropOff ? errors.dropOff : ''}
+                      error={touched.dropOff && Boolean(errors.dropOff)}
+                      variant="outlined"
+                      value={values.dropOff}
+                      handleChange={handleChange}
+                    />
+                  </Grid>
+                </Grid>
 
                 <Button type="submit" variant="contained" color="secondary" className={classes.submit}>
                   FIND MY DOG SITTER
