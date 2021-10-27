@@ -14,7 +14,7 @@ exports.getNotifications = asyncHandler(async (req, res) => {
       data: userNotification.notifications,
     });
   } else {
-    res.status(500);
+    res.status(404);
     throw new Error("Something went wrong");
   }
 });
@@ -27,7 +27,6 @@ exports.getUnReadNotifications = asyncHandler(async (req, res) => {
   const userNotification = await Notification.findOne({
     user: id,
   }).populate("notifications.senderProfile", "firstName image");
-  // .select('firstName');
 
   if (userNotification && userNotification.notifications.length > 0) {
     const unReadNotifications = userNotification.notifications.filter(
@@ -39,7 +38,7 @@ exports.getUnReadNotifications = asyncHandler(async (req, res) => {
       data: unReadNotifications,
     });
   } else {
-    res.status(400);
+    res.status(404);
     throw new Error("No unread notifications found");
   }
 });
@@ -84,7 +83,7 @@ exports.createNotification = asyncHandler(async (req, res) => {
 });
 
 // @desc    Update notification to read
-// @route   Patch /notification/:userId/:notificationId
+// @route   Patch /notification//:notificationId
 // @access  Private
 exports.updateNotificationToRead = asyncHandler(async (req, res) => {
   const { id } = req.user;
@@ -106,7 +105,7 @@ exports.updateNotificationToRead = asyncHandler(async (req, res) => {
       await userNotification.save();
       res.status(200).json({ data: foundNotification });
     } else {
-      res.status(400);
+      res.status(404);
       throw new Error("No notification found");
     }
   }
