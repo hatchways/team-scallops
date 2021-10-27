@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const notificationSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
+    ref: "user",
     required: true,
   },
   notifications: [
@@ -13,9 +13,9 @@ const notificationSchema = new Schema({
         type: String,
         enum: ["serviceRequest", "serviceAvailable", "message"],
       },
-      sender: {
+      senderProfile: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
+        ref: "Profile",
         required: true,
       },
       title: {
@@ -28,7 +28,8 @@ const notificationSchema = new Schema({
         type: Boolean,
         default: false,
       },
-
+    },
+    {
       timestamps: true,
     },
   ],
