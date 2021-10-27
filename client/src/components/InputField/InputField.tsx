@@ -4,14 +4,15 @@ import useStyles from './useStyles';
 
 interface Props {
   id: string;
+  type: string;
   name: string;
   label: string;
   className?: string;
   value: string;
   margin?: 'normal';
   placeholder: string;
-  error: boolean;
-  helperText: string;
+  error: boolean | undefined;
+  helperText: string | undefined;
   handleChange: (e: string | ChangeEvent<any>) => void;
   variant: 'filled' | 'standard' | 'outlined' | undefined;
 }
@@ -19,6 +20,7 @@ interface Props {
 export default function InputField({
   id,
   name,
+  type,
   value,
   label,
   handleChange,
@@ -37,6 +39,7 @@ export default function InputField({
       </InputLabel>
       <TextField
         id={id}
+        type={type}
         margin="normal"
         fullWidth
         InputLabelProps={{
