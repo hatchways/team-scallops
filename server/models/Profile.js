@@ -31,7 +31,7 @@ const profileSchema = new mongoose.Schema({
   },
   image: {
     url: String,
-    public_id: String,
+    publicId: String,
   },
   availability: {
     monday: {
