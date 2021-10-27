@@ -29,7 +29,7 @@ function App(): JSX.Element {
               <Switch>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={Signup} />
-                <Route exact path="/land" component={LandingPage} />
+                <Route exact path="/landing-page" component={LandingPage} />
                 <Route path="/profile" component={Profile} />
                 <Route exact path="/my-jobs" component={MyJobs} />
                 <Route exact path="/my-sitters" component={MySitters} />
