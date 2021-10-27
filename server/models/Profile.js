@@ -29,6 +29,10 @@ const profileSchema = new mongoose.Schema({
   description: {
     type: String,
   },
+  image: {
+    url: String,
+    publicId: String,
+  },
   availability: {
     monday: {
       type: Boolean,

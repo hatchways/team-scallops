@@ -4,6 +4,7 @@ import useStyles from './useStyles';
 import { Route, Switch } from 'react-router-dom';
 import ProfileMenu from '../../components/ProfileMenu/ProfileMenu';
 import ProfileEdit from './ProfileEdit/ProfileEdit';
+import ProfileUploadPhoto from '../../components/ProfileUploadPhoto/UploadPhoto';
 
 export default function Profile(): JSX.Element {
   const classes = useStyles();
@@ -18,7 +19,7 @@ export default function Profile(): JSX.Element {
           <Paper className={classes.paper}>
             <Switch>
               <Route path="/profile/edit" component={ProfileEdit} />
-              <Route path="/profile/photo" />
+              <Route path="/profile/photo" component={ProfileUploadPhoto} />
               <Route path="/profile/availability" />
               <Route path="/profile/payment" />
               <Route path="/profile/security" />
