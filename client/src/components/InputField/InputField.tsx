@@ -1,34 +1,19 @@
 import { Box, InputLabel, TextField, Typography } from '@material-ui/core';
-import React, { ChangeEvent } from 'react';
+import { IInputField } from '../../interface/InputField';
 import useStyles from './useStyles';
-
-interface Props {
-  id: string;
-  type: string;
-  name: string;
-  label: string;
-  className?: string;
-  value: string;
-  margin?: 'normal';
-  placeholder: string;
-  error: boolean | undefined;
-  helperText: string | undefined;
-  handleChange: (e: string | ChangeEvent<any>) => void;
-  variant: 'filled' | 'standard' | 'outlined' | undefined;
-}
 
 export default function InputField({
   id,
   name,
-  type,
-  value,
   label,
-  handleChange,
   placeholder,
+  type,
   variant,
   error,
   helperText,
-}: Props): JSX.Element {
+  value,
+  handleChange,
+}: IInputField): JSX.Element {
   const classes = useStyles();
   return (
     <Box>
@@ -39,23 +24,23 @@ export default function InputField({
       </InputLabel>
       <TextField
         id={id}
+        name={name}
         type={type}
+        variant={variant}
+        placeholder={placeholder}
         margin="normal"
         fullWidth
+        autoFocus
+        autoComplete={name}
         InputLabelProps={{
           shrink: true,
         }}
         InputProps={{
           classes: { input: classes.inputs },
         }}
-        name={name}
-        autoComplete={name}
-        autoFocus
         helperText={helperText}
         error={error}
         value={value}
-        placeholder={placeholder}
-        variant={variant}
         onChange={handleChange}
       />
     </Box>
