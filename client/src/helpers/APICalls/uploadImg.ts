@@ -16,6 +16,7 @@ export const uploadImage = async (url: string, image: File): Promise<string> => 
 
   return res.secure_url;
 
+  //TO Do After merging Profile routing to develop, we need to make a req to profile to get the image url
   // return await fetch('/profile', imageUrl)
   //   .then((res) => res.json())
   //   .catch(() => ({
