@@ -15,8 +15,9 @@ export default function UploadFileButton({ ...inputProps }: IUploadFile): JSX.El
     const file: File = (target.files as FileList)[0];
     if (file) {
       uploadImage(URL, file)
-        .then((data: string) => {
+        .then((data) => {
           updateSnackBarMessage('Image has been successfully uploaded');
+          console.log(data);
           //Note data has the image url we can save it in context
         })
         .catch((err) => updateSnackBarMessage(err.message));
