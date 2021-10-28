@@ -13,10 +13,13 @@ const logger = require("morgan");
 
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
+const notificationRouter = require("./routes/notification");
 const profileRouter = require("./routes/profile");
 const messageRouter = require("./routes/message");
 const conversationRouter = require("./routes/conversation");
 const requestRouter = require("./routes/request");
+
+const { cloudinaryConfig } = require("./config/cloudinary");
 
 const { json, urlencoded } = express;
 
@@ -59,6 +62,7 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
+app.use("", cloudinaryConfig);
 
 app.use((req, res, next) => {
   req.io = io;
@@ -67,6 +71,7 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/notification", notificationRouter);
 app.use("/profile", profileRouter);
 app.use("/message", messageRouter);
 app.use("/conversation", conversationRouter);
