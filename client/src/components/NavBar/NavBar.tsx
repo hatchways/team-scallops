@@ -30,7 +30,7 @@ function LoggedInBar({ classes, loggedInUser }: any): JSX.Element {
         </Typography>
       </Button>
       <Button component={NavLink} to="/messages" className={`${classes.menuBarButton} ${classes.mobileView}`}>
-        <Badge color="primary" variant="dot">
+        <Badge color="secondary" variant="dot">
           <Typography variant="h6" color="textPrimary" className={classes.menuBarText}>
             Messages
           </Typography>

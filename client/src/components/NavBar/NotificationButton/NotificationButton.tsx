@@ -60,7 +60,7 @@ export default function NotificationButton(): JSX.Element {
   return (
     <Box>
       <Button aria-describedby={id} onClick={handleClick} className={classes.menuBarButton}>
-        <Badge color="primary" variant="dot" invisible={isReadNotification}>
+        <Badge color="secondary" variant="dot" invisible={isReadNotification}>
           <Typography variant="h6" color="textPrimary" className={` ${classes.mobileView}`}>
             Notifications
           </Typography>
@@ -76,7 +76,7 @@ export default function NotificationButton(): JSX.Element {
           vertical: 'bottom',
           horizontal: 'center',
         }}
-        style={{ position: 'absolute', top: '3rem' }}
+        style={{ position: 'absolute', top: '4rem' }}
       >
         {testNotifi.map((notification, index) => (
           <NotificationRequest notification={notification} key={index} />
