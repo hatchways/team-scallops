@@ -10,6 +10,7 @@ export interface Conversation {
 }
 
 export interface Message {
+  _id: string;
   sender: User;
   text: string;
   conversation?: string | Conversation;

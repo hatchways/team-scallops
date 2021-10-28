@@ -10,6 +10,7 @@ import { useConversation } from '../../../context/useConversationContext';
 import AvatarDisplay from '../../AvatarDisplay/AvatarDisplay';
 import moment from 'moment';
 import { Message } from '../../../interface/Conversation';
+import clsx from 'clsx';
 
 const MessageChat = (): JSX.Element => {
   const classes = useStyles();
@@ -29,21 +30,24 @@ const MessageChat = (): JSX.Element => {
     setReceiver(otherUser);
   }, [otherUser, activeConversation, loggedInUser]);
 
-  const renderMessage = (message: Message, messageIndex: number) => {
+  const renderMessage = (message: Message, messageId: string) => {
     const isSenderMessage = message.sender._id === sender?.id;
     return (
       <Box
         display="flex"
         flexDirection="column"
         alignItems={isSenderMessage ? 'flex-end' : 'flex-start'}
-        key={messageIndex}
+        key={messageId}
         className={isSenderMessage ? classes.senderRightMessage : classes.receiverLeftMessage}
       >
         <Box mb={'0.5rem'} display="flex">
           {!isSenderMessage && <AvatarDisplay loggedIn user={receiver} />}
           <Box
             component={Paper}
-            className={`${classes.userMessageBox} ${isSenderMessage ? '' : classes.grayUserMessages}`}
+            className={clsx({
+              [classes.userMessageBox]: true,
+              [classes.grayUserMessages]: isSenderMessage,
+            })}
           >
             <Typography className={classes.messageText}>{message.text}</Typography>
           </Box>
@@ -67,7 +71,7 @@ const MessageChat = (): JSX.Element => {
           </Box>
           <Box className={classes.chatBoxWrapper}>
             <Box display="flex" justifyContent="flex-start" flexDirection="column" className={classes.chatContentBox}>
-              {activeMessages?.map((message, messageIndex) => renderMessage(message, messageIndex))}
+              {activeMessages?.map((message) => renderMessage(message, message._id))}
             </Box>
           </Box>
           <MessageInput activeConversation={activeConversation} />

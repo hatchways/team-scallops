@@ -1,4 +1,4 @@
-import { MuiThemeProvider } from '@material-ui/core';
+import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 import { theme } from './themes/theme';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import Login from './pages/Login/Login';
@@ -21,6 +21,7 @@ import './App.css';
 function App(): JSX.Element {
   return (
     <MuiThemeProvider theme={theme}>
+      <CssBaseline />
       <BrowserRouter>
         <SnackBarProvider>
           <AuthProvider>

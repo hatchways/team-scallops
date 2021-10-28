@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Grid, Typography, Paper, CssBaseline } from '@material-ui/core';
+import { Grid, Typography, Paper } from '@material-ui/core';
 import ChatSideBanner from '../../components/Messages/ChatSideBanner/ChatSideBanner';
 import MessageChat from '../../components/Messages/messageChat/MessageChat';
 import { useActiveConversation } from '../../context/useActiveConversationContext';
@@ -16,7 +16,6 @@ const Conversations = (): JSX.Element => {
 
   return (
     <>
-      <CssBaseline />
       <Grid container className={classes.conversationBody}>
         <Grid item xs={3} elevation={2} component={Paper} className={classes.sideBar}>
           <ChatSideBanner />

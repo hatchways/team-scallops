@@ -1,5 +1,4 @@
 import Grid from '@material-ui/core/Grid';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import useStyles from './useStyles';
 import { useAuth } from '../../context/useAuthContext';
@@ -31,7 +30,6 @@ export default function Dashboard(): JSX.Element {
 
   return (
     <Grid container component="main" className={`${classes.root} ${classes.dashboard}`}>
-      <CssBaseline />
       <Link to="/profile"> Profile</Link>
       <Link to="/booking"> Booking</Link>
       <Grid item className={classes.drawerWrapper}>

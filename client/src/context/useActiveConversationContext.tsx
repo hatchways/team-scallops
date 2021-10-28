@@ -1,5 +1,6 @@
 import { useState, useContext, createContext, FunctionComponent, useEffect, useCallback } from 'react';
 import { Conversation, Message, MessagesApiData } from '../interface/Conversation';
+import { useSnackBar } from './useSnackbarContext';
 import getMessages from '../helpers/APICalls/getMessages';
 
 interface ActiveConversationContext {
@@ -19,16 +20,20 @@ export const ActiveConversationContext = createContext<ActiveConversationContext
 export const ActiveConversationProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [activeConversation, setActiveConversation] = useState<undefined | null | Conversation>();
   const [activeMessages, setActiveMessages] = useState<undefined | null | Message[]>();
+  const { updateSnackBarMessage } = useSnackBar();
   const updateActiveConversation = useCallback((data: Conversation) => {
     setActiveConversation(data);
   }, []);
 
   const updateActiveMessages = useCallback(() => {
     getMessages(activeConversation?._id).then((data: MessagesApiData) => {
-      if (data.error) return;
+      if (data.error) {
+        updateSnackBarMessage(data.error.message);
+        return;
+      }
       setActiveMessages(data.success?.messages);
     });
-  }, [activeConversation]);
+  }, [activeConversation, updateSnackBarMessage]);
 
   useEffect(() => {
     updateActiveMessages();

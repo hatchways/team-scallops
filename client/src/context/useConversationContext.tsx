@@ -2,6 +2,7 @@ import { useState, useContext, createContext, FunctionComponent, useEffect, useC
 import { Conversation, ConversationsApiData } from '../interface/Conversation';
 import getConversations from '../helpers/APICalls/getConversations';
 import { useActiveConversation } from './useActiveConversationContext';
+import { useSnackBar } from './useSnackbarContext';
 
 interface IConversationContext {
   conversations: Conversation[] | null | undefined;
@@ -16,13 +17,17 @@ export const ConversationContext = createContext<IConversationContext>({
 export const ConversationProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [conversations, setConversations] = useState<Conversation[] | null | undefined>();
   const { activeMessages } = useActiveConversation();
+  const { updateSnackBarMessage } = useSnackBar();
 
   const updateConversationContext = useCallback(() => {
     getConversations().then((data: ConversationsApiData) => {
-      if (data.error) return;
+      if (data.error) {
+        updateSnackBarMessage(data.error.message);
+        return;
+      }
       if (data.success) setConversations(data.success.conversations);
     });
-  }, []);
+  }, [updateSnackBarMessage]);
 
   useEffect(() => {
     updateConversationContext();

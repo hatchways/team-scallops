@@ -5,6 +5,8 @@ import { Conversation } from '../../../interface/Conversation';
 import { useActiveConversation } from '../../../context/useActiveConversationContext';
 import { useAuth } from '../../../context/useAuthContext';
 import moment from 'moment';
+import clsx from 'clsx';
+
 interface Props {
   conversation: Conversation;
 }
@@ -26,9 +28,10 @@ const SideBannerItem = ({ conversation }: Props): JSX.Element => {
       display="flex"
       alignItems="center"
       justifyContent="center"
-      className={`${classes.conversationBox} ${
-        activeConversation?._id === conversation._id && classes.activeConversationBox
-      }`}
+      className={clsx({
+        [classes.conversationBox]: true,
+        [classes.activeConversationBox]: activeConversation?._id === conversation._id,
+      })}
     >
       <Box className={classes.userAvatarBox}>
         <AvatarDisplay loggedIn user={otherUser} />
