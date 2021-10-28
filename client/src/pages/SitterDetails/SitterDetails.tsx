@@ -83,9 +83,10 @@ function SitterDetails(): JSX.Element {
     createRequest(selectedUserSitterId, startDate, endDate).then((data) => {
       if (data.error) {
         console.error({ error: data.error.message });
+        updateSnackBarMessage('Please log in and try again!');
         setSubmitting(false);
       } else if (data.request) {
-        updateSnackBarMessage('The request was sent.');
+        updateSnackBarMessage('Your request was sent, please wait for the sitter to accept it.');
       }
       setSubmitting(false);
     });
