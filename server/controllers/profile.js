@@ -104,12 +104,12 @@ exports.get = asyncHandler(async (req, res) => {
 
 exports.getSittersProfile = asyncHandler(async (req, res) => {
   const sitterId = req.params.id;
-  console.log({ sitterId });
+
   let profile;
   if (sitterId) {
     profile = await Profile.findOne({ _id: sitterId });
   }
-  console.log({ profile });
+
   if (!sitterId) {
     res.status(404);
     throw new Error("No sitter found");
