@@ -22,32 +22,28 @@ function App(): JSX.Element {
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
-        <SnackBarProvider>
-          <AuthProvider>
-            <ActiveConversationProvider>
-              <ConversationProvider>
-                <SocketProvider>
-                  <NavBar />
-                  <Switch>
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/signup" component={Signup} />
-                    <Route path="/profile" component={Profile} />
-                    <Route exact path="/my-jobs" component={MyJobs} />
-                    <Route exact path="/my-sitters" component={MySitters} />
-                    <Route exact path="/messages" component={Messages} />
-                    <Route exact path="/dashboard">
-                      <Dashboard />
-                    </Route>
-                    <Route path="/booking" component={Booking} />
-                    <Route path="*">
-                      <Redirect to="/login" />
-                    </Route>
-                  </Switch>
-                </SocketProvider>
-              </ConversationProvider>
-            </ActiveConversationProvider>
-          </AuthProvider>
-        </SnackBarProvider>
+        <SocketProvider>
+          <SnackBarProvider>
+            <AuthProvider>
+              <NavBar />
+              <Switch>
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/signup" component={Signup} />
+                <Route path="/profile" component={Profile} />
+                <Route exact path="/my-jobs" component={MyJobs} />
+                <Route exact path="/my-sitters" component={MySitters} />
+                <Route exact path="/messages" component={Messages} />
+                <Route exact path="/dashboard">
+                  <Dashboard />
+                </Route>
+                <Route path="/booking" component={Booking} />
+                <Route path="*">
+                  <Redirect to="/login" />
+                </Route>
+              </Switch>
+            </AuthProvider>
+          </SnackBarProvider>
+        </SocketProvider>
       </BrowserRouter>
     </MuiThemeProvider>
   );
