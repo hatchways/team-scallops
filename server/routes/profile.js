@@ -13,7 +13,7 @@ const { multerUploads } = require("../middleware/multer");
 router.route("/").post(protect, multerUploads, post);
 router.route("/").patch(protect, patch);
 router.route("/").get(protect, get);
-router.route("/:id").get(protect, getSittersProfile);
+router.route("/:id").get(getSittersProfile);
 router.route("/all").get(protect, all);
 
 module.exports = router;
