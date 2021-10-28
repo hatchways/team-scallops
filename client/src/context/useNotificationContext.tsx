@@ -1,7 +1,7 @@
 import { useState, useContext, createContext, FunctionComponent, useEffect, useCallback } from 'react';
 import { NotificationApiData, NotificationApiDataSuccess } from '../interface/NotificationApiData';
 import { Notification } from '../interface/Notification';
-import getUnreadNotifications from '../helpers/APICalls/getUnreadNotifications';
+import { getUnreadNotifications } from '../helpers/APICalls/notifications';
 
 interface INotificationContext {
   updateNotificationContext: (data: NotificationApiDataSuccess) => void;

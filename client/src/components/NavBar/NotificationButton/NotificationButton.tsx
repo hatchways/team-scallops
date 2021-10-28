@@ -6,27 +6,27 @@ import useStyles from './useSyles';
 import { Badge, Box } from '@material-ui/core';
 import NotificationRequest from '../NotificationRequest/NotificationRequest';
 import { useNotification } from '../../../context/useNotificationContext';
-
+import { setUnreadNotificationToRead } from '../../../helpers/APICalls/notifications';
 const testNotifi = [
   {
     id: '123',
     type: 'message',
     isRead: false,
     sender: '12265eu56eutr',
-    title: 'hello',
-    message: 'waht',
+    title: '',
+    message: '',
     created_at: '2/3/2020',
     image: '1.jpeg',
     name: 'Mary',
-    service: 'Dag Sitter',
+    service: 'Dag owner',
   },
   {
-    id: '123',
-    type: 'message',
+    id: '1234cc',
+    type: 'Service',
     isRead: false,
     sender: '98u098y7yt07t7',
-    title: 'hello',
-    message: 'waht',
+    title: '',
+    message: '',
     created_at: '2/3/2020',
     image: '2.jpeg',
     name: 'Joe',
@@ -45,6 +45,10 @@ export default function NotificationButton(): JSX.Element {
     setAnchorEl(event.currentTarget);
     //TODO make a req to server to set notification unread to read
     setIsReadNotification(true);
+    changeUnreadToRead();
+  };
+  const changeUnreadToRead = () => {
+    unReadNotifications?.map((notification) => setUnreadNotificationToRead(notification.id));
   };
 
   const handleClose = () => {
