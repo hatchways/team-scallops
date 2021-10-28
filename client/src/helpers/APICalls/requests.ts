@@ -14,8 +14,8 @@ export async function getRequestList(): Promise<RequestsList> {
 
 export async function createRequest(
   sitterId: string,
-  startDate: string,
-  endDate: string,
+  startDate: Date,
+  endDate: Date,
   serviceType?: string,
   totalPrice?: number,
 ): Promise<RequestApiData> {

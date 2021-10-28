@@ -27,13 +27,20 @@ import useStyles from './useStyles';
 import { useParams } from 'react-router-dom';
 import { Profile } from '../../interface/Profile';
 import { getSitterProfile } from '../../helpers/APICalls/profile';
-import { format, formatISO } from 'date-fns';
+import { format, formatISO, parseISO } from 'date-fns';
 import { createRequest } from '../../helpers/APICalls/requests';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { useSnackBar } from '../../context/useSnackbarContext';
 
 interface paramsProps {
   id: string;
+}
+
+interface datesRequest {
+  dropInDate: Date;
+  dropInTime: Date;
+  dropOffDate: Date;
+  dropOffTime: Date;
 }
 
 const today = new Date();
@@ -51,30 +58,25 @@ function SitterDetails(): JSX.Element {
     const timeStr = formatISO(time, { representation: 'time' });
 
     const dateAndTime = `${dateStr}T${timeStr}`;
+    const newDate = parseISO(dateAndTime);
 
-    return dateAndTime;
+    return newDate;
   }
 
-  async function getSitterDetails() {
-    const sitterProfile = await getSitterProfile(selectedSitterId);
-    setSitterDetails(sitterProfile);
-  }
   useEffect(() => {
+    async function getSitterDetails() {
+      const sitterProfile = await getSitterProfile(selectedSitterId);
+      setSitterDetails(sitterProfile);
+    }
     getSitterDetails();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [selectedSitterId]);
 
   const profile = sitterDetails?.profile;
 
   const { updateSnackBarMessage } = useSnackBar();
   const handleSubmit = (
-    {
-      dropInDate,
-      dropInTime,
-      dropOffDate,
-      dropOffTime,
-    }: { dropInDate: Date; dropInTime: Date; dropOffDate: Date; dropOffTime: Date },
-    { setSubmitting }: FormikHelpers<{ dropInDate: Date; dropInTime: Date; dropOffDate: Date; dropOffTime: Date }>,
+    { dropInDate, dropInTime, dropOffDate, dropOffTime }: datesRequest,
+    { setSubmitting }: FormikHelpers<datesRequest>,
   ) => {
     const startDate = convertToDateTime(dropInDate, dropInTime);
     const endDate = convertToDateTime(dropOffDate, dropOffTime);
@@ -84,9 +86,11 @@ function SitterDetails(): JSX.Element {
       if (data.error) {
         console.error({ error: data.error.message });
         updateSnackBarMessage('Please log in and try again!');
-        setSubmitting(false);
       } else if (data.request) {
         updateSnackBarMessage('Your request was sent, please wait for the sitter to accept it.');
+      } else {
+        console.error({ data });
+        updateSnackBarMessage('An unexpected error occurred. Please try again');
       }
       setSubmitting(false);
     });

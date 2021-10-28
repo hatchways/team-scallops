@@ -107,7 +107,7 @@ exports.getSittersProfile = asyncHandler(async (req, res) => {
 
   let profile;
   if (sitterId) {
-    profile = await Profile.findOne({ _id: sitterId });
+    profile = await Profile.findById(sitterId);
   }
 
   if (!sitterId) {
