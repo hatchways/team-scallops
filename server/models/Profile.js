@@ -4,7 +4,7 @@ const profileSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "User",
+    ref: "user",
   },
   firstName: {
     type: String,
@@ -21,13 +21,17 @@ const profileSchema = new mongoose.Schema({
     type: Date,
   },
   phone: {
-    type: String,
+    type: Number,
   },
   address: {
     type: String,
   },
   description: {
     type: String,
+  },
+  image: {
+    url: String,
+    publicId: String,
   },
   availability: {
     monday: {
@@ -68,6 +72,7 @@ const profileSchema = new mongoose.Schema({
   },
   available: {
     type: Boolean,
+    default: false,
   },
 });
 

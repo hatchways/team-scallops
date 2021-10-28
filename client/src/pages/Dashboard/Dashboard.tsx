@@ -23,6 +23,7 @@ export default function Dashboard(): JSX.Element {
   }, [initSocket]);
 
   if (loggedInUser === undefined) return <CircularProgress />;
+
   if (!loggedInUser) {
     history.push('/login');
     // loading for a split seconds until history.push works
@@ -33,6 +34,7 @@ export default function Dashboard(): JSX.Element {
     <Grid container component="main" className={`${classes.root} ${classes.dashboard}`}>
       <CssBaseline />
       <Link to="/profile"> Profile</Link>
+      <Link to="/booking"> Booking</Link>
       <Grid item className={classes.drawerWrapper}>
         <ChatSideBanner loggedInUser={loggedInUser} />
       </Grid>
