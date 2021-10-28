@@ -35,12 +35,16 @@ io.use(socketAuthVerify);
 
 io.on("connection", (socket) => {
   socket.on("disconnect", () => {
-    onlineUserLog.removeUser(socket.user);
+    const deletedUser = onlineUserLog.removeUser(socket.user);
+
+    if (!deletedUser) return;
+    socket.to("online").emit("userDisconnected", deletedUser);
   });
 
   socket.on("online", () => {
     if (!onlineUserLog.checkInLog(socket.user)) {
       const newUser = onlineUserLog.addUser(socket.user, socket.id);
+      if (!newUser) return;
       socket.join("online");
       socket.to("online").emit("newUserOnline", newUser);
     }

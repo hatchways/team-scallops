@@ -26,6 +26,10 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
       // console.log('Socket connected!!');
     });
 
+    newSocket.on('userDisconnected', (deletedUser) => {
+      // console.log('Socket disconnected!!');
+    });
+
     newSocket.on('connect_error', (error) => {
       // console.log(error.message);
     });

@@ -42,7 +42,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         setLoggedInUser(null);
       })
       .catch((error) => console.error(error));
-  }, [history, socket, disconnectSocket]);
+  }, [history, disconnectSocket]);
 
   // use our cookies to check if we can login straight away
   useEffect(() => {
