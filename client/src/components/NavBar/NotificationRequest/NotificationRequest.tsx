@@ -14,7 +14,7 @@ const NotificationRequest: React.FC<IProps> = ({
   const classes = useStyles();
 
   return (
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" m={1}>
       <Avatar variant="square" src={`/${image}`} className={classes.large} />
       <Box>
         <Link to={type === 'Service' ? '/my-sitters' : '/messages'}>

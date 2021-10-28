@@ -43,7 +43,6 @@ export default function NotificationButton(): JSX.Element {
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
-    //TODO make a req to server to set notification unread to read
     setIsReadNotification(true);
     changeUnreadToRead();
   };
@@ -79,14 +78,9 @@ export default function NotificationButton(): JSX.Element {
         }}
         style={{ position: 'absolute', top: '3rem' }}
       >
-        <Typography
-          color="textPrimary"
-          className={`${classes.menuBarButton} ${classes.mobileView} ${classes.typography}`}
-        >
-          {testNotifi.map((notification, index) => (
-            <NotificationRequest notification={notification} key={index} />
-          ))}
-        </Typography>
+        {testNotifi.map((notification, index) => (
+          <NotificationRequest notification={notification} key={index} />
+        ))}
       </Popover>
     </Box>
   );
