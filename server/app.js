@@ -8,13 +8,12 @@ const connectDB = require("./db");
 const { join } = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
 const profileRouter = require("./routes/profile");
 const requestRouter = require("./routes/request");
-const { env } = require("process");
+const paymentRouter = require("./routes/payment");
 
 const { json, urlencoded } = express;
 
@@ -49,6 +48,7 @@ app.use("/auth", authRouter);
 app.use("/users", userRouter);
 app.use("/profile", profileRouter);
 app.use("/request", requestRouter);
+app.use("/payment", paymentRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));

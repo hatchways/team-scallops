@@ -13,8 +13,8 @@ router.route("/register").post(validateRegister, registerUser);
 
 router.route("/login").post(validateLogin, loginUser);
 
-router.route("user").get(protect, loadUser);
+router.route("/user").get(protect, loadUser);
 
-router.route("logout").post(logoutUser);
+router.route("/logout").post(logoutUser);
 
 module.exports = router;
