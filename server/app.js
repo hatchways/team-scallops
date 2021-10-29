@@ -36,22 +36,59 @@ const io = socketio(server, {
 
 io.use(socketAuthVerify);
 
+const printCurrentOnline = () => {
+  console.log(onlineUserLog.getAll());
+};
+
 io.on("connection", (socket) => {
+  if (!onlineUserLog.checkInLog(socket.user)) {
+    const newUser = onlineUserLog.addUser(socket.user, socket.id);
+    if (!newUser) return;
+    printCurrentOnline();
+    const allUsersOnline = onlineUserLog.getAll();
+    socket.broadcast.emit("allUsersOnlineRes", allUsersOnline);
+  } else {
+    socket.close();
+    return;
+  }
+
   socket.on("disconnect", () => {
     const deletedUser = onlineUserLog.removeUser(socket.user);
-
     if (!deletedUser) return;
-    socket.to("online").emit("userDisconnected", deletedUser);
+    printCurrentOnline();
+    const allUsersOnline = onlineUserLog.getAll();
+    io.emit("allUsersOnlineRes", allUsersOnline);
   });
 
-  socket.on("online", () => {
-    if (!onlineUserLog.checkInLog(socket.user)) {
-      const newUser = onlineUserLog.addUser(socket.user, socket.id);
-      if (!newUser) return;
-      socket.join("online");
-      socket.to("online").emit("newUserOnline", newUser);
-    }
-    return;
+  socket.on("allUsersOnline", () => {
+    console.log("emit received and sent!!");
+    const allUsersOnline = onlineUserLog.getAll();
+    console.log(allUsersOnline);
+    io.to(socket.id).emit("allUsersOnlineRes", allUsersOnline);
+  });
+
+  socket.on("sendMessage", (conversation, receiverId, text) => {
+    console.log("New message received: " + text);
+    console.log(conversation);
+    if (!conversation || !receiverId || !text) return;
+    if (
+      !(
+        socket.user === conversation.firstUser._id ||
+        socket.user === conversation.secondUser._id
+      )
+    )
+      return;
+    if (
+      !(
+        receiverId === conversation.firstUser._id ||
+        receiverId === conversation.secondUser._id
+      )
+    )
+      return;
+    const receiverSocket = onlineUserLog.getUserSocket(receiverId);
+    if (!receiverSocket) return;
+    console.log("New message sent: " + text);
+    io.to(receiverSocket).emit("newMessage", conversation, socket.user, text);
   });
 });
 

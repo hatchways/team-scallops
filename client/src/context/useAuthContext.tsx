@@ -22,15 +22,14 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   // default undefined before loading, once loaded provide user or null if logged out
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>();
   const history = useHistory();
-  const { socket, disconnectSocket } = useSocket();
+  const { disconnectSocket } = useSocket();
 
   const updateLoginContext = useCallback(
     (data: AuthApiDataSuccess) => {
       setLoggedInUser(data.user);
-      socket?.emit('online');
       history.push('/dashboard');
     },
-    [history, socket],
+    [history],
   );
 
   const logout = useCallback(async () => {

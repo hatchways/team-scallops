@@ -21,30 +21,34 @@ import './App.css';
 function App(): JSX.Element {
   return (
     <MuiThemeProvider theme={theme}>
-      <BrowserRouter>
-        <SocketProvider>
-          <SnackBarProvider>
-            <AuthProvider>
-              <NavBar />
-              <Switch>
-                <Route exact path="/login" component={Login} />
-                <Route exact path="/signup" component={Signup} />
-                <Route path="/profile" component={Profile} />
-                <Route exact path="/my-jobs" component={MyJobs} />
-                <Route exact path="/my-sitters" component={MySitters} />
-                <Route exact path="/messages" component={Messages} />
-                <Route exact path="/dashboard">
-                  <Dashboard />
-                </Route>
-                <Route path="/booking" component={Booking} />
-                <Route path="*">
-                  <Redirect to="/login" />
-                </Route>
-              </Switch>
-            </AuthProvider>
-          </SnackBarProvider>
-        </SocketProvider>
-      </BrowserRouter>
+      <SocketProvider>
+        <ActiveConversationProvider>
+          <ConversationProvider>
+            <BrowserRouter>
+              <SnackBarProvider>
+                <AuthProvider>
+                  <NavBar />
+                  <Switch>
+                    <Route exact path="/login" component={Login} />
+                    <Route exact path="/signup" component={Signup} />
+                    <Route path="/profile" component={Profile} />
+                    <Route exact path="/my-jobs" component={MyJobs} />
+                    <Route exact path="/my-sitters" component={MySitters} />
+                    <Route exact path="/messages" component={Messages} />
+                    <Route exact path="/dashboard">
+                      <Dashboard />
+                    </Route>
+                    <Route path="/booking" component={Booking} />
+                    <Route path="*">
+                      <Redirect to="/login" />
+                    </Route>
+                  </Switch>
+                </AuthProvider>
+              </SnackBarProvider>
+            </BrowserRouter>
+          </ConversationProvider>
+        </ActiveConversationProvider>
+      </SocketProvider>
     </MuiThemeProvider>
   );
 }

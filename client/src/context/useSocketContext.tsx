@@ -26,18 +26,18 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
       // console.log('Socket connected!!');
     });
 
-    newSocket.on('userDisconnected', (deletedUser) => {
-      // console.log('Socket disconnected!!');
-    });
+    // newSocket.on('userDisconnected', (deletedUser) => {
+    //   // console.log('Socket disconnected!!');
+    // });
 
     newSocket.on('connect_error', (error) => {
       // console.log(error.message);
     });
 
-    newSocket.on('newUserOnline', (newUser) => {
-      // console.log('New user is online now!');
-      // console.log(newUser);
-    });
+    // newSocket.on('newUserOnline', (newUser) => {
+    //   // console.log('New user is online now!');
+    //   // console.log(newUser);
+    // });
 
     setSocket(newSocket);
   }, [socket]);

@@ -7,6 +7,12 @@ class onlineUserLog {
     return this.log;
   }
 
+  getUserSocket(userId) {
+    if (userId in this.log) return this.log[userId];
+
+    return null;
+  }
+
   checkInLog(userId) {
     if (userId in this.log) return true;
 

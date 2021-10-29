@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import useStyles from './useStyles';
 import MessageInput from '../MessageInput/MessageInput';
 import { Box, IconButton, Paper, Typography } from '@material-ui/core';
@@ -7,27 +7,73 @@ import { User } from '../../../interface/User';
 import { useAuth } from '../../../context/useAuthContext';
 import { useActiveConversation } from '../../../context/useActiveConversationContext';
 import { useConversation } from '../../../context/useConversationContext';
+import { useSocket } from '../../../context/useSocketContext';
+import { useSnackBar } from '../../../context/useSnackbarContext';
 import AvatarDisplay from '../../AvatarDisplay/AvatarDisplay';
+import { Conversation, Message, MessagesApiData, PostMessageApiData } from '../../../interface/Conversation';
+import sendMessage from '../../../helpers/APICalls/sendMessage';
+import { FormikHelpers } from 'formik';
 import moment from 'moment';
-import { Message } from '../../../interface/Conversation';
 
 const MessageChat = (): JSX.Element => {
   const classes = useStyles();
   const { activeConversation, activeMessages } = useActiveConversation();
-  const { updateConversationContext } = useConversation();
+  const { socket } = useSocket();
   const { loggedInUser } = useAuth();
-  const otherUser =
-    loggedInUser?.id === activeConversation?.firstUser._id
-      ? activeConversation?.secondUser
-      : activeConversation?.firstUser;
+  const { updateSnackBarMessage } = useSnackBar();
   const [sender, setSender] = useState<User | null | undefined>();
   const [receiver, setReceiver] = useState<User | null | undefined>();
+  const [messages, setMessages] = useState<Message[] | null | undefined>();
+
+  const handleMessageSend = (values: { message: string }, props: FormikHelpers<{ message: string }>) => {
+    sendMessage(activeConversation?._id, values.message).then((data: PostMessageApiData) => {
+      if (data.error) {
+        console.log(data);
+        updateSnackBarMessage(data.error.message);
+      } else {
+        console.log(data);
+        socket?.emit('sendMessage', activeConversation, receiver?._id, values.message);
+        setMessages((prev) => {
+          if (!prev) return prev;
+          if (!data.success) return prev;
+          return [...prev, data.success?.message];
+        });
+        props.resetForm();
+      }
+    });
+  };
 
   useEffect(() => {
+    console.log('render happended');
     if (!activeConversation) return;
     setSender(loggedInUser);
-    setReceiver(otherUser);
-  }, [otherUser, activeConversation, loggedInUser]);
+    setReceiver(
+      loggedInUser?.id === activeConversation?.firstUser._id
+        ? activeConversation?.secondUser
+        : activeConversation?.firstUser,
+    );
+    setMessages(activeMessages);
+  }, [activeConversation, loggedInUser, activeMessages]);
+
+  useEffect(() => {
+    const newMessageListener = (conversation: Conversation, sender: string, text: string) => {
+      if (!sender || !text || !receiver || sender !== receiver?._id) return;
+      if (!(conversation._id === activeConversation?._id)) return;
+      const newMessage: Message = {
+        conversation: conversation,
+        sender: receiver,
+        text: text,
+      };
+      setMessages((prev) => {
+        if (!prev) return prev;
+        return [...prev, newMessage];
+      });
+    };
+    socket?.on('newMessage', newMessageListener);
+    return () => {
+      socket?.off('newMessage', newMessageListener);
+    };
+  }, [activeConversation, socket, receiver]);
 
   const renderMessage = (message: Message, messageIndex: number) => {
     const isSenderMessage = message.sender._id === sender?.id;
@@ -67,10 +113,11 @@ const MessageChat = (): JSX.Element => {
           </Box>
           <Box className={classes.chatBoxWrapper}>
             <Box display="flex" justifyContent="flex-start" flexDirection="column" className={classes.chatContentBox}>
-              {activeMessages?.map((message, messageIndex) => renderMessage(message, messageIndex))}
+              {console.log(messages)}
+              {messages?.map((message, messageIndex) => renderMessage(message, messageIndex))}
             </Box>
           </Box>
-          <MessageInput activeConversation={activeConversation} />
+          <MessageInput handleMessageSend={handleMessageSend} />
         </>
       )}
     </>
