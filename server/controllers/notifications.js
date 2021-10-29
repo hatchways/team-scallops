@@ -10,8 +10,7 @@ exports.getNotifications = asyncHandler(async (req, res) => {
   const userNotification = await Notification.findOne({ user: id });
   if (userNotification && userNotification.notifications.length > 0) {
     return res.status(200).json({
-      result: userNotification.notifications.length,
-      data: userNotification.notifications,
+      success: userNotification.notifications,
     });
   } else {
     res.status(404);
@@ -34,8 +33,7 @@ exports.getUnReadNotifications = asyncHandler(async (req, res) => {
     );
 
     return res.status(200).json({
-      result: unReadNotifications.length,
-      data: unReadNotifications,
+      success: unReadNotifications,
     });
   } else {
     res.status(404);
@@ -69,7 +67,7 @@ exports.createNotification = asyncHandler(async (req, res) => {
       ],
     });
     await newNotification.save();
-    return res.status(201).json({ data: newNotification });
+    return res.status(201).json({ success: newNotification });
   }
   const newNotification = {
     type,
@@ -79,7 +77,7 @@ exports.createNotification = asyncHandler(async (req, res) => {
   };
   await userNotification.notifications.unshift(newNotification);
   await userNotification.save();
-  return res.status(201).json(userNotification);
+  return res.status(201).json({ success: userNotification });
 });
 
 // @desc    Update notification to read
@@ -103,7 +101,7 @@ exports.updateNotificationToRead = asyncHandler(async (req, res) => {
     if (foundNotification) {
       foundNotification.isRead = true;
       await userNotification.save();
-      res.status(200).json({ data: foundNotification });
+      res.status(200).json({ success: foundNotification });
     } else {
       res.status(404);
       throw new Error("No notification found");

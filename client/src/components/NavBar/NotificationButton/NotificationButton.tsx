@@ -22,7 +22,7 @@ const testNotifi = [
   },
   {
     id: '1234cc',
-    type: 'Service',
+    type: 'serviceRequest',
     isRead: false,
     sender: '98u098y7yt07t7',
     title: '',

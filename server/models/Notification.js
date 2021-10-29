@@ -28,9 +28,10 @@ const notificationSchema = new Schema({
         type: Boolean,
         default: false,
       },
-    },
-    {
-      timestamps: true,
+      created_at: {
+        type: Date,
+        default: Date.now,
+      },
     },
   ],
 });
