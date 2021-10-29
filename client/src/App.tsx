@@ -22,12 +22,12 @@ function App(): JSX.Element {
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter>
-        <SnackBarProvider>
-          <AuthProvider>
-            <ActiveConversationProvider>
-              <ConversationProvider>
-                <SocketProvider>
+      <SocketProvider>
+        <ActiveConversationProvider>
+          <ConversationProvider>
+            <BrowserRouter>
+              <SnackBarProvider>
+                <AuthProvider>
                   <NavBar />
                   <Switch>
                     <Route exact path="/login" component={Login} />
@@ -44,12 +44,12 @@ function App(): JSX.Element {
                       <Redirect to="/login" />
                     </Route>
                   </Switch>
-                </SocketProvider>
-              </ConversationProvider>
-            </ActiveConversationProvider>
-          </AuthProvider>
-        </SnackBarProvider>
-      </BrowserRouter>
+                </AuthProvider>
+              </SnackBarProvider>
+            </BrowserRouter>
+          </ConversationProvider>
+        </ActiveConversationProvider>
+      </SocketProvider>
     </MuiThemeProvider>
   );
 }

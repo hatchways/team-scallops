@@ -3,6 +3,8 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
+const socketAuthVerify = require("./middleware/socketAuthVerify");
+const onlineUserLog = require("./utils/onlineUserLog");
 const { notFound, errorHandler } = require("./middleware/error");
 const connectDB = require("./db");
 const { join } = require("path");
@@ -11,11 +13,13 @@ const logger = require("morgan");
 
 const authRouter = require("./routes/auth");
 const userRouter = require("./routes/user");
+const notificationRouter = require("./routes/notification");
 const profileRouter = require("./routes/profile");
 const messageRouter = require("./routes/message");
 const conversationRouter = require("./routes/conversation");
 const requestRouter = require("./routes/request");
 
+const { cloudinaryConfig } = require("./config/cloudinary");
 
 const { json, urlencoded } = express;
 
@@ -26,11 +30,66 @@ const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
     origin: "*",
+    credentials: true,
   },
 });
 
+io.use(socketAuthVerify);
+
+const printCurrentOnline = () => {
+  console.log(onlineUserLog.getAll());
+};
+
 io.on("connection", (socket) => {
-  console.log("connected");
+  if (!onlineUserLog.checkInLog(socket.user)) {
+    const newUser = onlineUserLog.addUser(socket.user, socket.id);
+    if (!newUser) return;
+    printCurrentOnline();
+    const allUsersOnline = onlineUserLog.getAll();
+    socket.broadcast.emit("allUsersOnlineRes", allUsersOnline);
+  } else {
+    socket.close();
+    return;
+  }
+
+  socket.on("disconnect", () => {
+    const deletedUser = onlineUserLog.removeUser(socket.user);
+    if (!deletedUser) return;
+    printCurrentOnline();
+    const allUsersOnline = onlineUserLog.getAll();
+    io.emit("allUsersOnlineRes", allUsersOnline);
+  });
+
+  socket.on("allUsersOnline", () => {
+    console.log("emit received and sent!!");
+    const allUsersOnline = onlineUserLog.getAll();
+    console.log(allUsersOnline);
+    io.to(socket.id).emit("allUsersOnlineRes", allUsersOnline);
+  });
+
+  socket.on("sendMessage", (conversation, receiverId, text) => {
+    console.log("New message received: " + text);
+    console.log(conversation);
+    if (!conversation || !receiverId || !text) return;
+    if (
+      !(
+        socket.user === conversation.firstUser._id ||
+        socket.user === conversation.secondUser._id
+      )
+    )
+      return;
+    if (
+      !(
+        receiverId === conversation.firstUser._id ||
+        receiverId === conversation.secondUser._id
+      )
+    )
+      return;
+    const receiverSocket = onlineUserLog.getUserSocket(receiverId);
+    if (!receiverSocket) return;
+    console.log("New message sent: " + text);
+    io.to(receiverSocket).emit("newMessage", conversation, socket.user, text);
+  });
 });
 
 if (process.env.NODE_ENV === "development") {
@@ -40,6 +99,7 @@ app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
+app.use("", cloudinaryConfig);
 
 app.use((req, res, next) => {
   req.io = io;
@@ -48,6 +108,7 @@ app.use((req, res, next) => {
 
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
+app.use("/notification", notificationRouter);
 app.use("/profile", profileRouter);
 app.use("/message", messageRouter);
 app.use("/conversation", conversationRouter);
