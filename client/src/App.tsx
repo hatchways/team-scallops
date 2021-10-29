@@ -10,6 +10,7 @@ import MySitters from './pages/MySitters/MySitters';
 import Messages from './pages/Messages/Messages';
 import NavBar from './components/NavBar/NavBar';
 import Booking from './pages/Booking/Booking';
+import LandingPage from './pages/landingPage/LandingPage';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
@@ -24,9 +25,11 @@ function App(): JSX.Element {
           <AuthProvider>
             <SocketProvider>
               <NavBar />
+
               <Switch>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/signup" component={Signup} />
+                <Route exact path="/landing-page" component={LandingPage} />
                 <Route path="/profile" component={Profile} />
                 <Route exact path="/my-jobs" component={MyJobs} />
                 <Route exact path="/my-sitters" component={MySitters} />
