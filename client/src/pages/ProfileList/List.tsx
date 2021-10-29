@@ -5,7 +5,10 @@ import useStyles from './useStyles';
 import DatePicker from '../../components/DateRangePicker/DatePicker';
 import SearchIcon from '@material-ui/icons/Search';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
-
+import { CircularProgress } from '@material-ui/core';
+import { Rating } from '@material-ui/lab';
+import profilePhoto from '../../Images/d9fc84a0d1d545d77e78aaad39c20c11d3355074.png';
+import ProfilePhoto2 from '../../Images/775db5e79c5294846949f1f55059b53317f51e30.png';
 import moment from 'moment';
 import {
   Grid,
@@ -24,7 +27,12 @@ import {
   Input,
 } from '@material-ui/core';
 
-const profileImg = '775db5e79c5294846949f1f55059b53317f51e30.png';
+const placeholder = {
+  rating: 5,
+  price: 15,
+  location: 'Toronto, Ontario',
+};
+const defaultDescription = 'New pet sitter!';
 
 export default function List(): JSX.Element {
   const classes = useStyles();
@@ -52,7 +60,7 @@ export default function List(): JSX.Element {
   }, []);
 
   if (!profiles) {
-    return <Box>loading</Box>;
+    return <CircularProgress />;
   } else {
     return (
       <Box>
@@ -92,7 +100,7 @@ export default function List(): JSX.Element {
               user && (
                 <Grid item key={key}>
                   <Card style={{ height: '100%' }} variant="outlined" key={key}>
-                    <CardActionArea>
+                    <CardActionArea component={Link} to={`profile/${user}`}>
                       <Grid
                         justify="center"
                         alignItems="center"
@@ -100,26 +108,25 @@ export default function List(): JSX.Element {
                         container
                         className={`${classes.card}`}
                       >
-                        <Avatar src={profileImg} className={classes.avatar} />
+                        <Avatar src={profilePhoto} className={classes.avatar} />
 
                         <CardContent>
-                          <Typography>{/* <Link to={`profile?user=${userId}`}> {userId}</Link>*/}</Typography>
                           <Typography className={classes.fullName} variant="h6">
                             {firstName} {lastName}
                           </Typography>
-                          <Typography> Rating</Typography>
+                          <Rating name="read-only" value={placeholder.rating} readOnly />
 
-                          <Typography>{description ? description : 'Default description'}</Typography>
+                          <Typography>{description ? description : defaultDescription}</Typography>
                         </CardContent>
                       </Grid>
                     </CardActionArea>
                     <Divider light />
                     <Grid container className={`${classes.bottom}`} spacing={2}>
                       <Grid item>
-                        <Typography className={classes.location}> Regina, Saskatchewan</Typography>
+                        <Typography className={classes.location}>{placeholder.location}</Typography>
                       </Grid>
                       <Grid item>
-                        <Typography className={classes.price}>$20/hr</Typography>
+                        <Typography className={classes.price}>${placeholder.price}/hr</Typography>
                       </Grid>
                     </Grid>
                   </Card>
