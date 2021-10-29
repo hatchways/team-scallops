@@ -5,7 +5,7 @@ import { ChangeEvent } from 'react';
 import { uploadImage } from '../../helpers/APICalls/uploadImg';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import { useProfile } from '../../context/useProfileContext';
-import { ProfileApiDataSuccess } from '../../interface/profile/ProfileApiData';
+import { ProfileApiData } from '../../interface/profile/ProfileApiData';
 export default function UploadFileButton({ ...inputProps }: IUploadFile): JSX.Element {
   const classes = useStyles();
   const URL = 'https://api.cloudinary.com/v1_1/dog-sitter/image/upload';
@@ -18,7 +18,7 @@ export default function UploadFileButton({ ...inputProps }: IUploadFile): JSX.El
     const file: File = (target.files as FileList)[0];
     if (file) {
       uploadImage(URL, file)
-        .then((data: ProfileApiDataSuccess) => {
+        .then((data: ProfileApiData) => {
           updateSnackBarMessage('Image has been successfully uploaded');
           updateMyProfileContext(data);
         })

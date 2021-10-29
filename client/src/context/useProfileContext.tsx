@@ -1,5 +1,5 @@
 import { useState, useContext, createContext, FunctionComponent, useEffect, useCallback } from 'react';
-import { ProfileApiData, ProfileApiDataSuccess } from '../interface/profile/ProfileApiData';
+import { ProfileApiData } from '../interface/profile/ProfileApiData';
 import { SearchProfilesApiData, ProfilesApiDataSuccess } from '../interface/profile/Profiles';
 import { Profile } from '../interface/profile/Profile';
 import { getMyProfile } from '../helpers/APICalls/getProfilesApi';
@@ -7,7 +7,7 @@ import { getMyProfile } from '../helpers/APICalls/getProfilesApi';
 interface IProfileContext {
   myProfile: Profile | null | undefined;
   profiles: Profile[] | undefined;
-  updateMyProfileContext: (data: ProfileApiDataSuccess) => void;
+  updateMyProfileContext: (data: ProfileApiData) => void;
   updateProfilesContext: (data: SearchProfilesApiData) => void;
 }
 
@@ -22,7 +22,7 @@ export const ProfileProvider: FunctionComponent = ({ children }): JSX.Element =>
   const [myProfile, setMyProfile] = useState<Profile | null | undefined>();
   const [profiles, setProfiles] = useState<Profile[] | undefined>([]);
 
-  const updateMyProfileContext = useCallback((data: ProfileApiDataSuccess) => {
+  const updateMyProfileContext = useCallback((data) => {
     setMyProfile(data.profile);
   }, []);
   const updateProfilesContext = useCallback((data: ProfilesApiDataSuccess) => {
@@ -32,8 +32,8 @@ export const ProfileProvider: FunctionComponent = ({ children }): JSX.Element =>
   useEffect(() => {
     const getProfile = async () => {
       await getMyProfile().then((data: ProfileApiData) => {
-        if (data.success) {
-          updateMyProfileContext(data.success);
+        if (data.profile) {
+          updateMyProfileContext(data);
         } else {
           setMyProfile(null);
         }
