@@ -12,7 +12,6 @@ import NavBar from './components/NavBar/NavBar';
 import Booking from './pages/Booking/Booking';
 import LandingPage from './pages/landingPage/LandingPage';
 import SitterDetails from './pages/SitterDetails/SitterDetails';
-import ProfileDetails from './pages/ProfileDetails/ProfileDetails';
 import ProtectedRoute from './components/ProtectedRoute';
 import UnauthorizedError from './components/UnauthorizedError/UnauthorizedError';
 import { AuthProvider } from './context/useAuthContext';
