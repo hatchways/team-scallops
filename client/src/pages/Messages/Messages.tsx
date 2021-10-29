@@ -15,7 +15,6 @@ const Conversations = (): JSX.Element => {
   useEffect(() => {
     updateConversationContext();
   }, [updateConversationContext]);
-  // We dont want to update on active conversation change
 
   return (
     <>

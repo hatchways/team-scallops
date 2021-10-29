@@ -12,9 +12,7 @@ const ChatSideBanner = (): JSX.Element => {
   const [onlineUsers, setOnlineUsers] = useState({});
 
   useEffect(() => {
-    console.log('client all user emitted');
     const allUsersOnlineListener = (allUsersOnline: Record<string, string>) => {
-      console.log('All users received');
       setOnlineUsers(allUsersOnline);
     };
 

@@ -36,59 +36,43 @@ const io = socketio(server, {
 
 io.use(socketAuthVerify);
 
-const printCurrentOnline = () => {
-  console.log(onlineUserLog.getAll());
-};
-
 io.on("connection", (socket) => {
   if (!onlineUserLog.checkInLog(socket.user)) {
     const newUser = onlineUserLog.addUser(socket.user, socket.id);
     if (!newUser) return;
-    printCurrentOnline();
+
     const allUsersOnline = onlineUserLog.getAll();
     socket.broadcast.emit("allUsersOnlineRes", allUsersOnline);
   } else {
-    socket.close();
+    socket.disconnect();
     return;
   }
 
   socket.on("disconnect", () => {
     const deletedUser = onlineUserLog.removeUser(socket.user);
     if (!deletedUser) return;
-    printCurrentOnline();
+
     const allUsersOnline = onlineUserLog.getAll();
     io.emit("allUsersOnlineRes", allUsersOnline);
   });
 
   socket.on("allUsersOnline", () => {
-    console.log("emit received and sent!!");
     const allUsersOnline = onlineUserLog.getAll();
-    console.log(allUsersOnline);
     io.to(socket.id).emit("allUsersOnlineRes", allUsersOnline);
   });
 
-  socket.on("sendMessage", (conversation, receiverId, text) => {
-    console.log("New message received: " + text);
-    console.log(conversation);
-    if (!conversation || !receiverId || !text) return;
+  socket.on("sendMessage", (message, receiverId) => {
     if (
-      !(
-        socket.user === conversation.firstUser._id ||
-        socket.user === conversation.secondUser._id
-      )
+      !message.conversation ||
+      !message.sender ||
+      !message.text ||
+      !message._id
     )
       return;
-    if (
-      !(
-        receiverId === conversation.firstUser._id ||
-        receiverId === conversation.secondUser._id
-      )
-    )
-      return;
+
     const receiverSocket = onlineUserLog.getUserSocket(receiverId);
     if (!receiverSocket) return;
-    console.log("New message sent: " + text);
-    io.to(receiverSocket).emit("newMessage", conversation, socket.user, text);
+    io.to(receiverSocket).emit("newMessage", message);
   });
 });
 

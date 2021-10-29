@@ -1,7 +1,7 @@
 import useStyles from './useStyles';
 import AvatarDisplay from '../../AvatarDisplay/AvatarDisplay';
 import { Box, Typography } from '@material-ui/core';
-import { Conversation } from '../../../interface/Conversation';
+import { Conversation, Message } from '../../../interface/Conversation';
 import { useActiveConversation } from '../../../context/useActiveConversationContext';
 import { useAuth } from '../../../context/useAuthContext';
 import moment from 'moment';
@@ -16,12 +16,12 @@ interface Props {
 const SideBannerItem = ({ conversation, onlineUsers }: Props): JSX.Element => {
   const classes = useStyles();
   const { activeConversation, updateActiveConversation } = useActiveConversation();
-  const [lastMessage, SetLastMessage] = useState<string | null>(null);
+  const [lastMessage, SetLastMessage] = useState<Message | null>(null);
   const { loggedInUser } = useAuth();
   const { socket } = useSocket();
   const otherUser = loggedInUser?.id === conversation.firstUser._id ? conversation.secondUser : conversation.firstUser;
   let isUserOnline = false;
-  if (otherUser?._id && otherUser?._id in onlineUsers) {
+  if (!!otherUser?._id && otherUser?._id in onlineUsers) {
     isUserOnline = true;
   }
 
@@ -30,14 +30,14 @@ const SideBannerItem = ({ conversation, onlineUsers }: Props): JSX.Element => {
   };
 
   useEffect(() => {
-    const lastMessageListener = (resConversation: Conversation, sender: string, text: string) => {
-      if (!sender || !text || !resConversation) return;
-      if (resConversation._id === conversation._id) {
-        SetLastMessage(text);
+    const lastMessageListener = (message: Message) => {
+      if (!message.sender || !message.text || !message.conversation) return;
+      if (message.conversation === conversation._id) {
+        SetLastMessage(message);
       }
     };
 
-    SetLastMessage((prev) => (prev === conversation.lastMessage.text ? prev : conversation.lastMessage.text));
+    SetLastMessage((prev) => (prev?.text === conversation.lastMessage.text ? prev : conversation.lastMessage));
     socket?.on('newMessage', lastMessageListener);
     return () => {
       socket?.off('newMessage', lastMessageListener);
@@ -55,17 +55,16 @@ const SideBannerItem = ({ conversation, onlineUsers }: Props): JSX.Element => {
         [classes.activeConversationBox]: activeConversation?._id === conversation._id,
       })}
     >
-      {console.log('User is: ' + isUserOnline)}
       <Box className={classes.userAvatarBox}>
         <AvatarDisplay loggedIn user={otherUser} />
         {isUserOnline ? <Box className={classes.userOnline}></Box> : ''}
       </Box>
       <Box className={classes.userNameBox}>
         <Typography className={classes.userName}>{otherUser?.username}</Typography>
-        <Typography className={classes.userLastMessage}>{lastMessage}</Typography>
+        <Typography className={classes.userLastMessage}>{lastMessage?.text}</Typography>
       </Box>
       <Box className={classes.userMessageDate}>
-        <Typography>{moment(conversation.updatedAt).fromNow()}</Typography>
+        <Typography>{moment(lastMessage?.updatedAt).fromNow()}</Typography>
       </Box>
     </Box>
   );

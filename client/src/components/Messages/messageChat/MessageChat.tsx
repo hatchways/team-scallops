@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { LegacyRef, useEffect, useRef, useState } from 'react';
 import useStyles from './useStyles';
 import MessageInput from '../MessageInput/MessageInput';
 import { Box, IconButton, Paper, Typography } from '@material-ui/core';
@@ -10,7 +10,7 @@ import { useConversation } from '../../../context/useConversationContext';
 import { useSocket } from '../../../context/useSocketContext';
 import { useSnackBar } from '../../../context/useSnackbarContext';
 import AvatarDisplay from '../../AvatarDisplay/AvatarDisplay';
-import { Conversation, Message, MessagesApiData, PostMessageApiData } from '../../../interface/Conversation';
+import { Message, PostMessageApiData } from '../../../interface/Conversation';
 import sendMessage from '../../../helpers/APICalls/sendMessage';
 import { FormikHelpers } from 'formik';
 import moment from 'moment';
@@ -25,15 +25,14 @@ const MessageChat = (): JSX.Element => {
   const [sender, setSender] = useState<User | null | undefined>();
   const [receiver, setReceiver] = useState<User | null | undefined>();
   const [messages, setMessages] = useState<Message[] | null | undefined>();
+  const scrollRef: LegacyRef<HTMLDivElement> | undefined = useRef(null);
 
   const handleMessageSend = (values: { message: string }, props: FormikHelpers<{ message: string }>) => {
     sendMessage(activeConversation?._id, values.message).then((data: PostMessageApiData) => {
       if (data.error) {
-        console.log(data);
         updateSnackBarMessage(data.error.message);
       } else {
-        console.log(data);
-        socket?.emit('sendMessage', activeConversation, receiver?._id, values.message);
+        socket?.emit('sendMessage', data.success?.message, receiver?._id);
         setMessages((prev) => {
           if (!prev) return prev;
           if (!data.success) return prev;
@@ -45,7 +44,10 @@ const MessageChat = (): JSX.Element => {
   };
 
   useEffect(() => {
-    console.log('render happended');
+    scrollRef.current?.scrollIntoView();
+  }, [messages]);
+
+  useEffect(() => {
     if (!activeConversation) return;
     setSender(loggedInUser);
     setReceiver(
@@ -57,17 +59,13 @@ const MessageChat = (): JSX.Element => {
   }, [activeConversation, loggedInUser, activeMessages]);
 
   useEffect(() => {
-    const newMessageListener = (conversation: Conversation, sender: string, text: string) => {
-      if (!sender || !text || !receiver || sender !== receiver?._id) return;
-      if (!(conversation._id === activeConversation?._id)) return;
-      const newMessage: Message = {
-        conversation: conversation,
-        sender: receiver,
-        text: text,
-      };
+    const newMessageListener = (message: Message) => {
+      if (!message.text || !receiver || !message._id || message.sender._id !== receiver?._id) return;
+      if (!(message.conversation === activeConversation?._id)) return;
+
       setMessages((prev) => {
         if (!prev) return prev;
-        return [...prev, newMessage];
+        return [...prev, message];
       });
     };
     socket?.on('newMessage', newMessageListener);
@@ -117,8 +115,8 @@ const MessageChat = (): JSX.Element => {
           </Box>
           <Box className={classes.chatBoxWrapper}>
             <Box display="flex" justifyContent="flex-start" flexDirection="column" className={classes.chatContentBox}>
-              {console.log(messages)}
               {messages?.map((message) => renderMessage(message, message._id))}
+              <div ref={scrollRef} />
             </Box>
           </Box>
           <MessageInput handleMessageSend={handleMessageSend} />

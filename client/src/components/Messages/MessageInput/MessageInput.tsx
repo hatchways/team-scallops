@@ -1,12 +1,7 @@
-import { useState } from 'react';
 import { FormikHelpers, useFormik } from 'formik';
-import { useSnackBar } from '../../../context/useSnackbarContext';
 import * as Yup from 'yup';
 import { TextField, Button } from '@material-ui/core';
-import { Conversation, MessagesApiData } from '../../../interface/Conversation';
-import sendMessage from '../../../helpers/APICalls/sendMessage';
 import useStyles from './useStyles';
-import { useSocket } from '../../../context/useSocketContext';
 interface Props {
   handleMessageSend: (
     values: {
@@ -20,8 +15,6 @@ interface Props {
 
 const MessageInput = ({ handleMessageSend }: Props): JSX.Element => {
   const classes = useStyles();
-  const { socket } = useSocket();
-  const { updateSnackBarMessage } = useSnackBar();
 
   const validationSchema = Yup.object().shape({ message: Yup.string().required('Message text is required') });
 
