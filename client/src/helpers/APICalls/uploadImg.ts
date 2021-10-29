@@ -1,4 +1,4 @@
-export const uploadImage = async (url: string, file: File) => {
+export const uploadImage = async (url: string, file: File): Promise<string> => {
   const formData = new FormData();
   formData.append('file', file);
   formData.append('upload_preset', 'dog-sitter');
