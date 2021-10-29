@@ -2,7 +2,7 @@ import { useState, useContext, createContext, FunctionComponent, useEffect, useC
 import { ProfileApiData, ProfileApiDataSuccess } from '../interface/profile/ProfileApiData';
 import { SearchProfilesApiData, ProfilesApiDataSuccess } from '../interface/profile/Profiles';
 import { Profile } from '../interface/profile/Profile';
-import { getMyProfile, getAllProfiles } from '../helpers/APICalls/getProfilesApi';
+import { getMyProfile } from '../helpers/APICalls/getProfilesApi';
 
 interface IProfileContext {
   myProfile: Profile | null | undefined;
@@ -35,11 +35,8 @@ export const ProfileProvider: FunctionComponent = ({ children }): JSX.Element =>
         if (data.success) {
           updateMyProfileContext(data.success);
         } else {
-          setProfiles([]);
+          setMyProfile(null);
         }
-      });
-      await getAllProfiles().then((data: ProfilesApiDataSuccess) => {
-        updateProfilesContext(data);
       });
     };
     getProfile();
