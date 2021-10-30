@@ -32,11 +32,11 @@ import { createRequest } from '../../helpers/APICalls/requests';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { useSnackBar } from '../../context/useSnackbarContext';
 
-interface paramsProps {
+interface ParamsProps {
   id: string;
 }
 
-interface datesRequest {
+interface DatesRequest {
   dropInDate: Date;
   dropInTime: Date;
   dropOffDate: Date;
@@ -49,7 +49,7 @@ nextDay.setDate(nextDay.getDate() + 1);
 
 function SitterDetails(): JSX.Element {
   const classes = useStyles();
-  const { id: selectedSitterId }: paramsProps = useParams();
+  const { id: selectedSitterId }: ParamsProps = useParams();
 
   const [sitterDetails, setSitterDetails] = useState<Profile>();
 
@@ -75,8 +75,8 @@ function SitterDetails(): JSX.Element {
 
   const { updateSnackBarMessage } = useSnackBar();
   const handleSubmit = (
-    { dropInDate, dropInTime, dropOffDate, dropOffTime }: datesRequest,
-    { setSubmitting }: FormikHelpers<datesRequest>,
+    { dropInDate, dropInTime, dropOffDate, dropOffTime }: DatesRequest,
+    { setSubmitting }: FormikHelpers<DatesRequest>,
   ) => {
     const startDate = convertToDateTime(dropInDate, dropInTime);
     const endDate = convertToDateTime(dropOffDate, dropOffTime);
