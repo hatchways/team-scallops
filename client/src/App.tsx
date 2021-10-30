@@ -11,6 +11,7 @@ import Messages from './pages/Messages/Messages';
 import NavBar from './components/NavBar/NavBar';
 import Booking from './pages/Booking/Booking';
 import LandingPage from './pages/landingPage/LandingPage';
+import SitterDetails from './pages/SitterDetails/SitterDetails';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
@@ -37,6 +38,7 @@ function App(): JSX.Element {
                 <Route exact path="/dashboard">
                   <Dashboard />
                 </Route>
+                <Route path="/sitter/detail/:id" component={SitterDetails} />
                 <Route path="/booking" component={Booking} />
                 <Route path="*">
                   <Redirect to="/login" />
