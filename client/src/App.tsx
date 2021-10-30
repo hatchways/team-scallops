@@ -21,9 +21,9 @@ function App(): JSX.Element {
   return (
     <MuiThemeProvider theme={theme}>
       <BrowserRouter>
-        <SnackBarProvider>
-          <AuthProvider>
-            <SocketProvider>
+        <SocketProvider>
+          <SnackBarProvider>
+            <AuthProvider>
               <NavBar />
 
               <Switch>
@@ -42,9 +42,9 @@ function App(): JSX.Element {
                   <Redirect to="/login" />
                 </Route>
               </Switch>
-            </SocketProvider>
-          </AuthProvider>
-        </SnackBarProvider>
+            </AuthProvider>
+          </SnackBarProvider>
+        </SocketProvider>
       </BrowserRouter>
     </MuiThemeProvider>
   );
