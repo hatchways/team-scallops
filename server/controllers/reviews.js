@@ -14,17 +14,22 @@ exports.postReview = asyncHandler(async (req, res, next) => {
   const reviewerProfile = await Profile.findOne({ user: reviewerUserId });
   const requestObject = await Request.findById(requestId);
 
+  if (!(requestObject.status === "PAID")) {
+    res.status(401);
+    throw new Error("Review only allowed on completed request status");
+  }
   if (!requestObject) {
-    res.status(404);
+    res.status(400);
     throw new Error("Invalid provided requestId");
   }
+
   if (!reviewedProfile) {
-    res.status(404);
+    res.status(400);
     throw new Error("Invalid provided profileId");
   }
   if (!reviewerProfile) {
-    res.status(404);
-    throw new Error("Invalid user profile");
+    res.status(400);
+    throw new Error("Invalid user profileId");
   }
 
   if (
@@ -35,7 +40,7 @@ exports.postReview = asyncHandler(async (req, res, next) => {
         requestObject.owner.equals(reviewedProfile.user))
     )
   ) {
-    res.sendStatus(400);
+    res.sendStatus(401);
     throw new Error(
       "Both parties must be part of the Request and have opposite roles"
     );
