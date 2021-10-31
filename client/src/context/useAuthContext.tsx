@@ -4,6 +4,7 @@ import { AuthApiData, AuthApiDataSuccess } from '../interface/AuthApiData';
 import { User } from '../interface/User';
 import { Profile } from '../interface/profile/Profile';
 import { ProfileApiData } from '../interface/profile/ProfileApiData';
+import { useSocket } from './useSocketContext';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
 import { getMyProfile } from '../helpers/APICalls/getProfilesApi';
 import logoutAPI from '../helpers/APICalls/logout';
@@ -27,13 +28,15 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>();
   const [myProfile, setMyProfile] = useState<Profile | null | undefined>();
   const history = useHistory();
+  const { socket, disconnectSocket } = useSocket();
 
   const updateLoginContext = useCallback(
     (data: AuthApiDataSuccess) => {
       setLoggedInUser(data.user);
+      socket?.emit('online');
       history.push('/dashboard');
     },
-    [history],
+    [history, socket],
   );
   const updateMyProfile = useCallback((data: ProfileApiData) => {
     setMyProfile(data.profile);
@@ -44,10 +47,11 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     await logoutAPI()
       .then(() => {
         history.push('/login');
+        disconnectSocket();
         setLoggedInUser(null);
       })
       .catch((error) => console.error(error));
-  }, [history]);
+  }, [history, disconnectSocket]);
 
   // use our cookies to check if we can login straight away
   useEffect(() => {
@@ -59,7 +63,7 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         } else {
           // don't need to provide error feedback as this just means user doesn't have saved cookies or the cookies have not been authenticated on the backend
           setLoggedInUser(null);
-          history.push('/login');
+          history.push('/land');
         }
       });
     };

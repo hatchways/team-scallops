@@ -91,6 +91,21 @@ exports.get = asyncHandler(async (req, res) => {
   res.status(200).json({ profile: profile });
 });
 
+exports.getSittersProfile = asyncHandler(async (req, res) => {
+  const sitterId = req.params.id;
+
+  let profile;
+  if (sitterId) {
+    profile = await Profile.findById(sitterId);
+  }
+
+  if (!sitterId) {
+    res.status(404);
+    throw new Error("No sitter found");
+  }
+  res.status(200).json({ profile: profile });
+});
+
 exports.all = asyncHandler(async (req, res) => {
   const profiles = await Profile.find();
   res.status(200).json({ profiles: profiles });
