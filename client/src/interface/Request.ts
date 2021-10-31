@@ -15,3 +15,8 @@ export interface RequestsList {
   requestsReceived: Request[];
   requestsSend: Request[];
 }
+
+export interface RequestApiData {
+  error?: { message: string };
+  request?: Request;
+}
