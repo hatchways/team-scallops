@@ -3,6 +3,8 @@ const path = require("path");
 const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
+const socketAuthVerify = require("./middleware/socketAuthVerify");
+const onlineUserLog = require("./utils/onlineUserLog");
 const { notFound, errorHandler } = require("./middleware/error");
 const connectDB = require("./db");
 const { join } = require("path");
@@ -28,11 +30,29 @@ const server = http.createServer(app);
 const io = socketio(server, {
   cors: {
     origin: "*",
+    credentials: true,
   },
 });
 
+io.use(socketAuthVerify);
+
 io.on("connection", (socket) => {
-  console.log("connected");
+  socket.on("disconnect", () => {
+    const deletedUser = onlineUserLog.removeUser(socket.user);
+
+    if (!deletedUser) return;
+    socket.to("online").emit("userDisconnected", deletedUser);
+  });
+
+  socket.on("online", () => {
+    if (!onlineUserLog.checkInLog(socket.user)) {
+      const newUser = onlineUserLog.addUser(socket.user, socket.id);
+      if (!newUser) return;
+      socket.join("online");
+      socket.to("online").emit("newUserOnline", newUser);
+    }
+    return;
+  });
 });
 
 if (process.env.NODE_ENV === "development") {

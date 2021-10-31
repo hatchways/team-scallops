@@ -2,6 +2,7 @@ import { useState, useContext, createContext, FunctionComponent, useEffect, useC
 import { useHistory } from 'react-router-dom';
 import { AuthApiData, AuthApiDataSuccess } from '../interface/AuthApiData';
 import { User } from '../interface/User';
+import { useSocket } from './useSocketContext';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
 import logoutAPI from '../helpers/APICalls/logout';
 
@@ -21,13 +22,15 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   // default undefined before loading, once loaded provide user or null if logged out
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>();
   const history = useHistory();
+  const { socket, disconnectSocket } = useSocket();
 
   const updateLoginContext = useCallback(
     (data: AuthApiDataSuccess) => {
       setLoggedInUser(data.user);
+      socket?.emit('online');
       history.push('/dashboard');
     },
-    [history],
+    [history, socket],
   );
 
   const logout = useCallback(async () => {
@@ -35,10 +38,11 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
     await logoutAPI()
       .then(() => {
         history.push('/login');
+        disconnectSocket();
         setLoggedInUser(null);
       })
       .catch((error) => console.error(error));
-  }, [history]);
+  }, [history, disconnectSocket]);
 
   // use our cookies to check if we can login straight away
   useEffect(() => {
