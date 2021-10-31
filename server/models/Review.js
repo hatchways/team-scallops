@@ -5,14 +5,17 @@ const reviewSchema = new mongoose.Schema(
     reviewerProfileId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Profile",
+      required: true,
     },
     reviewedProfileId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Profile",
+      required: true,
     },
     requestId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Request",
+      required: true,
     },
     starRating: {
       type: Number,
