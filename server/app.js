@@ -18,6 +18,7 @@ const profileRouter = require("./routes/profile");
 const messageRouter = require("./routes/message");
 const conversationRouter = require("./routes/conversation");
 const requestRouter = require("./routes/request");
+const reviewsRouter = require("./routes/reviews");
 
 const { cloudinaryConfig } = require("./config/cloudinary");
 
@@ -76,6 +77,7 @@ app.use("/profile", profileRouter);
 app.use("/message", messageRouter);
 app.use("/conversation", conversationRouter);
 app.use("/request", requestRouter);
+app.use("/reviews", reviewsRouter);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "/client/build")));
