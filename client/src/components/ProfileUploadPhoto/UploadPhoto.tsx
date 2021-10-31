@@ -5,11 +5,11 @@ import { Box, Button } from '@material-ui/core';
 import { useStyles } from './useStyles';
 import UploadFileButton from '../UploadFileButton/UploadFileButton';
 import Avatar from '@material-ui/core/Avatar';
-import { useProfile } from '../../context/useProfileContext';
+import { useAuth } from '../../context/useAuthContext';
 
 export default function UploadPhoto(): JSX.Element {
   const classes = useStyles();
-  const { myProfile } = useProfile();
+  const { myProfile } = useAuth();
 
   return (
     <Card className={classes.root}>

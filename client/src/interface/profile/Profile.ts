@@ -1,6 +1,6 @@
 type image = {
   url: string;
-  public_id: string;
+  publicId: string;
 };
 
 export interface Profile {
