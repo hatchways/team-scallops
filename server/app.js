@@ -53,6 +53,14 @@ io.on("connection", (socket) => {
     }
     return;
   });
+  //Send Msg
+  socket.on("sendNewMsg", async ({ userId, msgSendToUserId, msg }) => {
+    const { newMsg, error } = await sendMsg(userId, msgSendToUserId, msg);
+    const receiverSocket = findConeectedUser(msgSendToUserId);
+    if (receiverSocket) {
+      io.to(receiverSocket.socketId).emit("newMsgReceived", { newMsg });
+    }
+  });
 });
 
 if (process.env.NODE_ENV === "development") {

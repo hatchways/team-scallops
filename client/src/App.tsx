@@ -26,7 +26,7 @@ function App(): JSX.Element {
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter>
+      <Router>
         <SnackBarProvider>
           <AuthProvider>
             <ActiveConversationProvider>
@@ -56,7 +56,7 @@ function App(): JSX.Element {
             </ActiveConversationProvider>
           </AuthProvider>
         </SnackBarProvider>
-      </BrowserRouter>
+      </Router>
     </MuiThemeProvider>
   );
 }

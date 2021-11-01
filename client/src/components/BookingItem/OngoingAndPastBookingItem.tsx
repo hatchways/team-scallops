@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { format } from 'date-fns';
 
-import person from '../../images/women-striped-blouse.png';
+import person from '../../Images/women-striped-blouse.png';
 import { updateRequest } from '../../helpers/APICalls/requests';
 import useStyles from './useStyles';
 
