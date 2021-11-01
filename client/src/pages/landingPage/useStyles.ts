@@ -26,6 +26,7 @@ export const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2, 6),
     background: '#f54242',
     minWidth: '4rem',
+    textTransform: 'uppercase',
   },
   fontBold: {
     fontWeight: 'bold',
