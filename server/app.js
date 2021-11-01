@@ -61,6 +61,8 @@ io.on("connection", (socket) => {
       io.to(receiverSocket.socketId).emit("newMsgReceived", { newMsg });
     }
   });
+  //Send Notification
+  socket.on("newNotification", async ({ userId, notificationId }) => {});
 });
 
 if (process.env.NODE_ENV === "development") {
