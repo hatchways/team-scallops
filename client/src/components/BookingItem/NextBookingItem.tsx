@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { format } from 'date-fns';
 
-import person from '../../Images/68f55f7799df6c8078a874cfe0a61a5e6e9e1687.png';
+import person from '../../images/women-striped-blouse.png';
 import { updateRequest } from '../../helpers/APICalls/requests';
 import useStyles from './useStyles';
 
