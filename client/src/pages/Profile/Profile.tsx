@@ -5,6 +5,7 @@ import ProfileMenu from '../../components/ProfileMenu/ProfileMenu';
 import ProfileEdit from './ProfileEdit/ProfileEdit';
 import ProfileUploadPhoto from '../../components/ProfileUploadPhoto/UploadPhoto';
 import SitterSignup from '../../components/SitterSignup/SitterSignup';
+import ProfileAvailability from './ProfileAvailability/ProfileAvailability';
 
 export default function Profile(): JSX.Element {
   const classes = useStyles();
@@ -20,7 +21,7 @@ export default function Profile(): JSX.Element {
             <Switch>
               <Route path="/profile/edit" component={ProfileEdit} />
               <Route path="/profile/photo" component={ProfileUploadPhoto} />
-              <Route path="/profile/availability" />
+              <Route path="/profile/availability" component={ProfileAvailability} />
               <Route path="/profile/payment" />
               <Route path="/profile/security" />
               <Route path="/profile/settings" />
