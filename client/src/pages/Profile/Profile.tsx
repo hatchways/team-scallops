@@ -1,5 +1,4 @@
 import { Grid, Paper, Typography } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import useStyles from './useStyles';
 import { Route, Switch } from 'react-router-dom';
 import ProfileMenu from '../../components/ProfileMenu/ProfileMenu';
