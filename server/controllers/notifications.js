@@ -33,7 +33,9 @@ exports.getUnReadNotifications = asyncHandler(async (req, res) => {
     );
 
     return res.status(200).json({
-      success: unReadNotifications,
+      success: {
+        unReadNotifications,
+      },
     });
   } else {
     res.status(404);
