@@ -7,6 +7,7 @@ import { Badge, Box } from '@material-ui/core';
 import NotificationRequest from '../NotificationRequest/NotificationRequest';
 import { useNotification } from '../../../context/useNotificationContext';
 import { setUnreadNotificationToRead } from '../../../helpers/APICalls/notifications';
+import { v4 as uuidv4 } from 'uuid';
 const testNotifi = [
   {
     id: '123',
@@ -15,7 +16,7 @@ const testNotifi = [
     sender: '12265eu56eutr',
     title: '',
     message: '',
-    created_at: '2/3/2020',
+    createdAt: '2/3/2020',
     image: '1.jpeg',
     name: 'Mary',
     service: 'Dag owner',
@@ -27,7 +28,7 @@ const testNotifi = [
     sender: '98u098y7yt07t7',
     title: '',
     message: '',
-    created_at: '2/3/2020',
+    createdAt: '2/3/2020',
     image: '2.jpeg',
     name: 'Joe',
     service: 'Dag Sitter',
@@ -78,8 +79,8 @@ export default function NotificationButton(): JSX.Element {
         }}
         style={{ position: 'absolute', top: '4rem' }}
       >
-        {testNotifi.map((notification, index) => (
-          <NotificationRequest notification={notification} key={index} />
+        {testNotifi.map((notification) => (
+          <NotificationRequest notification={notification} key={uuidv4()} />
         ))}
       </Popover>
     </Box>

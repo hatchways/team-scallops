@@ -9,7 +9,7 @@ interface IProps {
 }
 
 const NotificationRequest: React.FC<IProps> = ({
-  notification: { type, created_at, name, image, service },
+  notification: { type, createdAt, name, image, service },
 }): JSX.Element => {
   const classes = useStyles();
 
@@ -25,7 +25,7 @@ const NotificationRequest: React.FC<IProps> = ({
         </Link>
         <Typography className={` ${classes.bold} ${classes.opacity}`}> {`${service}`}</Typography>
         <Typography variant="h6" className={classes.bold}>
-          {`${created_at}`}
+          {`${createdAt}`}
         </Typography>
       </Box>
     </Box>

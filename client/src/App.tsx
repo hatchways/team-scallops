@@ -27,22 +27,24 @@ function App(): JSX.Element {
             <SocketProvider>
               <NotificationProvider>
                 <NavBar />
-                <Switch>
-                  <Route exact path="/login" component={Login} />
-                  <Route exact path="/signup" component={Signup} />
-                  <Route path="/profile" component={Profile} />
-                  <Route exact path="/my-jobs" component={MyJobs} />
-                  <Route exact path="/my-sitters" component={MySitters} />
-                  <Route exact path="/messages" component={Messages} />
-                  <Route exact path="/dashboard">
-                    <Dashboard />
-                  </Route>
-                  <Route path="/booking" component={Booking} />
-                  <Route path="*">
-                    <Redirect to="/login" />
-                  </Route>
-                </Switch>
               </NotificationProvider>
+              <Switch>
+                <Route exact path="/login" component={Login} />
+                <Route exact path="/signup" component={Signup} />
+                <Route path="/profile" component={Profile} />
+                <Route exact path="/my-jobs" component={MyJobs} />
+                <Route exact path="/my-sitters" component={MySitters} />
+                <Route exact path="/messages" component={Messages} />
+
+                <Route exact path="/dashboard">
+                  <Dashboard />
+                </Route>
+
+                <Route path="/booking" component={Booking} />
+                <Route path="*">
+                  <Redirect to="/login" />
+                </Route>
+              </Switch>
             </SocketProvider>
           </AuthProvider>
         </SnackBarProvider>

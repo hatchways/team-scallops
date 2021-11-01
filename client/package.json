@@ -29,6 +29,7 @@
     "socket.io-client": "^4.0.1",
     "typescript": "^4.2.3",
     "use-debounce": "^6.0.0",
+    "uuid": "^8.3.2",
     "yup": "^0.32.8"
   },
   "scripts": {
@@ -56,6 +57,7 @@
   },
   "devDependencies": {
     "@types/react-router-dom": "^5.1.7",
+    "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.23.0",
     "@typescript-eslint/parser": "^4.23.0",
     "eslint-config-prettier": "^8.3.0",
