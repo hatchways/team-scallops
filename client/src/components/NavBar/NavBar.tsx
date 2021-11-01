@@ -11,7 +11,7 @@ import {
   Link as MaterialLink,
 } from '@material-ui/core';
 import AuthMenu from '../AuthMenu/AuthMenu';
-import Logo from '../../Images/logo.png';
+import Logo from '../../images/logo.png';
 import useStyles from './useStyles';
 import NotificationButton from './NotificationButton/NotificationButton';
 
