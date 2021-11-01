@@ -98,7 +98,7 @@ export default function List(): JSX.Element {
             const { firstName, lastName, user, description } = profile;
             return (
               user && (
-                <Grid item key={key}>
+                <Grid item key={user}>
                   <Card style={{ height: '100%' }} variant="outlined" key={key}>
                     <CardActionArea component={Link} to={`profile/${user}`}>
                       <Grid
