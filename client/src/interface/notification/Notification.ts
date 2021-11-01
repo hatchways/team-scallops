@@ -8,5 +8,4 @@ export interface Notification {
   createdAt: string;
   name: string;
   image: string;
-  service: string;
 }

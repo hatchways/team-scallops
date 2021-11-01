@@ -7,7 +7,6 @@ import { Badge, Box } from '@material-ui/core';
 import NotificationRequest from '../NotificationRequest/NotificationRequest';
 import { useNotification } from '../../../context/useNotificationContext';
 import { setUnreadNotificationToRead } from '../../../helpers/APICalls/notifications';
-import { v4 as uuidv4 } from 'uuid';
 const testNotifi = [
   {
     id: '123',
@@ -80,7 +79,7 @@ export default function NotificationButton(): JSX.Element {
         style={{ position: 'absolute', top: '4rem' }}
       >
         {testNotifi.map((notification) => (
-          <NotificationRequest notification={notification} key={uuidv4()} />
+          <NotificationRequest notification={notification} key={notification.id} />
         ))}
       </Popover>
     </Box>
