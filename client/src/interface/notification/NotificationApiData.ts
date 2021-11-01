@@ -1,10 +1,14 @@
 import { Notification } from './Notification';
 
-export interface NotificationApiDataSuccess {
+export interface NotificationsApiDataSuccess {
   unReadNotifications: Notification[];
 }
-
 export interface NotificationApiData {
   error?: { message: string };
-  success?: NotificationApiDataSuccess;
+  success?: Notification;
+}
+
+export interface NotificationsApiData {
+  error?: { message: string };
+  success?: NotificationsApiDataSuccess;
 }

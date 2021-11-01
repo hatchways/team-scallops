@@ -1,10 +1,10 @@
 import { useState, useContext, createContext, FunctionComponent, useEffect, useCallback } from 'react';
-import { NotificationApiData, NotificationApiDataSuccess } from '../interface/notification/NotificationApiData';
+import { NotificationsApiData, NotificationsApiDataSuccess } from '../interface/notification/NotificationApiData';
 import { Notification } from '../interface/notification/Notification';
 import { getUnreadNotifications } from '../helpers/APICalls/notifications';
 
 interface INotificationContext {
-  updateNotificationContext: (data: NotificationApiDataSuccess) => void;
+  updateNotificationContext: (data: NotificationsApiDataSuccess) => void;
   unReadNotifications: Notification[] | null;
 }
 
@@ -16,14 +16,15 @@ export const NotificationContext = createContext<INotificationContext>({
 export const NotificationProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [unReadNotifications, setUnReadNotifications] = useState<Notification[] | null>([]);
 
-  const updateNotificationContext = useCallback((data: NotificationApiDataSuccess) => {
+  const updateNotificationContext = useCallback((data: NotificationsApiDataSuccess) => {
     setUnReadNotifications(data.unReadNotifications);
   }, []);
 
   useEffect(() => {
     const getNotifications = async () => {
-      await getUnreadNotifications().then((data: NotificationApiData) => {
+      await getUnreadNotifications().then((data: NotificationsApiData) => {
         if (data.success) {
+          console.log(data.success);
           updateNotificationContext(data.success);
         } else {
           setUnReadNotifications(null);

@@ -1,6 +1,6 @@
-import { NotificationApiData } from '../../interface/notification/NotificationApiData';
+import { NotificationsApiData, NotificationApiData } from '../../interface/notification/NotificationApiData';
 
-const getUnreadNotifications = async (): Promise<NotificationApiData> => {
+const getUnreadNotifications = async (): Promise<NotificationsApiData> => {
   return await fetch(`/notification/unread`)
     .then((res) => res.json())
     .catch(() => ({

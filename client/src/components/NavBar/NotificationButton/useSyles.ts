@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme: Theme) =>
         display: 'none',
       },
     },
+    greenColor: {
+      background: '#4CFF33',
+    },
   }),
 );
 export default useStyles;

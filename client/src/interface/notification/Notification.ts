@@ -1,5 +1,5 @@
 export interface Notification {
-  id: string;
+  _id: string;
   type: string;
   isRead: boolean;
   sender: string;
