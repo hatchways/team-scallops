@@ -5,7 +5,6 @@ const Cloudinary = require("cloudinary");
 
 exports.post = asyncHandler(async (req, res) => {
   const id = req.user.id;
-  const email = req.user.email;
 
   if (req.file) {
     cloudinaryImg = await Cloudinary.v2.uploader.upload(
@@ -31,7 +30,7 @@ exports.post = asyncHandler(async (req, res) => {
   } = req.body;
   if (!firstName || !lastName || !id) {
     res.status(400);
-    throw new Error("Invalid request");
+    throw new Error("Invalid request," + firstName, LastName, id);
   }
 
   const profile = await Profile.create({
