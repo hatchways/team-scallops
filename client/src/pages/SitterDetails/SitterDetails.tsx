@@ -20,9 +20,9 @@ import Rating from '@material-ui/lab/Rating';
 import { TimePicker, KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
-import dog from '../../images/shiba-inu.jpeg';
-import house from '../../images/house.jpeg';
-import person from '../../images/woman-green-jacket.png';
+import dog from '../../Images/shiba-inu.jpeg';
+import house from '../../Images/house.jpeg';
+import person from '../../Images/woman-green-jacket.png';
 import useStyles from './useStyles';
 import { useParams } from 'react-router-dom';
 import { Profile } from '../../interface/Profile';
