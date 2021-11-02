@@ -4,6 +4,7 @@ import useStyles from './useStyles';
 import { useAuth } from '../../context/useAuthContext';
 import { useSocket } from '../../context/useSocketContext';
 import { useHistory } from 'react-router-dom';
+import ChatSideBanner from '../../components/ChatSideBanner/ChatSideBanner';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -28,9 +29,13 @@ export default function Dashboard(): JSX.Element {
 
   return (
     <Grid container component="main" className={`${classes.root} ${classes.dashboard}`}>
+      <CssBaseline />
+      <Link to="/search"> Search</Link>
       <Link to="/profile"> Profile</Link>
       <Link to="/booking"> Booking</Link>
-      <Grid item className={classes.drawerWrapper}></Grid>
+      <Grid item className={classes.drawerWrapper}>
+        <ChatSideBanner loggedInUser={loggedInUser} />
+      </Grid>
     </Grid>
   );
 }

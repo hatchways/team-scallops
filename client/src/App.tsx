@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import Login from './pages/Login/Login';
 import Signup from './pages/SignUp/SignUp';
 import Profile from './pages/Profile/Profile';
+import List from './pages/ProfileList/List';
 import Dashboard from './pages/Dashboard/Dashboard';
 import MyJobs from './pages/MyJobs/MyJobs';
 import MySitters from './pages/MySitters/MySitters';
@@ -11,6 +12,9 @@ import Messages from './pages/Messages/Messages';
 import NavBar from './components/NavBar/NavBar';
 import Booking from './pages/Booking/Booking';
 import LandingPage from './pages/landingPage/LandingPage';
+import SitterDetails from './pages/SitterDetails/SitterDetails';
+import ProtectedRoute from './components/ProtectedRoute';
+import UnauthorizedError from './components/UnauthorizedError/UnauthorizedError';
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
@@ -23,35 +27,39 @@ function App(): JSX.Element {
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
-      <SocketProvider>
-        <ActiveConversationProvider>
-          <ConversationProvider>
-            <BrowserRouter>
-              <SnackBarProvider>
-                <AuthProvider>
+      <BrowserRouter>
+        <SnackBarProvider>
+          <AuthProvider>
+            <ActiveConversationProvider>
+              <ConversationProvider>
+                <SocketProvider>
                   <NavBar />
                   <Switch>
+                    <Route path="/search" component={List} />
+
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={Signup} />
                     <Route exact path="/landing-page" component={LandingPage} />
-                    <Route path="/profile" component={Profile} />
-                    <Route exact path="/my-jobs" component={MyJobs} />
-                    <Route exact path="/my-sitters" component={MySitters} />
-                    <Route exact path="/messages" component={Messages} />
-                    <Route exact path="/dashboard">
+                    <ProtectedRoute path="/profile" component={Profile} />
+                    <ProtectedRoute exact path="/my-jobs" component={MyJobs} />
+                    <ProtectedRoute exact path="/my-sitters" component={MySitters} />
+                    <ProtectedRoute exact path="/messages" component={Messages} />
+                    <ProtectedRoute exact path="/dashboard">
                       <Dashboard />
-                    </Route>
-                    <Route path="/booking" component={Booking} />
+                    </ProtectedRoute>
+                    <Route path="/sitter/detail/:id" component={SitterDetails} />
+                    <ProtectedRoute path="/booking" component={Booking} />
+                    <Route exact path="/unauthorized" component={UnauthorizedError} />
                     <Route path="*">
                       <Redirect to="/login" />
                     </Route>
                   </Switch>
-                </AuthProvider>
-              </SnackBarProvider>
-            </BrowserRouter>
-          </ConversationProvider>
-        </ActiveConversationProvider>
-      </SocketProvider>
+                </SocketProvider>
+              </ConversationProvider>
+            </ActiveConversationProvider>
+          </AuthProvider>
+        </SnackBarProvider>
+      </BrowserRouter>
     </MuiThemeProvider>
   );
 }
