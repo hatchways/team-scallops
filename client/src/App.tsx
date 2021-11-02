@@ -11,7 +11,8 @@ import Messages from './pages/Messages/Messages';
 import NavBar from './components/NavBar/NavBar';
 import Booking from './pages/Booking/Booking';
 import LandingPage from './pages/landingPage/LandingPage';
-import SitterDetails from './pages/SitterDetails/SitterDetails';
+// import SitterDetails from './pages/SitterDetails/SitterDetails';
+import Reviews from './pages/Reviews/Reviews';
 import ProtectedRoute from './components/ProtectedRoute';
 import UnauthorizedError from './components/UnauthorizedError/UnauthorizedError';
 import { AuthProvider } from './context/useAuthContext';
@@ -40,8 +41,9 @@ function App(): JSX.Element {
                 <ProtectedRoute exact path="/dashboard">
                   <Dashboard />
                 </ProtectedRoute>
-                <Route path="/sitter/detail/:id" component={SitterDetails} />
+                {/* <Route path="/sitter/detail/:id" component={SitterDetails} /> */}
                 <ProtectedRoute path="/booking" component={Booking} />
+                <Route exact path="/reviews" component={Reviews} />
                 <Route exact path="/unauthorized" component={UnauthorizedError} />
                 <Route path="*">
                   <Redirect to="/login" />

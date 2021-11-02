@@ -18,6 +18,14 @@ import useStyles from './useStyles';
 function LoggedInBar({ classes, loggedInUser }: any): JSX.Element {
   return (
     <Box>
+      <Button component={NavLink} to="/reviews" className={classes.menuBarButton}>
+        <Badge color="primary" variant="dot">
+          <Typography variant="h6" color="textPrimary" className={`${classes.menuBarText} ${classes.mobileView}`}>
+            Reviews
+          </Typography>
+          <Notifications className={`${classes.desktopView}`} />
+        </Badge>
+      </Button>
       <Button component={NavLink} to="/dashboard" className={classes.menuBarButton}>
         <Badge color="primary" variant="dot">
           <Typography variant="h6" color="textPrimary" className={`${classes.menuBarText} ${classes.mobileView}`}>

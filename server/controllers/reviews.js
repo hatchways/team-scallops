@@ -1,37 +1,55 @@
 const Profile = require("../models/Profile");
 const Request = require("../models/Request");
 const Review = require("../models/Review");
+const User = require("../models/User");
 const asyncHandler = require("express-async-handler");
 
 // @route POST /reviews/
 // @desc Post new review for a profile
 // @access Private
 exports.postReview = asyncHandler(async (req, res, next) => {
-  const { reviewedProfileId, requestId, starRating, text } = req.body;
+  const { reviewedProfileId, starRating, text } = req.body;
   const reviewerUserId = req.user.id;
 
-  const reviewedProfile = await Profile.findById(reviewedProfileId);
-  const reviewerProfile = await Profile.findOne({ user: reviewerUserId });
-  const requestObject = await Request.findById(requestId);
+  console.log("Until here 1");
 
-  if (!(requestObject.status === "PAID")) {
-    res.status(401);
-    throw new Error("Review only allowed on completed request status");
-  }
+  const reviewedProfile = await Profile.findById(reviewedProfileId);
+
+  // find reviewerUserObj
+  const reviewerUser = await User.findById(reviewerUserId);
+
+  console.log("reviewerUserId : " + reviewerUserId);
+  console.log("reviewedProfile.user : " + reviewedProfile.user);
+
+  // const reviewerProfile = await Profile.findOne({ user: reviewerUserId });
+  const requestObject = await Request.findOne({
+    $or: [
+      { $and: [{ owner: reviewerUserId }, { sitter: reviewedProfile.user }] },
+      { $and: [{ owner: reviewedProfile.user }, { sitter: reviewerUserId }] },
+    ],
+  });
+
+  console.log("Until here 2");
+  console.log(requestObject);
+
   if (!requestObject) {
     res.status(400);
     throw new Error("Invalid provided requestId");
+  }
+  if (!(requestObject.status === "PAID")) {
+    res.status(401);
+    throw new Error("Review only allowed on completed request status");
   }
 
   if (!reviewedProfile) {
     res.status(400);
     throw new Error("Invalid provided profileId");
   }
-  if (!reviewerProfile) {
+  if (!reviewerUser) {
     res.status(400);
     throw new Error("Invalid user profileId");
   }
-
+  console.log("Until here 3");
   if (
     !(
       (requestObject.sitter.equals(reviewedProfile.user) &&
@@ -45,14 +63,27 @@ exports.postReview = asyncHandler(async (req, res, next) => {
       "Both parties must be part of the Request and have opposite roles"
     );
   }
+  console.log("Until here 4");
 
-  const newReview = await Review.create({
-    reviewerProfileId: reviewerProfile._id,
+  // console.log(reviewerUser);
+
+  const newReview = {
+    reviewerProfileId: reviewerUser.profile,
     reviewedProfileId: reviewedProfile._id,
     requestId: requestObject._id,
-    starRating,
-    text,
-  });
+    starRating: starRating,
+    text: text,
+  };
+
+  console.log(newReview);
+
+  // const newReview = await Review.create({
+  //   reviewerProfileId: reviewerUser.profile._id,
+  //   reviewedProfileId: reviewedProfile._id,
+  //   requestId: requestObject._id,
+  //   starRating,
+  //   text,
+  // });
 
   return res.status(201).json({ success: { review: newReview } });
 });

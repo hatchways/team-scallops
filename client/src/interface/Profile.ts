@@ -1,3 +1,5 @@
+import { User } from './User';
+
 export interface Profile {
   profile: {
     _id: string;
@@ -10,7 +12,7 @@ export interface Profile {
     description?: string;
     availability: AvailabilityInDays;
     available: boolean;
-    user: string;
+    user: User;
   };
 }
 
