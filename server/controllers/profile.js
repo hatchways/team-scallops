@@ -5,17 +5,7 @@ const Cloudinary = require("cloudinary");
 
 exports.post = asyncHandler(async (req, res) => {
   const id = req.user.id;
-
-  if (req.file) {
-    cloudinaryImg = await Cloudinary.v2.uploader.upload(
-      convertBufferToString(req).content
-    );
-    req.body.image = {
-      url: cloudinaryImg.secure_url,
-      public_id: cloudinaryImg.public_id,
-    };
-  }
-
+  const email = req.user.email;
   const {
     firstName,
     lastName,
