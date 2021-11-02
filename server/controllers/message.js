@@ -33,5 +33,9 @@ exports.postMessage = asyncHandler(async (req, res, next) => {
   conversation.save();
 
   res.status(201);
-  res.json(lastMessage);
+  res.json({
+    success: {
+      message: lastMessage,
+    },
+  });
 });
