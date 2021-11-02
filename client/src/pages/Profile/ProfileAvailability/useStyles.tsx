@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
   datePicker: {
     zIndex: 10,
     position: 'absolute',
+    display: 'inline-grid',
   },
   content: {
     margin: theme.spacing(0, 4),
