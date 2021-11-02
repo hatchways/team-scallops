@@ -6,7 +6,7 @@ import useStyles from './useSyles';
 import { Badge, Box } from '@material-ui/core';
 import NotificationRequest from '../NotificationRequest/NotificationRequest';
 import { useNotification } from '../../../context/useNotificationContext';
-
+import { StyledBadge } from './useSyles';
 export default function NotificationButton(): JSX.Element {
   const [isReadNotification, setIsReadNotification] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -29,11 +29,11 @@ export default function NotificationButton(): JSX.Element {
   return (
     <Box>
       <Button aria-describedby={id} onClick={handleClick} className={classes.menuBarButton}>
-        <Badge color="secondary" variant="dot" invisible={isReadNotification}>
+        <StyledBadge variant="dot" invisible={isReadNotification}>
           <Typography variant="h6" color="textPrimary" className={` ${classes.mobileView}`}>
             Notifications
           </Typography>
-        </Badge>
+        </StyledBadge>
       </Button>
 
       <Popover

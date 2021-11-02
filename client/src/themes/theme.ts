@@ -11,7 +11,7 @@ export const theme = createMuiTheme({
   },
   palette: {
     primary: { main: '#3A8DFF' },
-    secondary: { main: '#2BDA12' },
+    secondary: { main: '#F54242' },
   },
   shape: {
     borderRadius: 5,

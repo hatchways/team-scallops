@@ -14,7 +14,7 @@ import AuthMenu from '../AuthMenu/AuthMenu';
 import Logo from '../../Images/logo.png';
 import useStyles from './useStyles';
 import NotificationButton from './NotificationButton/NotificationButton';
-
+import { StyledBadge } from './useStyles';
 function LoggedInBar({ classes, loggedInUser }: any): JSX.Element {
   return (
     <Box display="flex" alignItems="center">
@@ -30,11 +30,11 @@ function LoggedInBar({ classes, loggedInUser }: any): JSX.Element {
         </Typography>
       </Button>
       <Button component={NavLink} to="/messages" className={`${classes.menuBarButton} ${classes.mobileView}`}>
-        <Badge color="secondary" variant="dot">
+        <StyledBadge color="secondary" variant="dot">
           <Typography variant="h6" color="textPrimary" className={classes.menuBarText}>
             Messages
           </Typography>
-        </Badge>
+        </StyledBadge>
       </Button>
       <AuthMenu />
     </Box>

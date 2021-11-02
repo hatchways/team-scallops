@@ -1,5 +1,5 @@
-import { makeStyles } from '@material-ui/core/styles';
-
+import { makeStyles, withStyles, createStyles, Theme } from '@material-ui/core/styles';
+import Badge from '@material-ui/core/Badge';
 const useStyles = makeStyles((theme) => ({
   appBar: {
     height: 80,
@@ -31,5 +31,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+export const StyledBadge = withStyles((theme: Theme) =>
+  createStyles({
+    badge: {
+      background: 'green',
+    },
+  }),
+)(Badge);
 
 export default useStyles;

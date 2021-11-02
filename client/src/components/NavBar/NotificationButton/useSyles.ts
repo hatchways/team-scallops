@@ -1,4 +1,5 @@
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { makeStyles, createStyles, withStyles, Theme } from '@material-ui/core/styles';
+import Badge from '@material-ui/core/Badge';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     typography: {
@@ -17,4 +18,12 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   }),
 );
+
+export const StyledBadge = withStyles((theme: Theme) =>
+  createStyles({
+    badge: {
+      background: 'green',
+    },
+  }),
+)(Badge);
 export default useStyles;
