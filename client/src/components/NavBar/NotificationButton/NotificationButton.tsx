@@ -3,10 +3,11 @@ import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import useStyles from './useSyles';
-import { Badge, Box } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import NotificationRequest from '../NotificationRequest/NotificationRequest';
 import { useNotification } from '../../../context/useNotificationContext';
 import { StyledBadge } from './useSyles';
+
 export default function NotificationButton(): JSX.Element {
   const [isReadNotification, setIsReadNotification] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);

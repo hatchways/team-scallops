@@ -5,6 +5,7 @@ import useStyles from './useStyles';
 import { Notification } from '../../../interface/notification/Notification';
 import { Link } from 'react-router-dom';
 import { setUnreadNotificationToRead } from '../../../helpers/APICalls/notifications';
+import { format, compareAsc } from 'date-fns';
 interface IProps {
   notification: Notification;
 }
@@ -17,7 +18,7 @@ const NotificationRequest: React.FC<IProps> = ({
   const changeUnreadToRead = () => {
     setUnreadNotificationToRead(_id);
   };
-
+  // console.log(format(createdAt, 'MM/dd/yyyy'));
   return (
     <Box display="flex" alignItems="center" m={2}>
       <Avatar variant="square" src={`/${image}`} className={classes.large} />

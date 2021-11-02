@@ -5,7 +5,7 @@ export interface Notification {
   sender: string;
   title: string;
   message: string;
-  createdAt: string;
+  createdAt: Date;
   name: string;
   image: string;
 }
