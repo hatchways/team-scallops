@@ -1,6 +1,5 @@
 import { FetchOptions } from '../../interface/FetchOptions';
-import { Request, RequestsList } from '../../interface/Request';
-import { User } from '../../interface/User';
+import { Request, RequestApiData, RequestsList } from '../../interface/Request';
 
 export async function getRequestList(): Promise<RequestsList> {
   const fetchOptions: FetchOptions = {
@@ -14,12 +13,12 @@ export async function getRequestList(): Promise<RequestsList> {
 }
 
 export async function createRequest(
-  sitterId: User,
+  sitterId: string,
   startDate: Date,
   endDate: Date,
-  serviceType: string,
-  totalPrice: number,
-): Promise<Request> {
+  serviceType?: string,
+  totalPrice?: number,
+): Promise<RequestApiData> {
   const fetchOptions: FetchOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
