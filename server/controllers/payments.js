@@ -5,21 +5,24 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 // see https://stripe.com/docs/payments/save-and-reuse for client side implementation details
 
-exports.stripeSetup = asyncHandler(async (email) => {
+exports.stripeSetup = async (email) => {
   const customer = await stripe.customers.create({
     email,
   });
+  console.log({ customer });
   if (!customer.error) {
     return customer.id;
   } else {
     return { error: customer.error };
   }
-});
+};
 
 exports.secret = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user.id);
+
   const intent = await stripe.setupIntents.create({
-    customer: req.user.id,
-    payment_method_types: ["bancontact", "card", "ideal"],
+    customer: user.StripeCustomerId,
+    payment_method_types: ["card"],
   });
   if (!intent.error) {
     res.status(200).json({ client_secret: intent.client_secret });

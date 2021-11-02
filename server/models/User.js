@@ -26,6 +26,7 @@ const userSchema = new mongoose.Schema({
   },
   stripeCustomerId: {
     type: String,
+    required: true,
   },
 });
 
