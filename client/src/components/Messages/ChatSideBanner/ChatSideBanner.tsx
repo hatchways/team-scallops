@@ -2,7 +2,6 @@ import { Box, Typography } from '@material-ui/core';
 import useStyles from './useStyles';
 import SideBannerItem from '../sideBannerItem/SideBannerItem';
 import { useConversation } from '../../../context/useConversationContext';
-import { useEffect } from 'react';
 
 const ChatSideBanner = (): JSX.Element => {
   const classes = useStyles();

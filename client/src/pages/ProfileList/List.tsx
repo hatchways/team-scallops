@@ -7,8 +7,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { CircularProgress } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import profilePhoto from '../../Images/d9fc84a0d1d545d77e78aaad39c20c11d3355074.png';
-import ProfilePhoto2 from '../../Images/775db5e79c5294846949f1f55059b53317f51e30.png';
+import profilePhoto from '../../images/women-striped-blouse.png';
 import moment from 'moment';
 import {
   Grid,
@@ -16,12 +15,9 @@ import {
   Typography,
   Box,
   Card,
-  TextField,
   Button,
-  CardActions,
   CardContent,
   Divider,
-  CardMedia,
   CardActionArea,
   Avatar,
   Input,
