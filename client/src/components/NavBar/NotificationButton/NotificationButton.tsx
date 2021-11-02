@@ -14,7 +14,6 @@ export default function NotificationButton(): JSX.Element {
 
   const classes = useStyles();
   const { unReadNotifications } = useNotification();
-
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
     setIsReadNotification(true);
@@ -26,7 +25,6 @@ export default function NotificationButton(): JSX.Element {
 
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
-
   return (
     <Box>
       <Button aria-describedby={id} onClick={handleClick} className={classes.menuBarButton}>

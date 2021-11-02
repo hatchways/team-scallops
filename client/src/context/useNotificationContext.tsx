@@ -24,7 +24,6 @@ export const NotificationProvider: FunctionComponent = ({ children }): JSX.Eleme
     const getNotifications = async () => {
       await getUnreadNotifications().then((data: NotificationsApiData) => {
         if (data.success) {
-          console.log(data.success);
           updateNotificationContext(data.success);
         } else {
           setUnReadNotifications(null);

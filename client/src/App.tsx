@@ -32,7 +32,9 @@ function App(): JSX.Element {
             <ActiveConversationProvider>
               <ConversationProvider>
                 <SocketProvider>
-                  <NavBar />
+                  <NotificationProvider>
+                    <NavBar />
+                  </NotificationProvider>
                   <Switch>
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={Signup} />
