@@ -17,6 +17,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import DateRangeIcon from '@material-ui/icons/CalendarToday';
+import SaveIcon from '@material-ui/icons/Save';
 
 import useStyles from './useStyles';
 
@@ -24,29 +25,20 @@ function ProfileAvailability(): JSX.Element {
   const classes = useStyles();
 
   const today = new Date();
+  const nextDay = new Date(today);
+  nextDay.setDate(nextDay.getDate() + 1);
+
   const [hidden, setHidden] = useState(true);
   const [selection, setSelection] = useState<Range>({
     startDate: today,
-    endDate: today,
-    key: 'selection',
+    endDate: nextDay,
+    key: 'rollup',
   });
 
-  const [state, setState] = useState({
-    checkedA: true,
-    checkedB: true,
-  });
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
+  const [availability, setAvailability] = useState(false);
 
   const from = selection.startDate ?? today;
-  const to = selection.endDate ?? today;
-
-  const handleSelect = (ranges: RangeKeyDict) => {
-    // props.handleSelect(ranges);
-    setSelection(ranges);
-  };
+  const to = selection.endDate ?? nextDay;
 
   return (
     <Grid className={classes.root}>
@@ -60,19 +52,26 @@ function ProfileAvailability(): JSX.Element {
         <Button onClick={() => setHidden(!hidden)} className={classes.dateRange}>{`
               ${format(from, 'dd-')}${`${format(to, 'dd MMMM yyyy')}`}`}</Button>
       </Box>
-      <Box display="inline" className={classes.datePicker}>
-        {!hidden && (
-          <Paper>
-            <DateRange onChange={handleSelect} minDate={new Date()} ranges={[selection]} />
-          </Paper>
-        )}
-      </Box>
+      {!hidden && (
+        <Box display="inline" className={classes.datePicker}>
+          <DateRange
+            startDatePlaceholder="Start Date"
+            endDatePlaceholder="End Date"
+            onChange={(ranges) => setSelection(ranges.rollup)}
+            minDate={new Date()}
+            ranges={[selection]}
+          />
+          <Button variant="contained" size="small" startIcon={<SaveIcon />} onClick={() => setHidden(!hidden)}>
+            Save
+          </Button>
+        </Box>
+      )}
       <Card variant="outlined">
         <Box className={classes.content}>
           <Switch
-            checked={state.checkedA}
-            onChange={handleChange}
-            name="checkedA"
+            checked={availability}
+            onChange={() => setAvailability(!availability)}
+            name="availability"
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
           <Typography variant="h6" className={classes.dayText}>
@@ -116,9 +115,9 @@ function ProfileAvailability(): JSX.Element {
         <Divider />
         <Box className={classes.content}>
           <Switch
-            checked={state.checkedA}
-            onChange={handleChange}
-            name="checkedA"
+            checked={availability}
+            onChange={() => setAvailability(!availability)}
+            name="availability"
             inputProps={{ 'aria-label': 'secondary checkbox' }}
           />
           <Typography variant="h6" className={classes.dayText}>
