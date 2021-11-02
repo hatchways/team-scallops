@@ -67,23 +67,23 @@ exports.postReview = asyncHandler(async (req, res, next) => {
 
   // console.log(reviewerUser);
 
-  const newReview = {
+  // const newReview = {
+  //   reviewerProfileId: reviewerUser.profile,
+  //   reviewedProfileId: reviewedProfile._id,
+  //   requestId: requestObject._id,
+  //   starRating: starRating,
+  //   text: text,
+  // };
+
+  // console.log(newReview);
+
+  const newReview = await Review.create({
     reviewerProfileId: reviewerUser.profile,
     reviewedProfileId: reviewedProfile._id,
     requestId: requestObject._id,
-    starRating: starRating,
-    text: text,
-  };
-
-  console.log(newReview);
-
-  // const newReview = await Review.create({
-  //   reviewerProfileId: reviewerUser.profile._id,
-  //   reviewedProfileId: reviewedProfile._id,
-  //   requestId: requestObject._id,
-  //   starRating,
-  //   text,
-  // });
+    starRating,
+    text,
+  });
 
   return res.status(201).json({ success: { review: newReview } });
 });

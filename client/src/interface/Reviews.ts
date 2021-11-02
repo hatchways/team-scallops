@@ -8,6 +8,7 @@ export interface Review {
   requestId: Request;
   starRating: number;
   text: string;
+  updatedAt: Date;
 }
 
 export interface ReviewsApiDataSuccess {

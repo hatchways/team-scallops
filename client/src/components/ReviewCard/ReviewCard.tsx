@@ -5,6 +5,7 @@ import useStyles from './useStyles';
 import { Review } from '../../interface/Reviews';
 import { useState } from 'react';
 import { ReportTwoTone } from '@material-ui/icons';
+import moment from 'moment';
 
 interface Props {
   review: Review;
@@ -56,7 +57,7 @@ export default function ReviewCard({ review }: Props): JSX.Element {
           </IconButton>
         }
         title={reviewerProfileId.firstName}
-        subheader="September 14, 2016"
+        subheader={moment(review.updatedAt).fromNow()}
       />
       <CardContent className={classes.content}>
         <Rating name="user rating" value={review.starRating} readOnly />
