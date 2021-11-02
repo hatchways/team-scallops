@@ -1,9 +1,10 @@
 import { CssBaseline, MuiThemeProvider } from '@material-ui/core';
 import { theme } from './themes/theme';
-import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
 import Login from './pages/Login/Login';
 import Signup from './pages/SignUp/SignUp';
 import Profile from './pages/Profile/Profile';
+import List from './pages/ProfileList/List';
 import Dashboard from './pages/Dashboard/Dashboard';
 import MyJobs from './pages/MyJobs/MyJobs';
 import MySitters from './pages/MySitters/MySitters';
@@ -34,6 +35,8 @@ function App(): JSX.Element {
                 <SocketProvider>
                   <NavBar />
                   <Switch>
+                    <Route path="/search" component={List} />
+
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/signup" component={Signup} />
                     <Route exact path="/landing-page" component={LandingPage} />
