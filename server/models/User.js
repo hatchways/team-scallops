@@ -24,6 +24,9 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  stripeCustomerId: {
+    type: String,
+  },
 });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
