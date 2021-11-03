@@ -7,7 +7,11 @@ import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import UserCard from '../../components/UserCard/UserCard';
 import { CircularProgress } from '@material-ui/core';
 import profilePhoto from '../../images/women-striped-blouse.png';
-import moment from 'moment';
+import { format, formatDistance, formatRelative, subDays } from 'date-fns';
+import * as Moment from 'moment';
+import { extendMoment } from 'moment-range';
+const moment = extendMoment(Moment);
+
 import {
   Grid,
   Paper,
@@ -102,6 +106,9 @@ export default function List(): JSX.Element {
               }
             })
             .filter((profile: Profile) => {
+              const requestDays = moment.range(selection.startDate, selection.endDate);
+              console.log(profile);
+              console.log(requestDays);
               return profile;
             })
             .map((profile, key) => (

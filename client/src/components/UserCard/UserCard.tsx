@@ -29,7 +29,7 @@ const defaultDescription = 'New pet sitter!';
 
 export default function UserCard(props: any): JSX.Element {
   const classes = useStyles();
-  const { firstName, lastName, user, description } = props.profile;
+  const { firstName, lastName, user, description, address } = props.profile;
   return (
     <Grid item key={user}>
       <Card style={{ height: '100%' }} variant="outlined" key={user}>
@@ -50,7 +50,7 @@ export default function UserCard(props: any): JSX.Element {
         <Divider light />
         <Grid container className={`${classes.bottom}`} spacing={2}>
           <Grid item>
-            <Typography className={classes.location}>{placeholder.location}</Typography>
+            <Typography className={classes.location}>{address}</Typography>
           </Grid>
           <Grid item>
             <Typography className={classes.price}>${placeholder.price}/hr</Typography>
