@@ -106,6 +106,7 @@ export default function ProfileEditForm(): JSX.Element {
               setTimeout(async () => {
                 if (!hasProfile) {
                   await axios.post('/profile/', modifiedValues);
+                  updateSnackBarMessage('Profile created!');
                 } else {
                   await axios
                     .patch('/profile/', modifiedValues)
@@ -113,7 +114,6 @@ export default function ProfileEditForm(): JSX.Element {
                       updateSnackBarMessage(error);
                     })
                     .then((response) => {
-                      <Redirect to={{ pathname: '/' }} />;
                       updateSnackBarMessage('success!');
                     });
                 }

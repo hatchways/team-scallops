@@ -22,6 +22,8 @@ import {
   Input,
 } from '@material-ui/core';
 
+import { Profile } from '../../interface/profile/Profile';
+
 export default function List(): JSX.Element {
   const classes = useStyles();
   const [state, setState] = useState({
@@ -37,7 +39,6 @@ export default function List(): JSX.Element {
 
   const handleSelect = (ranges: any) => {
     setSelection(ranges.selection);
-    console.log(selection);
   };
   useEffect(() => {
     function fetchProfile() {
@@ -47,6 +48,11 @@ export default function List(): JSX.Element {
     }
     fetchProfile();
   }, []);
+  const [searchTerm, setSearchTerm] = useState('');
+  const handleChange = (event: any) => {
+    setSearchTerm(event.target.value);
+    event.preventDefault();
+  };
 
   if (!profiles) {
     return <CircularProgress />;
@@ -63,7 +69,13 @@ export default function List(): JSX.Element {
               <Grid alignItems="center" container>
                 <Grid item>
                   <SearchIcon />
-                  <Input disableUnderline={true} placeholder="Search by location..."></Input>
+                  <Input
+                    name="searchTerm"
+                    value={searchTerm}
+                    onChange={handleChange}
+                    disableUnderline={true}
+                    placeholder="Search by location..."
+                  ></Input>
                 </Grid>
                 <Grid item>
                   <Box display="inline" className={classes.search}>
@@ -83,9 +95,18 @@ export default function List(): JSX.Element {
           </Grid>
         </Grid>
         <Grid container spacing={10} className={`${classes.root}`} sm>
-          {profiles.map((profile, key) => (
-            <UserCard profile={profile} key={key} />
-          ))}
+          {profiles
+            .filter((profile: Profile) => {
+              if (profile.address && profile.address.includes(searchTerm)) {
+                return profile;
+              }
+            })
+            .filter((profile: Profile) => {
+              return profile;
+            })
+            .map((profile, key) => (
+              <UserCard profile={profile} key={key} />
+            ))}
         </Grid>
       </Box>
     );
