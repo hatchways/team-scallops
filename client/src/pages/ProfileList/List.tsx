@@ -37,6 +37,7 @@ export default function List(): JSX.Element {
 
   const handleSelect = (ranges: any) => {
     setSelection(ranges.selection);
+    console.log(selection);
   };
   useEffect(() => {
     function fetchProfile() {

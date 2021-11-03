@@ -30,11 +30,10 @@ const defaultDescription = 'New pet sitter!';
 export default function UserCard(props: any): JSX.Element {
   const classes = useStyles();
   const { firstName, lastName, user, description } = props.profile;
-  console.log(props.profile);
   return (
     <Grid item key={user}>
       <Card style={{ height: '100%' }} variant="outlined" key={user}>
-        <CardActionArea component={Link} to={`profile/${user}`}>
+        <CardActionArea component={Link} to={`sitter/detail/${user}`}>
           <Grid justify="center" alignItems="center" direction="column" container className={`${classes.card}`}>
             <Avatar src={profileImg} className={classes.avatar} />
 
