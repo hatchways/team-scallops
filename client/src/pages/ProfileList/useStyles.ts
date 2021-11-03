@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles(() => ({
   root: {
     paddingLeft: '20vw',
+    paddingRight: '20vw',
   },
 
   search: {

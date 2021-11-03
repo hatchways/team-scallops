@@ -2,7 +2,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    height: 100,
+    height: 80,
     backgroundColor: 'transparent',
   },
   appBarLoggedIn: {

@@ -5,9 +5,11 @@ import { Box, Button } from '@material-ui/core';
 import { useStyles } from './useStyles';
 import UploadFileButton from '../UploadFileButton/UploadFileButton';
 import Avatar from '@material-ui/core/Avatar';
+import { useAuth } from '../../context/useAuthContext';
 
 export default function UploadPhoto(): JSX.Element {
   const classes = useStyles();
+  const { myProfile } = useAuth();
 
   return (
     <Card className={classes.root}>
@@ -23,7 +25,7 @@ export default function UploadPhoto(): JSX.Element {
           Profile Photo
         </Typography>
 
-        <Avatar src="/avatar.jpeg" title="User-Image" className={classes.large} />
+        <Avatar src={`${myProfile?.image.url}`} title="User-Image" className={classes.large} />
         <Typography className={`${classes.opacity} ${classes.width12}`}>
           Be sure to use a photo that clearly shows your face
         </Typography>
@@ -32,7 +34,7 @@ export default function UploadPhoto(): JSX.Element {
           id="upload-image"
           accept="image/*"
           type="file"
-          name="images"
+          name="image"
           text="Upload a file from your device"
         />
         <Button startIcon={<DeleteIcon />}>Delete Photo</Button>

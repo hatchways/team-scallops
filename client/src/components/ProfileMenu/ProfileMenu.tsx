@@ -1,4 +1,4 @@
-import { Grid, Box, Typography } from '@material-ui/core';
+import { Grid, Box } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import useStyles from './useStyles';
 

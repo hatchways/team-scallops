@@ -6,17 +6,6 @@ const Cloudinary = require("cloudinary");
 exports.post = asyncHandler(async (req, res) => {
   const id = req.user.id;
   const email = req.user.email;
-
-  if (req.file) {
-    cloudinaryImg = await Cloudinary.v2.uploader.upload(
-      convertBufferToString(req).content
-    );
-    req.body.image = {
-      url: cloudinaryImg.secure_url,
-      public_id: cloudinaryImg.public_id,
-    };
-  }
-
   const {
     firstName,
     lastName,
@@ -31,7 +20,7 @@ exports.post = asyncHandler(async (req, res) => {
   } = req.body;
   if (!firstName || !lastName || !id) {
     res.status(400);
-    throw new Error("Invalid request");
+    throw new Error("Invalid request," + firstName, LastName, id);
   }
 
   const profile = await Profile.create({
@@ -98,6 +87,21 @@ exports.get = asyncHandler(async (req, res) => {
   if (!id) {
     res.status(404);
     throw new Error("No user found");
+  }
+  res.status(200).json({ profile: profile });
+});
+
+exports.getSittersProfile = asyncHandler(async (req, res) => {
+  const sitterId = req.params.id;
+
+  let profile;
+  if (sitterId) {
+    profile = await Profile.findById(sitterId);
+  }
+
+  if (!sitterId) {
+    res.status(404);
+    throw new Error("No sitter found");
   }
   res.status(200).json({ profile: profile });
 });

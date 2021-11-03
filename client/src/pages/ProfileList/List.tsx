@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import useStyles from './useStyles';
 import DatePicker from '../../components/DateRangePicker/DatePicker';
 import SearchIcon from '@material-ui/icons/Search';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import UserCard from '../../components/UserCard/UserCard';
-
+import { CircularProgress } from '@material-ui/core';
+import profilePhoto from '../../images/women-striped-blouse.png';
 import moment from 'moment';
 import {
   Grid,
@@ -14,12 +14,9 @@ import {
   Typography,
   Box,
   Card,
-  TextField,
   Button,
-  CardActions,
   CardContent,
   Divider,
-  CardMedia,
   CardActionArea,
   Avatar,
   Input,
@@ -51,7 +48,7 @@ export default function List(): JSX.Element {
   }, []);
 
   if (!profiles) {
-    return <Box>loading</Box>;
+    return <CircularProgress />;
   } else {
     return (
       <Box>
