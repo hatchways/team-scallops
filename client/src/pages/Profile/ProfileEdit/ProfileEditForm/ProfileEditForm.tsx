@@ -1,6 +1,7 @@
 import { Typography, Button, TextField, Select, CircularProgress, Grid, MenuItem } from '@material-ui/core';
 import { Formik } from 'formik';
 import { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../../../context/useAuthContext';
 import useStyles from './useStyles';
@@ -102,17 +103,18 @@ export default function ProfileEditForm(): JSX.Element {
                 address,
                 description,
               };
-              setTimeout(() => {
+              setTimeout(async () => {
                 if (!hasProfile) {
-                  axios.post('/profile/', modifiedValues);
+                  await axios.post('/profile/', modifiedValues);
                 } else {
-                  axios
+                  await axios
                     .patch('/profile/', modifiedValues)
-                    .then((response) => {
-                      updateSnackBarMessage('success!');
-                    })
                     .catch((error) => {
                       updateSnackBarMessage(error);
+                    })
+                    .then((response) => {
+                      <Redirect to={{ pathname: '/' }} />;
+                      updateSnackBarMessage('success!');
                     });
                 }
                 actions.setSubmitting(false);
