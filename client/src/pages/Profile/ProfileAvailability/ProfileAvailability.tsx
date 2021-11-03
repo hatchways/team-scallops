@@ -1,23 +1,16 @@
-import { useState } from 'react';
-import { format } from 'date-fns';
-import { DateRange, Range, RangeKeyDict } from 'react-date-range';
+import { useEffect, useState } from 'react';
+import { format, getDate, getDay, getMonth } from 'date-fns';
+import { DateRange, Range } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Divider,
-  Grid,
-  Icon,
-  Paper,
-  Switch,
-  TextField,
-  Typography,
-} from '@material-ui/core';
+import { Box, Button, Card, CardContent, Divider, Grid, Icon, Switch, TextField, Typography } from '@material-ui/core';
 import DateRangeIcon from '@material-ui/icons/CalendarToday';
 import SaveIcon from '@material-ui/icons/Save';
+import { eachDayOfInterval } from 'date-fns/esm';
+import { getUserProfile, updateProfile } from '../../../helpers/APICalls/profile';
+import { AvailabilityInDays } from '../../../interface/Profile';
+import MONTHS from '../../../lib/constants/MONTHS.json';
+import DAYS from '../../../lib/constants/DAYS.json';
 
 import useStyles from './useStyles';
 
@@ -35,15 +28,57 @@ function ProfileAvailability(): JSX.Element {
     key: 'rollup',
   });
 
-  const [availability, setAvailability] = useState(false);
+  const [availability, setAvailability] = useState<AvailabilityInDays>({
+    monday: false,
+    tuesday: false,
+    wednesday: false,
+    thursday: false,
+    friday: false,
+    saturday: false,
+    sunday: false,
+  });
+
+  useEffect(() => {
+    async function getSitterAvailability() {
+      const userProfile = await getUserProfile();
+
+      if (userProfile.profile.availability !== null) {
+        setAvailability(userProfile.profile.availability);
+      }
+    }
+    getSitterAvailability();
+  }, []);
+
+  useEffect(() => {
+    async function updateAvailability() {
+      await updateProfile(availability);
+    }
+    updateAvailability();
+  }, [availability]);
 
   const from = selection.startDate ?? today;
   const to = selection.endDate ?? nextDay;
 
+  const intervalOfDays = eachDayOfInterval({ start: from, end: to });
+
+  function getChecked(day: Date) {
+    const weekDay = DAYS[getDay(day)] as keyof AvailabilityInDays;
+    const checked = availability[weekDay];
+    return checked;
+  }
+
+  function handleAvailibility(day: Date): void {
+    const weekDay = DAYS[getDay(day)] as keyof AvailabilityInDays;
+    setAvailability((prev) => ({
+      ...prev,
+      [weekDay]: !availability[weekDay],
+    }));
+  }
+
   return (
     <Grid className={classes.root}>
       <Typography align="center" variant="h4" className={classes.dayText}>
-        Your availability
+        your availability
       </Typography>
       <Box display="inline" className={classes.availability}>
         <Icon color="secondary">
@@ -67,97 +102,56 @@ function ProfileAvailability(): JSX.Element {
         </Box>
       )}
       <Card variant="outlined">
-        <Box className={classes.content}>
-          <Switch
-            checked={availability}
-            onChange={() => setAvailability(!availability)}
-            name="availability"
-            inputProps={{ 'aria-label': 'secondary checkbox' }}
-          />
-          <Typography variant="h6" className={classes.dayText}>
-            17 June,
-            <Typography color="textSecondary" display="inline">
-              {' '}
-              Monday
-            </Typography>
-          </Typography>
-          <CardContent className={classes.time}>
-            <Typography className={classes.text}>From</Typography>
-            <TextField
-              id="time"
-              type="time"
-              defaultValue="07:30"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 300, // 5 min
-              }}
-              variant="outlined"
-              className={classes.textField}
-            />
-            <Typography className={classes.text}>To</Typography>
-            <TextField
-              id="time"
-              type="time"
-              defaultValue="07:30"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 300, // 5 min
-              }}
-              variant="outlined"
-              className={classes.textField}
-            />
-          </CardContent>
-        </Box>
-        <Divider />
-        <Box className={classes.content}>
-          <Switch
-            checked={availability}
-            onChange={() => setAvailability(!availability)}
-            name="availability"
-            inputProps={{ 'aria-label': 'secondary checkbox' }}
-          />
-          <Typography variant="h6" className={classes.dayText}>
-            17 June,
-            <Typography color="textSecondary" display="inline">
-              {' '}
-              Monday
-            </Typography>
-          </Typography>
-          <CardContent className={classes.time}>
-            <Typography className={classes.text}>From</Typography>
-            <TextField
-              id="time"
-              type="time"
-              defaultValue="07:30"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 300, // 5 min
-              }}
-              variant="outlined"
-              className={classes.textField}
-            />
-            <Typography className={classes.text}>To</Typography>
-            <TextField
-              id="time"
-              type="time"
-              defaultValue="07:30"
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                step: 300, // 5 min
-              }}
-              variant="outlined"
-              className={classes.textField}
-            />
-          </CardContent>
-        </Box>
+        {availability &&
+          intervalOfDays?.map((day, index) => (
+            <>
+              <Box className={classes.content} key={`${day} ${index}`}>
+                <Switch
+                  checked={getChecked(day)}
+                  onChange={() => handleAvailibility(day)}
+                  name="availability"
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+                <Typography variant="h6" className={classes.dayText}>
+                  {`${getDate(day)} ${MONTHS[getMonth(day)]},`}
+                  <Typography color="textSecondary" display="inline">
+                    {DAYS[getDay(day)]}
+                  </Typography>
+                </Typography>
+                <CardContent className={classes.time}>
+                  <Typography className={classes.text}>From</Typography>
+                  <TextField
+                    id="time"
+                    type="time"
+                    defaultValue="09:00"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    inputProps={{
+                      step: 300, // 5 min
+                    }}
+                    variant="outlined"
+                    className={classes.textField}
+                  />
+                  <Typography className={classes.text}>To</Typography>
+                  <TextField
+                    id="time"
+                    type="time"
+                    defaultValue="18:00"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    inputProps={{
+                      step: 300, // 5 min
+                    }}
+                    variant="outlined"
+                    className={classes.textField}
+                  />
+                </CardContent>
+              </Box>
+              <Divider />
+            </>
+          ))}
       </Card>
     </Grid>
   );
