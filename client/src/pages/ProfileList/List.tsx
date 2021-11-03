@@ -5,6 +5,7 @@ import useStyles from './useStyles';
 import DatePicker from '../../components/DateRangePicker/DatePicker';
 import SearchIcon from '@material-ui/icons/Search';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import UserCard from '../../components/UserCard/UserCard';
 
 import moment from 'moment';
 import {
@@ -23,8 +24,6 @@ import {
   Avatar,
   Input,
 } from '@material-ui/core';
-
-const profileImg = '775db5e79c5294846949f1f55059b53317f51e30.png';
 
 export default function List(): JSX.Element {
   const classes = useStyles();
@@ -85,48 +84,10 @@ export default function List(): JSX.Element {
             </Box>
           </Grid>
         </Grid>
-        <Grid container justify="center" spacing={6} className={`${classes.root}`}>
-          {profiles.map((profile, key) => {
-            const { firstName, lastName, user, description } = profile;
-            return (
-              user && (
-                <Grid item key={key}>
-                  <Card style={{ height: '100%' }} variant="outlined" key={key}>
-                    <CardActionArea>
-                      <Grid
-                        justify="center"
-                        alignItems="center"
-                        direction="column"
-                        container
-                        className={`${classes.card}`}
-                      >
-                        <Avatar src={profileImg} className={classes.avatar} />
-
-                        <CardContent>
-                          <Typography>{/* <Link to={`profile?user=${userId}`}> {userId}</Link>*/}</Typography>
-                          <Typography className={classes.fullName} variant="h6">
-                            {firstName} {lastName}
-                          </Typography>
-                          <Typography> Rating</Typography>
-
-                          <Typography>{description ? description : 'Default description'}</Typography>
-                        </CardContent>
-                      </Grid>
-                    </CardActionArea>
-                    <Divider light />
-                    <Grid container className={`${classes.bottom}`} spacing={2}>
-                      <Grid item>
-                        <Typography className={classes.location}> Regina, Saskatchewan</Typography>
-                      </Grid>
-                      <Grid item>
-                        <Typography className={classes.price}>$20/hr</Typography>
-                      </Grid>
-                    </Grid>
-                  </Card>
-                </Grid>
-              )
-            );
-          })}
+        <Grid container spacing={10} className={`${classes.root}`} sm>
+          {profiles.map((profile, key) => (
+            <UserCard profile={profile} key={key} />
+          ))}
         </Grid>
       </Box>
     );
