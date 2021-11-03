@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
   },
   dayText: {
     fontWeight: 'bold',
+    textTransform: 'capitalize',
   },
   availability: {
     margin: theme.spacing(2, 0),
