@@ -51,8 +51,9 @@ export default function SitterSignup(): JSX.Element {
             <Typography variant={'h6'}>
               You are NOW signed up as a pet Sitter. Please fill out your profile so you may be contacted by people
               requiring your services!
-              <br />
-              <Link to="/profile/edit">Edit your profile here!</Link>
+              <Typography>
+                <Link to="/profile/edit">Edit your profile here!</Link>
+              </Typography>
             </Typography>
           </Box>
         )}

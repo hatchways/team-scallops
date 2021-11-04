@@ -40,7 +40,10 @@ exports.getIsSitter = asyncHandler(async (req, res, next) => {
 exports.setIsSitter = asyncHandler(async (req, res, next) => {
   const id = req.user.id;
   const isSitter = req.body.isSitter;
-
-  const update = await User.updateOne({ _id: id }, { isSitter });
-  res.status(200).json({ update });
+  if (isSitter) {
+    const update = await User.updateOne({ _id: id }, { isSitter });
+    res.status(200).json({ update });
+  } else {
+    res.status(500).json({ error: "error updating isSitter" });
+  }
 });
