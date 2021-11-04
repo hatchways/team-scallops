@@ -3,8 +3,6 @@ import { makeStyles } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: theme.spacing(4, 6),
-    display: 'flex',
-    flexDirection: 'column',
   },
   dayText: {
     fontWeight: 'bold',

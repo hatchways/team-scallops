@@ -8,9 +8,8 @@ import DateRangeIcon from '@material-ui/icons/CalendarToday';
 import SaveIcon from '@material-ui/icons/Save';
 import { eachDayOfInterval } from 'date-fns/esm';
 import { getUserProfile, updateProfile } from '../../../helpers/APICalls/profile';
-import { AvailabilityInDays } from '../../../interface/Profile';
-import MONTHS from '../../../lib/constants/MONTHS.json';
-import DAYS from '../../../lib/constants/DAYS.json';
+import { AvailabilityInDays, Profile } from '../../../interface/Profile';
+import { Days, Months } from '../../../lib/constants/dates';
 
 import useStyles from './useStyles';
 
@@ -38,23 +37,30 @@ function ProfileAvailability(): JSX.Element {
     sunday: false,
   });
 
+  const [profile, setProfile] = useState<Profile>();
+
   useEffect(() => {
     async function getSitterAvailability() {
       const userProfile = await getUserProfile();
 
       if (userProfile.profile.availability !== null) {
         setAvailability(userProfile.profile.availability);
+        setProfile(userProfile);
       }
     }
     getSitterAvailability();
   }, []);
 
   useEffect(() => {
-    async function updateAvailability() {
-      await updateProfile(availability);
+    async function updateSitterAvailability() {
+      if (profile) {
+        profile.profile.availability = availability;
+        setProfile(profile);
+        await updateProfile(profile);
+      }
     }
-    updateAvailability();
-  }, [availability]);
+    updateSitterAvailability();
+  }, [profile, availability]);
 
   const from = selection.startDate ?? today;
   const to = selection.endDate ?? nextDay;
@@ -62,13 +68,13 @@ function ProfileAvailability(): JSX.Element {
   const intervalOfDays = eachDayOfInterval({ start: from, end: to });
 
   function getChecked(day: Date) {
-    const weekDay = DAYS[getDay(day)] as keyof AvailabilityInDays;
+    const weekDay = Days[getDay(day)].toLowerCase() as keyof AvailabilityInDays;
     const checked = availability[weekDay];
     return checked;
   }
 
   function handleAvailibility(day: Date): void {
-    const weekDay = DAYS[getDay(day)] as keyof AvailabilityInDays;
+    const weekDay = Days[getDay(day)].toLowerCase() as keyof AvailabilityInDays;
     setAvailability((prev) => ({
       ...prev,
       [weekDay]: !availability[weekDay],
@@ -76,7 +82,7 @@ function ProfileAvailability(): JSX.Element {
   }
 
   return (
-    <Grid className={classes.root}>
+    <Grid direction="column" className={classes.root}>
       <Typography align="center" variant="h4" className={classes.dayText}>
         your availability
       </Typography>
@@ -113,9 +119,9 @@ function ProfileAvailability(): JSX.Element {
                   inputProps={{ 'aria-label': 'secondary checkbox' }}
                 />
                 <Typography variant="h6" className={classes.dayText}>
-                  {`${getDate(day)} ${MONTHS[getMonth(day)]},`}
+                  {`${getDate(day)} ${Months[getMonth(day)]},`}
                   <Typography color="textSecondary" display="inline">
-                    {DAYS[getDay(day)]}
+                    {Days[getDay(day)]}
                   </Typography>
                 </Typography>
                 <CardContent className={classes.time}>
