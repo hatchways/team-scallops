@@ -5,7 +5,6 @@ import { useAuth } from '../../context/useAuthContext';
 import axios from 'axios';
 
 export default function SitterSignup(): JSX.Element {
-  const { loggedInUser } = useAuth();
   const history = useHistory();
 
   const [checked, setChecked] = useState(false);
