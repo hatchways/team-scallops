@@ -25,8 +25,7 @@ export default function SitterSignup(): JSX.Element {
     const checked = event.target.checked;
 
     async function updateIsSitter() {
-      const resp = await axios.patch('/users/isSitter/', { isSitter: checked });
-      console.log(resp.data);
+      await axios.patch('/users/isSitter/', { isSitter: checked });
     }
     updateIsSitter();
     setChecked(checked);
@@ -34,7 +33,6 @@ export default function SitterSignup(): JSX.Element {
 
   return (
     <Grid container justify="center">
-      {console.log(loggedInUser)}
       <Grid item xs={12}>
         <Typography variant={'h5'}>
           Pet sitters play an important role in our community. Pets need friends to love while their owners are away!{' '}
