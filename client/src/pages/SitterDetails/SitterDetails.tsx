@@ -13,11 +13,13 @@ import {
   Typography,
   CardActionArea,
   CircularProgress,
+  InputAdornment,
 } from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import Rating from '@material-ui/lab/Rating';
 
-import { TimePicker, KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { TimePicker, DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
 import dog from '../../images/shiba-inu.jpeg';
@@ -144,12 +146,11 @@ function SitterDetails(): JSX.Element {
         <Grid item xs={12} sm={5}>
           <Card className={classes.request}>
             <Box>
-              {/* TODO: Add rate to the Profile Model, adjust to profile.rate. */}
               <Typography variant="h6" align="center" className={classes.title}>
-                $14/hr
+                {profile?.ratePerHour}/hr
               </Typography>
               {/* TODO: Create Rating Model and add the value. */}
-              <Rating name="size-large" defaultValue={4} size="large" className={classes.rating} readOnly />
+              <Rating name="size-large" defaultValue={0} size="large" className={classes.rating} readOnly />
             </Box>
             <Formik
               initialValues={{
@@ -165,14 +166,20 @@ function SitterDetails(): JSX.Element {
                   <Box className={classes.datesBox}>
                     <Typography className={classes.datesTitle}>drop in</Typography>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
+                      <DatePicker
                         autoOk
                         disablePast
                         variant="inline"
                         inputVariant="outlined"
                         format="dd MMMM yyyy"
                         value={values.dropInDate}
-                        InputAdornmentProps={{ position: 'start' }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <CalendarTodayIcon />
+                            </InputAdornment>
+                          ),
+                        }}
                         onChange={(date: MaterialUiPickersDate) => setFieldValue('dropInDate', date)}
                       />
                       <TimePicker
@@ -187,7 +194,7 @@ function SitterDetails(): JSX.Element {
                   <Box className={classes.datesBox}>
                     <Typography className={classes.datesTitle}>drop off</Typography>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
+                      <DatePicker
                         autoOk
                         disablePast
                         variant="inline"
@@ -195,7 +202,13 @@ function SitterDetails(): JSX.Element {
                         label=""
                         format="dd MMMM yyyy"
                         value={values.dropOffDate}
-                        InputAdornmentProps={{ position: 'start' }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <CalendarTodayIcon />
+                            </InputAdornment>
+                          ),
+                        }}
                         onChange={(date: MaterialUiPickersDate) => setFieldValue('dropOffDate', date)}
                       />
                       <TimePicker
