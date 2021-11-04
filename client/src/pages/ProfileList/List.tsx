@@ -11,6 +11,15 @@ import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import * as Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
+const availability = {
+  monday: true,
+  tuesday: true,
+  wednesday: true,
+  thurdsay: true,
+  friday: true,
+  saturday: true,
+  sunday: true,
+};
 
 import {
   Grid,
@@ -106,9 +115,18 @@ export default function List(): JSX.Element {
               }
             })
             .filter((profile: Profile) => {
-              const requestDays = moment.range(selection.startDate, selection.endDate);
-              console.log(profile);
-              console.log(requestDays);
+              //TODO: Implement date search
+              // const requestDays = moment.range(new Date(selection.startDate), new Date(selection.endDate));
+
+              // const days = Array.from(requestDays.by('day'));
+              // days.map((day) => {
+              //   if (day) {
+              //     const weekday = moment(day).format('dddd');
+              //     if (availability[weekday as key] === false) {
+              //       return;
+              //     }
+              //   }
+              // });
               return profile;
             })
             .map((profile, key) => (
