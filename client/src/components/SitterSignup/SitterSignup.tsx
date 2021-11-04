@@ -1,0 +1,65 @@
+import { Box, Switch, Typography, Grid, Divider, Button } from '@material-ui/core';
+import { useState, useEffect } from 'react';
+import { useHistory, Link } from 'react-router-dom';
+import { useAuth } from '../../context/useAuthContext';
+import axios from 'axios';
+
+export default function SitterSignup(): JSX.Element {
+  const { loggedInUser } = useAuth();
+  const history = useHistory();
+
+  const [checked, setChecked] = useState(false);
+
+  useEffect(() => {
+    async function getUser() {
+      await axios.get('/users/isSitter/').then((response: any) => {
+        if (response.data.isSitter) {
+          setChecked(response.data.isSitter);
+        }
+      });
+    }
+    getUser();
+  }, [history]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = event.target.checked;
+
+    async function updateIsSitter() {
+      const resp = await axios.patch('/users/isSitter/', { isSitter: checked });
+      console.log(resp.data);
+    }
+    updateIsSitter();
+    setChecked(checked);
+  };
+
+  return (
+    <Grid container justify="center">
+      {console.log(loggedInUser)}
+      <Grid item xs={12}>
+        <Typography variant={'h5'}>
+          Pet sitters play an important role in our community. Pets need friends to love while their owners are away!{' '}
+        </Typography>
+        <Typography variant={'h6'}>Toggle this to become a pet sitter today!</Typography>
+      </Grid>
+      <Divider />
+      <Grid item xs={12}>
+        <Typography>
+          <Switch onChange={handleChange} checked={checked} />
+          Pet sitter toggle
+        </Typography>
+      </Grid>
+      <Grid item xs={12}>
+        {checked == true && (
+          <Box>
+            <Typography variant={'h6'}>
+              You are NOW signed up as a pet Sitter. Please fill out your profile so you may be contacted by people
+              requiring your services!
+              <br />
+              <Link to="/profile/edit">Edit your profile here!</Link>
+            </Typography>
+          </Box>
+        )}
+      </Grid>
+    </Grid>
+  );
+}
