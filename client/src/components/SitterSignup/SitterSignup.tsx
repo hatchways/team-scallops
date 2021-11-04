@@ -18,7 +18,7 @@ export default function SitterSignup(): JSX.Element {
       });
     }
     getUser();
-  }, [history]);
+  }, []);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const checked = event.target.checked;
@@ -46,7 +46,7 @@ export default function SitterSignup(): JSX.Element {
         </Typography>
       </Grid>
       <Grid item xs={12}>
-        {checked == true && (
+        {checked && (
           <Box>
             <Typography variant={'h6'}>
               You are NOW signed up as a pet Sitter. Please fill out your profile so you may be contacted by people
