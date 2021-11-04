@@ -1,13 +1,25 @@
 import { FetchOptions } from '../../interface/FetchOptions';
 import { Profile } from '../../interface/Profile';
+import { Review } from '../../interface/Review';
 
-export async function getSitterProfile(sitterId?: string): Promise<Profile> {
+export async function getSitterProfile(userId?: string): Promise<Profile> {
   const fetchOptions: FetchOptions = {
     method: 'GET',
     credentials: 'include',
   };
 
-  return await fetch(`/profile/${sitterId}`, fetchOptions)
+  return await fetch(`/profile/${userId}`, fetchOptions)
+    .then((res) => res.json())
+    .catch(() => ({ error: { message: 'Unable to connect to server. Please try again' } }));
+}
+
+export async function getSitterReviews(profileId?: string): Promise<Review[]> {
+  const fetchOptions: FetchOptions = {
+    method: 'GET',
+    credentials: 'include',
+  };
+
+  return await fetch(`/reviews/${profileId}`, fetchOptions)
     .then((res) => res.json())
     .catch(() => ({ error: { message: 'Unable to connect to server. Please try again' } }));
 }

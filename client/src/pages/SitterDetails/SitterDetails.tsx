@@ -28,11 +28,12 @@ import person from '../../images/woman-green-jacket.png';
 import useStyles from './useStyles';
 import { useParams } from 'react-router-dom';
 import { Profile } from '../../interface/Profile';
-import { getSitterProfile } from '../../helpers/APICalls/profile';
+import { getSitterProfile, getSitterReviews } from '../../helpers/APICalls/profile';
 import { format, formatISO, parseISO } from 'date-fns';
 import { createRequest } from '../../helpers/APICalls/requests';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { useSnackBar } from '../../context/useSnackbarContext';
+import { Review, ReviewsApiData } from '../../interface/Review';
 
 interface ParamsProps {
   id: string;
@@ -54,6 +55,8 @@ function SitterDetails(): JSX.Element {
   const { id: selectedSitterId }: ParamsProps = useParams();
 
   const [sitterDetails, setSitterDetails] = useState<Profile>();
+  const [reviews, setReviews] = useState<Review[]>();
+  const [ratings, setRatings] = useState<number>();
 
   function convertToDateTime(date: number | Date, time: number | Date) {
     const dateStr = formatISO(date, { representation: 'date' });
@@ -69,9 +72,24 @@ function SitterDetails(): JSX.Element {
     async function getSitterDetails() {
       const sitterProfile = await getSitterProfile(selectedSitterId);
       setSitterDetails(sitterProfile);
+
+      const reviewsData = (await getSitterReviews(sitterProfile.profile?._id)) as ReviewsApiData;
+      if (reviewsData.error) {
+        console.error({ error: reviewsData.error.message });
+        return;
+      }
+      setReviews(reviewsData?.success?.reviews);
+
+      if (reviews?.length) {
+        const startRatings = reviews?.map((review) => review?.starRating);
+        const ratingAvg =
+          startRatings?.reduce((prev, current) => Number(prev) + Number(current), 0) / startRatings.length;
+        setRatings(ratingAvg);
+      }
     }
+
     getSitterDetails();
-  }, [selectedSitterId]);
+  }, [selectedSitterId, reviews]);
 
   const profile = sitterDetails?.profile;
 
@@ -149,8 +167,9 @@ function SitterDetails(): JSX.Element {
               <Typography variant="h6" align="center" className={classes.title}>
                 {profile?.ratePerHour}/hr
               </Typography>
-              {/* TODO: Create Rating Model and add the value. */}
-              <Rating name="size-large" defaultValue={0} size="large" className={classes.rating} readOnly />
+              {ratings !== undefined && (
+                <Rating name="size-large" defaultValue={ratings} size="large" className={classes.rating} readOnly />
+              )}
             </Box>
             <Formik
               initialValues={{
