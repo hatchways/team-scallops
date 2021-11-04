@@ -74,6 +74,11 @@ const profileSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  ratePerHour: {
+    type: Number,
+    required: true,
+    default: 14,
+  },
 });
 
 module.exports = Profile = mongoose.model("Profile", profileSchema);
