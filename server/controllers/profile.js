@@ -20,7 +20,7 @@ exports.post = asyncHandler(async (req, res) => {
   } = req.body;
   if (!firstName || !lastName || !id) {
     res.status(400);
-    throw new Error("Invalid request," + firstName, LastName, id);
+    throw new Error("Invalid request," + firstName, lastName, id);
   }
 
   const profile = await Profile.create({

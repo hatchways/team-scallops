@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import ProfileMenu from '../../components/ProfileMenu/ProfileMenu';
 import ProfileEdit from './ProfileEdit/ProfileEdit';
 import ProfileUploadPhoto from '../../components/ProfileUploadPhoto/UploadPhoto';
+import SitterSignup from '../../components/SitterSignup/SitterSignup';
 
 export default function Profile(): JSX.Element {
   const classes = useStyles();
@@ -24,7 +25,7 @@ export default function Profile(): JSX.Element {
               <Route path="/profile/security" />
               <Route path="/profile/settings" />
               <Route exact path="/profile">
-                <Typography>Profie page(Not implimented)</Typography>
+                <SitterSignup />
               </Route>
             </Switch>
           </Paper>
