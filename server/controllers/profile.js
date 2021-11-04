@@ -87,7 +87,7 @@ exports.get = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("No user found");
   }
-  return res.status(200).json({ profile: profile });
+  res.status(200).json({ profile: profile });
 });
 
 exports.getSittersProfile = asyncHandler(async (req, res) => {
