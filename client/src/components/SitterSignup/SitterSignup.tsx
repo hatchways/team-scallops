@@ -6,6 +6,7 @@ import axios from 'axios';
 
 export default function SitterSignup(): JSX.Element {
   const history = useHistory();
+  const loggedInUser = useAuth();
 
   const [checked, setChecked] = useState(false);
 
@@ -28,6 +29,8 @@ export default function SitterSignup(): JSX.Element {
     }
     updateIsSitter();
     setChecked(checked);
+
+    console.log(loggedInUser);
   };
 
   return (
