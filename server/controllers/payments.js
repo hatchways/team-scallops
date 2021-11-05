@@ -9,7 +9,6 @@ exports.stripeSetup = async (email) => {
   const customer = await stripe.customers.create({
     email,
   });
-  console.log({ customer });
   if (!customer.error) {
     return customer.id;
   } else {
@@ -21,7 +20,7 @@ exports.secret = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
   const intent = await stripe.setupIntents.create({
-    customer: user.StripeCustomerId,
+    customer: user.stripeCustomerId,
     payment_method_types: ["card"],
   });
   if (!intent.error) {
