@@ -23,7 +23,6 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     throw new Error("A user with that username already exists");
   }
   const stripeCustomerId = await stripeSetup(email);
-  console.log(stripeCustomerId);
 
   const user = await User.create({
     username,
@@ -31,7 +30,6 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     password,
     stripeCustomerId,
   });
-  console.log(user);
   if (user) {
     const token = generateToken(user._id);
     const secondsInWeek = 604800;
