@@ -131,15 +131,12 @@ exports.logoutUser = asyncHandler(async (req, res, next) => {
 exports.sendResetLink = asyncHandler(async (req, res, next) => {
   try {
     const { email } = req.body;
+
+    if (!email || !validator.isEmail(email))
+      res.status(400).send({ error: "Missing or invalid email" });
+
     const user = await User.findOne({ email });
 
-    if (!email) {
-      res.status(400).send({ error: "Email is required" });
-    }
-
-    if (!validator.isEmail(email)) {
-      res.status(400).send({ error: "Invalid email" });
-    }
     if (!user) {
       res.status(404).send({ error: "User not found" });
     }
