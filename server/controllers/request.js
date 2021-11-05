@@ -1,6 +1,8 @@
+require("dotenv").config();
 const Request = require("../models/Request");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 // @route GET /request/
 // @desc List of requests for logged in user
@@ -34,6 +36,36 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
   const ownerExists = await User.findById(ownerId);
   const sitterExists = await User.findById(sitterId);
 
+  // check if the payment mehtod exist for the owner
+  const cards = await stripe.customers.listSources(
+    ownerExists.stripeCustomerId,
+    {
+      object: "card",
+      limit: 5,
+    }
+  );
+
+  if (!cards.data.length) {
+    res
+      .status(400)
+      .json({ error: { message: "No cards are there in User profile" } });
+  }
+
+  // add a hold if the payment method exists
+  const charge = await stripe.charges.create({
+    amount: totalPrice * 100,
+    currency: "cad",
+    describe: "Charge for dog sitting",
+    customer: ownerExists.stripeCustomerId,
+    capture: false,
+  });
+
+  console.log(charge.status);
+
+  if (charge.status === "failed") {
+    return res.status(400).json({ error: { message: "Cards was declined" } });
+  }
+
   if (ownerExists && sitterExists && ownerId !== sitterId) {
     const request = new Request({
       owner: ownerId,
@@ -42,6 +74,7 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
       endDate,
       serviceType,
       totalPrice,
+      chargeId: charge.id,
     });
 
     await request.save();
@@ -77,10 +110,16 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
   if (isOwnedByUser) {
     Object.entries(input).forEach(([key, value]) => {
       if (value) {
-        if (key === "startDate") {
+        if (key === "status" && value === "PAID") return;
+        else if (key === "status" && value === "ACCEPTED") {
+          // try to charge the payment here
+          const charge = await stripe.charge.capture(request.chargeId);
+        } else if (key === "status" && value === "DECLINED") {
+          // remove the hold
+          console.log("Remove the charge please!!!");
+        } else if (key === "startDate") {
           request.startDate = new Date(value);
-        }
-        if (key === "endDate") {
+        } else if (key === "endDate") {
           request.endDate = new Date(value);
         } else {
           request[key] = value;

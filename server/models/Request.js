@@ -37,6 +37,10 @@ const requestSchema = new mongoose.Schema(
     totalPrice: {
       type: Number,
     },
+    chargeId: {
+      type: String,
+      default: null,
+    },
   },
   { timestamps: true }
 );
