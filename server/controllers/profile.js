@@ -70,7 +70,6 @@ exports.patch = asyncHandler(async (req, res) => {
       }
     );
     res.status(200).json({ update: update });
-    i;
   } else {
     res.status(500);
     throw new Error("Invalid profile update");
