@@ -29,7 +29,7 @@ import useStyles from './useStyles';
 import { useParams } from 'react-router-dom';
 import { Profile } from '../../interface/Profile';
 import { getSitterProfile, getSitterReviews } from '../../helpers/APICalls/profile';
-import { format, formatISO, parseISO } from 'date-fns';
+import { eachDayOfInterval, format, formatISO, parseISO } from 'date-fns';
 import { createRequest } from '../../helpers/APICalls/requests';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { useSnackBar } from '../../context/useSnackbarContext';
@@ -102,7 +102,14 @@ function SitterDetails(): JSX.Element {
     const endDate = convertToDateTime(dropOffDate, dropOffTime);
     const selectedUserSitterId = profile?.user || '';
 
-    createRequest(selectedUserSitterId, startDate, endDate).then((data) => {
+    const numberOfDays = eachDayOfInterval({
+      start: startDate,
+      end: endDate,
+    }).length;
+
+    const totalPrice = profile?.ratePerDay ? numberOfDays * Number(profile?.ratePerDay) : numberOfDays * 40;
+
+    createRequest(selectedUserSitterId, startDate, endDate, totalPrice).then((data) => {
       if (data.error) {
         console.error({ error: data.error.message });
         updateSnackBarMessage('Please log in and try again!');
