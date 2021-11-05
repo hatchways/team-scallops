@@ -19,7 +19,7 @@ import { Rating } from '@material-ui/lab';
 import { Link } from 'react-router-dom';
 
 import useStyles from './useStyles';
-const profileImg = '775db5e79c5294846949f1f55059b53317f51e30.png';
+const profileImg = 'placeholderImage.png';
 const placeholder = {
   rating: 5,
   price: 15,
@@ -31,8 +31,8 @@ export default function UserCard(props: any): JSX.Element {
   const classes = useStyles();
   const { firstName, lastName, user, description, address } = props.profile;
   return (
-    <Grid item key={user}>
-      <Card style={{ height: '100%' }} variant="outlined" key={user}>
+    <Grid item>
+      <Card style={{ height: '100%' }} variant="outlined">
         <CardActionArea component={Link} to={`sitter/detail/${user}`}>
           <Grid justify="center" alignItems="center" direction="column" container className={`${classes.card}`}>
             <Avatar src={profileImg} className={classes.avatar} />
@@ -43,7 +43,7 @@ export default function UserCard(props: any): JSX.Element {
               </Typography>
               <Rating name="read-only" value={placeholder.rating} readOnly />
 
-              <Typography>{description ? description : defaultDescription}</Typography>
+              <Typography>{description || defaultDescription}</Typography>
             </CardContent>
           </Grid>
         </CardActionArea>

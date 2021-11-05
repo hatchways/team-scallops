@@ -62,7 +62,7 @@ export default function List(): JSX.Element {
     fetchProfile();
   }, []);
   const [searchTerm, setSearchTerm] = useState('');
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
     event.preventDefault();
   };

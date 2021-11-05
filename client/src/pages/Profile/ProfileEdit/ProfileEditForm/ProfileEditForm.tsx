@@ -130,7 +130,7 @@ export default function ProfileEditForm(): JSX.Element {
                   <Grid item className={`${classes.textboxContainer}`} justify="flex-end" xs={textboxSize}>
                     <TextField
                       className={`${classes.textbox}`}
-                      required={true}
+                      required
                       placeholder="John"
                       size="medium"
                       id="firstName"
@@ -147,7 +147,7 @@ export default function ProfileEditForm(): JSX.Element {
 
                   <Grid item className={`${classes.textboxContainer}`} justify="flex-end" xs={textboxSize}>
                     <TextField
-                      required={true}
+                      required
                       placeholder="Doe"
                       className={`${classes.textbox}`}
                       size="medium"
@@ -182,7 +182,7 @@ export default function ProfileEditForm(): JSX.Element {
                   </Grid>
                   <Grid item className={`${classes.textboxContainer}`} justify="flex-end" xs={textboxSize}>
                     <Select
-                      required={true}
+                      required
                       className={`${classes.birthday}`}
                       id="dobDay"
                       name="dobDay"
@@ -201,7 +201,7 @@ export default function ProfileEditForm(): JSX.Element {
                         })}
                     </Select>
                     <Select
-                      required={true}
+                      required
                       className={`${classes.birthday}`}
                       id="dobMonth"
                       name="dobMonth"
@@ -221,7 +221,7 @@ export default function ProfileEditForm(): JSX.Element {
                     </Select>
 
                     <Select
-                      required={true}
+                      required
                       className={`${classes.birthday}`}
                       id="dobYear"
                       name="dobYear"
