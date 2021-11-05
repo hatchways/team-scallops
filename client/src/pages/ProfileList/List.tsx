@@ -66,6 +66,25 @@ export default function List(): JSX.Element {
     setSearchTerm(event.target.value);
     event.preventDefault();
   };
+  const dateFilter = (profile: Profile) => {
+    //TODO: Implement date search
+    // const requestDays = moment.range(new Date(selection.startDate), new Date(selection.endDate));
+    // const days = Array.from(requestDays.by('day'));
+    // days.map((day) => {
+    //   if (day) {
+    //     const weekday = moment(day).format('dddd');
+    //     if (availability[weekday as key] === false) {
+    //       return;
+    //     }
+    //   }
+    // });
+    return profile;
+  };
+  const locationFilter = (profile: Profile) => {
+    if (profile.address && profile.address.includes(searchTerm)) {
+      return profile;
+    }
+  };
 
   if (!profiles) {
     return <CircularProgress />;
@@ -110,24 +129,7 @@ export default function List(): JSX.Element {
         <Grid container spacing={10} className={`${classes.root}`} sm>
           {profiles
             .filter((profile: Profile) => {
-              if (profile.address && profile.address.includes(searchTerm)) {
-                return profile;
-              }
-            })
-            .filter((profile: Profile) => {
-              //TODO: Implement date search
-              // const requestDays = moment.range(new Date(selection.startDate), new Date(selection.endDate));
-
-              // const days = Array.from(requestDays.by('day'));
-              // days.map((day) => {
-              //   if (day) {
-              //     const weekday = moment(day).format('dddd');
-              //     if (availability[weekday as key] === false) {
-              //       return;
-              //     }
-              //   }
-              // });
-              return profile;
+              return locationFilter(dateFilter(profile));
             })
             .map((profile, key) => (
               <UserCard profile={profile} key={key} />
