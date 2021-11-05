@@ -11,7 +11,6 @@ import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import * as Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
-//Array<availability>
 
 import {
   Grid,
@@ -27,7 +26,7 @@ import {
   Input,
 } from '@material-ui/core';
 
-import { Profile } from '../../interface/Profile';
+import { Profile } from '../../interface/profile/Profile';
 import { Filter } from '@material-ui/icons';
 
 export default function List(): JSX.Element {
@@ -60,27 +59,33 @@ export default function List(): JSX.Element {
     event.preventDefault();
   };
   const dateFilter = (profile: Profile) => {
-    //TODO: Implement date search
+    let count = 0;
     const requestDays = moment.range(new Date(selection.startDate), new Date(selection.endDate));
-    const days = Array.from(requestDays.by('day'));
-    console.log(days);
     for (const day of requestDays.by('day')) {
       const weekDay = day.format('dddd').toLowerCase();
-      const dayNumber = moment(day).weekday();
       const availability: Record<string, any> = profile.availability;
-      if (availability) {
-        console.log(weekDay);
-        console.log(availability[weekDay]);
+      if (!availability) {
+        return;
       }
-
-      //if weekDay is =
+      if (availability) {
+        if (availability[weekDay] === false) {
+          count++;
+        }
+      }
     }
-    return profile;
+    if (count === 0) {
+      return profile;
+    }
   };
 
   const locationFilter = (profile: Profile) => {
-    if (profile.address && profile.address.includes(searchTerm)) {
-      return profile;
+    if (profile.address) {
+      if (profile.address.toLowerCase().includes(searchTerm.toLowerCase())) {
+        return profile;
+      }
+      if (!searchTerm) {
+        return profile;
+      }
     }
   };
 
@@ -127,7 +132,10 @@ export default function List(): JSX.Element {
         <Grid container spacing={10} className={`${classes.root}`} sm>
           {profiles
             .filter((profile: Profile) => {
-              return locationFilter(dateFilter(profile));
+              return dateFilter(profile);
+            })
+            .filter((profile: Profile) => {
+              return locationFilter(profile);
             })
             .map((profile, key) => (
               <UserCard profile={profile} key={key} />
