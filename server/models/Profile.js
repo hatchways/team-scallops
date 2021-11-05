@@ -74,10 +74,10 @@ const profileSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  ratePerHour: {
+  ratePerDay: {
     type: Number,
     required: true,
-    default: 14,
+    default: 40,
   },
 });
 

@@ -11,7 +11,7 @@ export interface Profile {
     availability: AvailabilityInDays;
     available: boolean;
     user: string;
-    ratePerHour: number;
+    ratePerDay: number;
   };
 }
 

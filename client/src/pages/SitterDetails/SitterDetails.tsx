@@ -165,7 +165,7 @@ function SitterDetails(): JSX.Element {
           <Card className={classes.request}>
             <Box>
               <Typography variant="h6" align="center" className={classes.title}>
-                {profile?.ratePerHour}/hr
+                {profile?.ratePerDay}/day
               </Typography>
               {ratings !== undefined && (
                 <Rating name="size-large" defaultValue={ratings} size="large" className={classes.rating} readOnly />

@@ -122,7 +122,7 @@ export default function List(): JSX.Element {
                         <Typography className={classes.location}>{placeholder.location}</Typography>
                       </Grid>
                       <Grid item>
-                        <Typography className={classes.price}>${placeholder.price}/hr</Typography>
+                        <Typography className={classes.price}>${placeholder.price}/day</Typography>
                       </Grid>
                     </Grid>
                   </Card>
