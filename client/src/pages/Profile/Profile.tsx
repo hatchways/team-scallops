@@ -24,6 +24,8 @@ export default function Profile(): JSX.Element {
               <Route path="/profile/payment" />
               <Route path="/profile/security" />
               <Route path="/profile/settings" />
+              <Route path="/profile/:id" />
+
               <Route exact path="/profile">
                 <SitterSignup />
               </Route>

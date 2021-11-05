@@ -15,7 +15,7 @@ router.route("/populated").get(protect, getPopulated);
 router.route("/").post(protect, post);
 router.route("/").patch(protect, patch);
 router.route("/").get(protect, get);
-router.route("/all").get(protect, all);
-router.route("/profile/:id").get(getSittersProfile);
+router.route("/all").get(all);
+router.route("/:id").get(get);
 
 module.exports = router;

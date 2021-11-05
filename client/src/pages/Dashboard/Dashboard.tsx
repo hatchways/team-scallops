@@ -6,7 +6,7 @@ import { useAuth } from '../../context/useAuthContext';
 import { useSocket } from '../../context/useSocketContext';
 import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 
 export default function Dashboard(): JSX.Element {
   const classes = useStyles();
@@ -30,6 +30,7 @@ export default function Dashboard(): JSX.Element {
   return (
     <Grid container component="main" className={`${classes.root} ${classes.dashboard}`}>
       <CssBaseline />
+      <Redirect to={{ pathname: '/search' }} />
       <Link to="/search"> Search</Link>
       <Link to="/profile"> Profile</Link>
       <Grid item className={classes.drawerWrapper}></Grid>
