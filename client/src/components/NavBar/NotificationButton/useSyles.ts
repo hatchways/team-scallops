@@ -16,6 +16,9 @@ const useStyles = makeStyles((theme: Theme) =>
     greenColor: {
       background: '#4CFF33',
     },
+    margin2: {
+      margin: '2rem',
+    },
   }),
 );
 
