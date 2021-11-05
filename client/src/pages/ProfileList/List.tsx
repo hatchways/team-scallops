@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAuth } from '../../context/useAuthContext';
+
 import useStyles from './useStyles';
 import DatePicker from '../../components/DateRangePicker/DatePicker';
 import SearchIcon from '@material-ui/icons/Search';
@@ -39,6 +41,7 @@ export default function List(): JSX.Element {
     endDate: new Date(),
     key: 'selection',
   });
+  const loggedInUser = useAuth();
   const profiles = state.profiles;
   const [hidden, setHidden] = useState(true);
 
@@ -89,6 +92,7 @@ export default function List(): JSX.Element {
     }
   };
 
+  //TODO: implement filter to only show profiles where user.isSitter is true
   if (!profiles) {
     return <CircularProgress />;
   } else {
