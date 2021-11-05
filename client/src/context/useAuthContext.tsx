@@ -28,15 +28,14 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>();
   const [myProfile, setMyProfile] = useState<Profile | null | undefined>();
   const history = useHistory();
-  const { socket, disconnectSocket } = useSocket();
+  const { disconnectSocket } = useSocket();
 
   const updateLoginContext = useCallback(
     (data: AuthApiDataSuccess) => {
       setLoggedInUser(data.user);
-      socket?.emit('online');
       history.push('/dashboard');
     },
-    [history, socket],
+    [history],
   );
   const updateMyProfile = useCallback((data: ProfileApiData) => {
     setMyProfile(data.profile);

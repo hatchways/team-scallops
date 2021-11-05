@@ -27,6 +27,8 @@ exports.postMessage = asyncHandler(async (req, res, next) => {
     conversation: conversation._id,
   });
 
+  await lastMessage.populate("sender", "username email").execPopulate();
+
   conversation.set({
     lastMessage: lastMessage._id,
   });

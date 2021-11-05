@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { LegacyRef, useEffect, useRef, useState } from 'react';
 import useStyles from './useStyles';
 import MessageInput from '../MessageInput/MessageInput';
 import { Box, IconButton, Paper, Typography } from '@material-ui/core';
@@ -7,28 +7,72 @@ import { User } from '../../../interface/User';
 import { useAuth } from '../../../context/useAuthContext';
 import { useActiveConversation } from '../../../context/useActiveConversationContext';
 import { useConversation } from '../../../context/useConversationContext';
+import { useSocket } from '../../../context/useSocketContext';
+import { useSnackBar } from '../../../context/useSnackbarContext';
 import AvatarDisplay from '../../AvatarDisplay/AvatarDisplay';
+import { Message, PostMessageApiData } from '../../../interface/Conversation';
+import sendMessage from '../../../helpers/APICalls/sendMessage';
+import { FormikHelpers } from 'formik';
 import moment from 'moment';
-import { Message } from '../../../interface/Conversation';
 import clsx from 'clsx';
 
 const MessageChat = (): JSX.Element => {
   const classes = useStyles();
   const { activeConversation, activeMessages } = useActiveConversation();
-  const { updateConversationContext } = useConversation();
+  const { socket } = useSocket();
   const { loggedInUser } = useAuth();
-  const otherUser =
-    loggedInUser?.id === activeConversation?.firstUser._id
-      ? activeConversation?.secondUser
-      : activeConversation?.firstUser;
+  const { updateSnackBarMessage } = useSnackBar();
   const [sender, setSender] = useState<User | null | undefined>();
   const [receiver, setReceiver] = useState<User | null | undefined>();
+  const [messages, setMessages] = useState<Message[] | null | undefined>();
+  const scrollRef: LegacyRef<HTMLDivElement> | undefined = useRef(null);
+
+  const handleMessageSend = (values: { message: string }, props: FormikHelpers<{ message: string }>) => {
+    sendMessage(activeConversation?._id, values.message).then((data: PostMessageApiData) => {
+      if (data.error) {
+        updateSnackBarMessage(data.error.message);
+      } else {
+        socket?.emit('sendMessage', data.success?.message, receiver?._id);
+        setMessages((prev) => {
+          if (!prev) return prev;
+          if (!data.success) return prev;
+          return [...prev, data.success?.message];
+        });
+        props.resetForm();
+      }
+    });
+  };
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView();
+  }, [messages]);
 
   useEffect(() => {
     if (!activeConversation) return;
     setSender(loggedInUser);
-    setReceiver(otherUser);
-  }, [otherUser, activeConversation, loggedInUser]);
+    setReceiver(
+      loggedInUser?.id === activeConversation?.firstUser._id
+        ? activeConversation?.secondUser
+        : activeConversation?.firstUser,
+    );
+    setMessages(activeMessages);
+  }, [activeConversation, loggedInUser, activeMessages]);
+
+  useEffect(() => {
+    const newMessageListener = (message: Message) => {
+      if (!message.text || !receiver || !message._id || message.sender._id !== receiver?._id) return;
+      if (!(message.conversation === activeConversation?._id)) return;
+
+      setMessages((prev) => {
+        if (!prev) return prev;
+        return [...prev, message];
+      });
+    };
+    socket?.on('newMessage', newMessageListener);
+    return () => {
+      socket?.off('newMessage', newMessageListener);
+    };
+  }, [activeConversation, socket, receiver]);
 
   const renderMessage = (message: Message, messageId: string) => {
     const isSenderMessage = message.sender._id === sender?.id;
@@ -71,10 +115,11 @@ const MessageChat = (): JSX.Element => {
           </Box>
           <Box className={classes.chatBoxWrapper}>
             <Box display="flex" justifyContent="flex-start" flexDirection="column" className={classes.chatContentBox}>
-              {activeMessages?.map((message) => renderMessage(message, message._id))}
+              {messages?.map((message) => renderMessage(message, message._id))}
+              <div ref={scrollRef} />
             </Box>
           </Box>
-          <MessageInput activeConversation={activeConversation} />
+          <MessageInput handleMessageSend={handleMessageSend} />
         </>
       )}
     </>

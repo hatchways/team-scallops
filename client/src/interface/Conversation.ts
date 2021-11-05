@@ -27,6 +27,15 @@ export interface MessagesApiData {
   success?: MessagesDataSuccess;
 }
 
+export interface PostMessageDataSuccess {
+  message: Message;
+}
+
+export interface PostMessageApiData {
+  error?: { message: string };
+  success?: PostMessageDataSuccess;
+}
+
 export interface ConversationsDataSuccess {
   conversations: Conversation[];
 }

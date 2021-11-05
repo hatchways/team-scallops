@@ -1,5 +1,6 @@
 import { useState, useContext, createContext, FunctionComponent, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
+import { useSnackBar } from './useSnackbarContext';
 
 interface ISocketContext {
   socket: Socket | undefined;
@@ -15,6 +16,7 @@ export const SocketContext = createContext<ISocketContext>({
 
 export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => {
   const [socket, setSocket] = useState<Socket | undefined>(undefined);
+  const { updateSnackBarMessage } = useSnackBar();
 
   const initSocket = useCallback(() => {
     if (!!socket) return;
@@ -22,25 +24,12 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
       withCredentials: true,
     });
 
-    newSocket.on('connect', () => {
-      // console.log('Socket connected!!');
-    });
-
-    newSocket.on('userDisconnected', (deletedUser) => {
-      // console.log('Socket disconnected!!');
-    });
-
     newSocket.on('connect_error', (error) => {
-      // console.log(error.message);
-    });
-
-    newSocket.on('newUserOnline', (newUser) => {
-      // console.log('New user is online now!');
-      // console.log(newUser);
+      updateSnackBarMessage(error.message);
     });
 
     setSocket(newSocket);
-  }, [socket]);
+  }, [socket, updateSnackBarMessage]);
 
   const disconnectSocket = useCallback(() => {
     socket?.disconnect();

@@ -4,15 +4,17 @@ import ChatSideBanner from '../../components/Messages/ChatSideBanner/ChatSideBan
 import MessageChat from '../../components/Messages/messageChat/MessageChat';
 import { useActiveConversation } from '../../context/useActiveConversationContext';
 import { useConversation } from '../../context/useConversationContext';
+import { useSocket } from '../../context/useSocketContext';
 import useStyles from './useStyles';
 const Conversations = (): JSX.Element => {
   const classes = useStyles();
   const { activeConversation } = useActiveConversation();
   const { updateConversationContext } = useConversation();
+  const { socket } = useSocket();
 
   useEffect(() => {
     updateConversationContext();
-  }, [updateConversationContext, activeConversation]);
+  }, [updateConversationContext]);
 
   return (
     <>
