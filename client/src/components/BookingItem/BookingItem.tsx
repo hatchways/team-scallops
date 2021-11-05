@@ -32,11 +32,20 @@ function BookingItem(props: Props): JSX.Element {
   }, [loggedInUser?.isSitter, owner, sitter]);
 
   const fullName = `${profile?.profile.firstName} ${profile?.profile.lastName}`;
+  const photo = profile?.profile.image.url;
 
   return (
     <>
       {upcoming ? (
-        <NextBookingItem key={requestId} requestId={requestId} from={from} to={to} name={fullName} status={status} />
+        <NextBookingItem
+          key={requestId}
+          requestId={requestId}
+          from={from}
+          to={to}
+          name={fullName}
+          image={photo}
+          status={status}
+        />
       ) : (
         <OngoingAndPastBookingItem
           key={requestId}
@@ -44,6 +53,7 @@ function BookingItem(props: Props): JSX.Element {
           from={from}
           to={to}
           name={fullName}
+          image={photo}
           status={status}
           past={past}
         />

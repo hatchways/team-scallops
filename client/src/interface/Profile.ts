@@ -12,6 +12,7 @@ export interface Profile {
     available: boolean;
     user: string;
     ratePerDay: number;
+    image: Image;
   };
 }
 
@@ -23,4 +24,9 @@ export interface AvailabilityInDays {
   friday: boolean;
   saturday: boolean;
   sunday: boolean;
+}
+
+interface Image {
+  url: string;
+  publicId: string;
 }

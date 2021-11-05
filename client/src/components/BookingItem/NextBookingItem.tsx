@@ -10,7 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import SettingsIcon from '@material-ui/icons/Settings';
 import { format } from 'date-fns';
 
-import person from '../../images/women-striped-blouse.png';
 import { updateRequest } from '../../helpers/APICalls/requests';
 import useStyles from './useStyles';
 import { useAuth } from '../../context/useAuthContext';
@@ -20,6 +19,7 @@ interface Props {
   from: Date;
   to: Date;
   name: string;
+  image: string | undefined;
   status: string;
 }
 
@@ -27,7 +27,7 @@ function NextBookingItem(props: Props): JSX.Element {
   const classes = useStyles();
   const { loggedInUser } = useAuth();
 
-  const { requestId, from, to, name, status } = props;
+  const { requestId, from, to, name, image, status } = props;
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [currentStatus, setCurrentStatus] = useState<string>(status);
@@ -79,8 +79,7 @@ function NextBookingItem(props: Props): JSX.Element {
           </Menu>
         </Box>
         <Box className={classes.details}>
-          {/* TODO: Change mock image to user profile photo inside props. */}
-          <Avatar aria-label="next-booking" alt="Person" src={person} className={classes.large} />
+          <Avatar aria-label="next-booking" alt="Person" src={image} className={classes.large} />
           <Typography variant="h6" color="textPrimary" display="inline">
             {name}
           </Typography>
