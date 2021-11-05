@@ -11,15 +11,7 @@ import { format, formatDistance, formatRelative, subDays } from 'date-fns';
 import * as Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
-const availability = {
-  monday: true,
-  tuesday: true,
-  wednesday: true,
-  thurdsay: true,
-  friday: true,
-  saturday: true,
-  sunday: true,
-};
+//Array<availability>
 
 import {
   Grid,
@@ -35,7 +27,8 @@ import {
   Input,
 } from '@material-ui/core';
 
-import { Profile } from '../../interface/profile/Profile';
+import { Profile } from '../../interface/Profile';
+import { Filter } from '@material-ui/icons';
 
 export default function List(): JSX.Element {
   const classes = useStyles();
@@ -68,18 +61,23 @@ export default function List(): JSX.Element {
   };
   const dateFilter = (profile: Profile) => {
     //TODO: Implement date search
-    // const requestDays = moment.range(new Date(selection.startDate), new Date(selection.endDate));
-    // const days = Array.from(requestDays.by('day'));
-    // days.map((day) => {
-    //   if (day) {
-    //     const weekday = moment(day).format('dddd');
-    //     if (availability[weekday as key] === false) {
-    //       return;
-    //     }
-    //   }
-    // });
+    const requestDays = moment.range(new Date(selection.startDate), new Date(selection.endDate));
+    const days = Array.from(requestDays.by('day'));
+    console.log(days);
+    for (const day of requestDays.by('day')) {
+      const weekDay = day.format('dddd').toLowerCase();
+      const dayNumber = moment(day).weekday();
+      const availability: Record<string, any> = profile.availability;
+      if (availability) {
+        console.log(weekDay);
+        console.log(availability[weekDay]);
+      }
+
+      //if weekDay is =
+    }
     return profile;
   };
+
   const locationFilter = (profile: Profile) => {
     if (profile.address && profile.address.includes(searchTerm)) {
       return profile;

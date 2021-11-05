@@ -71,7 +71,7 @@ function SitterDetails(): JSX.Element {
     getSitterDetails();
   }, [selectedSitterId]);
 
-  const profile = sitterDetails?.profile;
+  const profile = sitterDetails;
 
   const { updateSnackBarMessage } = useSnackBar();
   const handleSubmit = (

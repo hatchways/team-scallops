@@ -1,17 +1,15 @@
 export interface Profile {
-  profile: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-    gender?: string;
-    birthday?: Date | string;
-    phone?: number;
-    address?: string;
-    description?: string;
-    availability: AvailabilityInDays;
-    available: boolean;
-    user: string;
-  };
+  _id: string;
+  firstName: string;
+  lastName: string;
+  gender?: string;
+  birthday?: Date | string;
+  phone?: number;
+  address?: string;
+  description?: string;
+  availability: AvailabilityInDays;
+  available: boolean;
+  user: string;
 }
 
 interface AvailabilityInDays {
