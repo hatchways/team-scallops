@@ -40,35 +40,11 @@ exports.post = asyncHandler(async (req, res) => {
 });
 
 exports.patch = asyncHandler(async (req, res) => {
-  const {
-    firstName,
-    lastName,
-    gender,
-    birthday,
-    phone,
-    address,
-    description,
-    availability,
-    available,
-  } = req.body;
   const id = req.user.id;
   const idExists = await Profile.findOne({ user: id });
 
   if (idExists) {
-    const update = await Profile.updateOne(
-      { user: id },
-      {
-        firstName,
-        lastName,
-        gender,
-        birthday,
-        phone,
-        address,
-        description,
-        availability,
-        available,
-      }
-    );
+    const update = await Profile.updateOne({ user: id }, req.body);
     res.status(200).json({ update: update });
     i;
   } else {
