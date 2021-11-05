@@ -79,17 +79,18 @@ function SitterDetails(): JSX.Element {
         return;
       }
       setReviews(reviewsData?.success?.reviews);
-
-      if (reviews?.length) {
-        const startRatings = reviews?.map((review) => review?.starRating);
-        const ratingAvg =
-          startRatings?.reduce((prev, current) => Number(prev) + Number(current), 0) / startRatings.length;
-        setRatings(ratingAvg);
-      }
     }
 
     getSitterDetails();
-  }, [selectedSitterId, reviews]);
+  }, [selectedSitterId]);
+
+  useEffect(() => {
+    if (reviews?.length) {
+      const starRatings = reviews?.map((review) => review?.starRating);
+      const ratingAvg = starRatings?.reduce((prev, current) => Number(prev) + Number(current), 0) / starRatings.length;
+      setRatings(ratingAvg);
+    }
+  }, [reviews]);
 
   const profile = sitterDetails?.profile;
 
