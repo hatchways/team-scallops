@@ -6,6 +6,7 @@ const MockUseAuthProvider: FunctionComponent = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
+        myProfile: undefined,
         loggedInUser: mockLoggedInUser,
         updateLoginContext: jest.fn(),
         logout: jest.fn(),

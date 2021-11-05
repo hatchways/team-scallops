@@ -1,7 +1,11 @@
 const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
+const { convertBufferToString } = require("../middleware/multer");
+const Cloudinary = require("cloudinary");
 
 exports.post = asyncHandler(async (req, res) => {
+  const id = req.user.id;
+  const email = req.user.email;
   const {
     firstName,
     lastName,
@@ -12,12 +16,11 @@ exports.post = asyncHandler(async (req, res) => {
     description,
     availability,
     available,
+    image,
   } = req.body;
-  const id = req.user.id;
-  const email = req.user.email;
   if (!firstName || !lastName || !id) {
     res.status(400);
-    throw new Error("Invalid request");
+    throw new Error("Invalid request," + firstName, lastName, id);
   }
 
   const profile = await Profile.create({
@@ -31,6 +34,7 @@ exports.post = asyncHandler(async (req, res) => {
     description,
     availability,
     available,
+    image,
   });
   res.status(201).json({ profile });
 });
@@ -82,6 +86,21 @@ exports.get = asyncHandler(async (req, res) => {
   if (!id) {
     res.status(404);
     throw new Error("No user found");
+  }
+  res.status(200).json({ profile: profile });
+});
+
+exports.getSittersProfile = asyncHandler(async (req, res) => {
+  const sitterId = req.params.id;
+
+  let profile;
+  if (sitterId) {
+    profile = await Profile.findById(sitterId);
+  }
+
+  if (!sitterId) {
+    res.status(404);
+    throw new Error("No sitter found");
   }
   res.status(200).json({ profile: profile });
 });

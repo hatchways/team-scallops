@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
@@ -7,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import useStyles from './useStyles';
 import { CircularProgress, InputLabel } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
+import Demo from '../../../components/DemoSelect/DemoSelect';
 
 interface Props {
   handleSubmit: (
@@ -33,12 +35,19 @@ interface Props {
 const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
   const classes = useStyles();
 
+  const [demoUser, setDemoUser] = useState<Record<string, string> | undefined>();
+
+  function getDemoUser({ username, email, password }: { username: string; email: string; password: string }) {
+    setDemoUser({ username, email, password });
+  }
+
   return (
     <Formik
+      enableReinitialize={true}
       initialValues={{
-        email: '',
-        password: '',
-        username: '',
+        email: demoUser?.email ?? '',
+        password: demoUser?.password ?? '',
+        username: demoUser?.username ?? '',
       }}
       validationSchema={Yup.object().shape({
         username: Yup.string().required('Username is required').max(40, 'Username is too long'),
@@ -130,6 +139,7 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             <Button type="submit" size="large" variant="contained" color="secondary" className={classes.submit}>
               {isSubmitting ? <CircularProgress className={classes.circleColor} /> : 'Create'}
             </Button>
+            <Demo label={'Sign up as a demo user'} user={getDemoUser} />
           </Box>
           <Box mt={3} display="flex" textAlign="center" alignItems="center" justifyContent="center">
             <Typography className={classes.boldText} color="textPrimary">
