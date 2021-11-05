@@ -31,8 +31,8 @@ function BookingItem(props: Props): JSX.Element {
     getProfile();
   }, [loggedInUser?.isSitter, owner, sitter]);
 
-  const fullName = `${profile?.profile.firstName} ${profile?.profile.lastName}`;
-  const photo = profile?.profile.image.url;
+  const fullName = `${profile?.profile?.firstName} ${profile?.profile?.lastName}`;
+  const photo = profile?.profile?.image?.url;
 
   return (
     <>
