@@ -20,8 +20,9 @@ export default function Login(): JSX.Element {
   ) => {
     login(email, password).then((data) => {
       if (data.error) {
+        const error = data.error as unknown as string;
         setSubmitting(false);
-        updateSnackBarMessage(data.error.message);
+        updateSnackBarMessage(error);
       } else if (data.success) {
         updateLoginContext(data.success);
       } else {

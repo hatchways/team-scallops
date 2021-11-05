@@ -90,6 +90,24 @@ exports.get = asyncHandler(async (req, res) => {
   res.status(200).json({ profile: profile });
 });
 
+exports.getPopulated = asyncHandler(async (req, res) => {
+  const id = req.user.id;
+  let profile;
+  if (id) {
+    profile = await Profile.findOne({ user: id }).populate(
+      "user",
+      "-password -email -stripeCustomerId -__v"
+    );
+  }
+
+  if (!id) {
+    res.status(404);
+    throw new Error("No user found");
+  }
+
+  res.status(200).json({ profile: profile });
+});
+
 exports.getSittersProfile = asyncHandler(async (req, res) => {
   const sitterId = req.params.id;
 

@@ -63,7 +63,7 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
         <form onSubmit={handleSubmit} className={classes.form} noValidate>
           <InputLabel htmlFor="username">
             <Typography className={classes.label} color="textPrimary">
-              name
+              username
             </Typography>
           </InputLabel>
           <TextField
@@ -82,7 +82,7 @@ const SignUpForm = ({ handleSubmit }: Props): JSX.Element => {
             helperText={touched.username ? errors.username : ''}
             error={touched.username && Boolean(errors.username)}
             value={values.username}
-            placeholder="Your name"
+            placeholder="username"
             variant="outlined"
             onChange={handleChange}
           />

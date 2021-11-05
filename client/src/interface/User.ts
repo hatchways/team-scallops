@@ -4,6 +4,7 @@ export interface User {
   email: string;
   username: string;
   isSitter?: boolean;
+  tutorialDone?: boolean;
 }
 
 export interface SearchUsersApiData {

@@ -28,6 +28,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  tutorialDone: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
 });
 
 userSchema.methods.matchPassword = async function (enteredPassword) {

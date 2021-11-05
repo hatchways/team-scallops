@@ -1,5 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/useAuthContext';
+import { useState } from 'react';
+import Tour from 'reactour';
+
 import {
   Toolbar,
   AppBar,
@@ -16,8 +19,23 @@ import Logo from '../../images/logo.png';
 import useStyles from './useStyles';
 
 function LoggedInBar({ classes, loggedInUser }: any): JSX.Element {
+  const [state, setState] = useState({
+    isTourOpen: true,
+  });
+
+  const closeTour = () => {
+    setState({ isTourOpen: false });
+  };
+
+  const openTour = () => {
+    setState({ isTourOpen: true });
+  };
   return (
     <Box>
+      {console.log(loggedInUser.tutorialDone)}
+      {loggedInUser && !loggedInUser.tutorialDone && (
+        <Tour steps={steps} isOpen={state.isTourOpen} onRequestClose={closeTour} />
+      )}
       <Button component={NavLink} to="/dashboard" className={classes.menuBarButton}>
         <Badge color="primary" variant="dot">
           <Typography variant="h6" color="textPrimary" className={`${classes.menuBarText} ${classes.mobileView}`}>
@@ -107,3 +125,11 @@ export default function NavBar(): JSX.Element {
     </>
   );
 }
+
+const steps = [
+  {
+    selector: '.first-step',
+    content: 'This is my first Step',
+  },
+  // ...
+];
