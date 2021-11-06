@@ -1,35 +1,32 @@
 import { Typography, Button, TextField, Select, CircularProgress, Grid, MenuItem } from '@material-ui/core';
 import { Formik } from 'formik';
 import { useState, useEffect } from 'react';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../../../context/useAuthContext';
 import useStyles from './useStyles';
 import moment from 'moment';
+import { useSnackBar } from '../../../../context/useSnackbarContext';
 moment().format();
 
 export default function ProfileEditForm(): JSX.Element {
   const { loggedInUser } = useAuth();
+  const { updateSnackBarMessage } = useSnackBar();
   const [hasProfile, setHasProfile] = useState(false);
   const classes = useStyles();
-  const [getDays, setDays] = useState(31);
   const [state, setState] = useState({
     firstName: '',
     lastName: '',
     email: '',
     gender: '',
     birthday: '',
-    dobDay: '10',
-    dobMonth: '10',
-    dobYear: '2020',
+    dobDay: 10,
+    dobMonth: 'May',
+    dobYear: 2020,
     phone: '',
     address: '',
     description: '',
     profile: {},
-  });
-  const [birthday, setBirthday] = useState({
-    day: '19',
-    month: '10',
-    year: '2020',
   });
 
   const textboxSize = 7;
@@ -61,12 +58,10 @@ export default function ProfileEditForm(): JSX.Element {
       return Array.from({ length: back }, (v, i) => year - back + i + 1);
     };
 
-    const days = (year: any, month: any) => {
-      const mnt = `${parseInt(year)} ${parseInt(month)}`;
-      const md = moment(mnt, 'YYYY-MM').daysInMonth();
-
-      const test = [...Array(+md + 1).keys()];
-      test.shift();
+    const days = (year = 2020, month = 'May') => {
+      const mnt = `${year} ${month}`;
+      const md = moment(mnt, 'YYYY-MMMM').daysInMonth();
+      const test = [...Array(md).keys()];
       return test;
     };
     return (
@@ -83,10 +78,10 @@ export default function ProfileEditForm(): JSX.Element {
               email: state.email,
               gender: state.gender,
               birthday: state.birthday,
-              dobDay: state.birthday.slice(8, 10),
-              dobMonth: state.birthday.slice(5, 7),
-              dobYear: state.birthday.slice(0, 4),
-              dayArray: days(birthday.year, birthday.month),
+              dobDay: parseInt(state.birthday.slice(8, 10)) || state.dobDay,
+              dobMonth: state.birthday.slice(5, 7) || state.dobMonth,
+              dobYear: state.birthday.slice(0, 4) || state.dobYear,
+              dayArray: days(state.dobYear, state.dobMonth),
               monthArray: [...moment.months()],
               yearArray: years(),
               phone: state.phone,
@@ -108,12 +103,19 @@ export default function ProfileEditForm(): JSX.Element {
                 address,
                 description,
               };
-
-              setTimeout(() => {
+              setTimeout(async () => {
                 if (!hasProfile) {
-                  axios.post('/profile/', modifiedValues);
+                  await axios.post('/profile/', modifiedValues);
+                  updateSnackBarMessage('Profile created!');
                 } else {
-                  axios.patch('/profile/', modifiedValues);
+                  await axios
+                    .patch('/profile/', modifiedValues)
+                    .catch((error) => {
+                      updateSnackBarMessage(error);
+                    })
+                    .then((response) => {
+                      updateSnackBarMessage('success!');
+                    });
                 }
                 actions.setSubmitting(false);
               }, 1000);
@@ -128,6 +130,7 @@ export default function ProfileEditForm(): JSX.Element {
                   <Grid item className={`${classes.textboxContainer}`} justify="flex-end" xs={textboxSize}>
                     <TextField
                       className={`${classes.textbox}`}
+                      required
                       placeholder="John"
                       size="medium"
                       id="firstName"
@@ -144,6 +147,7 @@ export default function ProfileEditForm(): JSX.Element {
 
                   <Grid item className={`${classes.textboxContainer}`} justify="flex-end" xs={textboxSize}>
                     <TextField
+                      required
                       placeholder="Doe"
                       className={`${classes.textbox}`}
                       size="medium"
@@ -178,13 +182,14 @@ export default function ProfileEditForm(): JSX.Element {
                   </Grid>
                   <Grid item className={`${classes.textboxContainer}`} justify="flex-end" xs={textboxSize}>
                     <Select
+                      required
                       className={`${classes.birthday}`}
                       id="dobDay"
                       name="dobDay"
                       onChange={props.handleChange}
                       variant="outlined"
                       type="text"
-                      value={+props.values.dobDay}
+                      value={props.values.dobDay}
                     >
                       {props.values.dayArray &&
                         props.values.dayArray.map((item, key) => {
@@ -196,6 +201,7 @@ export default function ProfileEditForm(): JSX.Element {
                         })}
                     </Select>
                     <Select
+                      required
                       className={`${classes.birthday}`}
                       id="dobMonth"
                       name="dobMonth"
@@ -215,6 +221,7 @@ export default function ProfileEditForm(): JSX.Element {
                     </Select>
 
                     <Select
+                      required
                       className={`${classes.birthday}`}
                       id="dobYear"
                       name="dobYear"
@@ -276,6 +283,7 @@ export default function ProfileEditForm(): JSX.Element {
                       onChange={props.handleChange}
                       variant="outlined"
                       type="text"
+                      placeholder="Toronto, Ontario"
                       value={props.values.address}
                     ></TextField>
                   </Grid>

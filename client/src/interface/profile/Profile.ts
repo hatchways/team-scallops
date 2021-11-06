@@ -4,12 +4,26 @@ type image = {
 };
 
 export interface Profile {
+  _id: string;
   firstName: string;
   lastName: string;
-  gender: string;
-  phone: string;
-  address: string;
+  gender?: string;
+  birthday?: Date | string;
+  phone?: number;
+  address?: string;
+  description?: string;
+  availability: AvailabilityInDays;
   available: boolean;
-  description: string;
+  user: string;
   image: image;
+}
+
+interface AvailabilityInDays {
+  monday: boolean;
+  tuesday: boolean;
+  wednesday: boolean;
+  thursday: boolean;
+  friday: boolean;
+  saturday: boolean;
+  sunday: boolean;
 }
