@@ -36,6 +36,8 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
   const ownerExists = await User.findById(ownerId);
   const sitterExists = await User.findById(sitterId);
 
+  console.log("Until here!");
+
   // check if the payment mehtod exist for the owner
   const cards = await stripe.customers.listSources(
     ownerExists.stripeCustomerId,
@@ -44,18 +46,20 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
       limit: 5,
     }
   );
+  console.log("Until here too!");
 
   if (!cards.data.length) {
     res
       .status(400)
       .json({ error: { message: "No cards are there in User profile" } });
   }
+  console.log("Until here 3!");
 
   // add a hold if the payment method exists
   const charge = await stripe.charges.create({
     amount: totalPrice * 100,
     currency: "cad",
-    describe: "Charge for dog sitting",
+    description: "Charge for dog sitting",
     customer: ownerExists.stripeCustomerId,
     capture: false,
   });
@@ -108,24 +112,35 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
   const isOwnedByUser = request.owner == userId || request.sitter == userId;
 
   if (isOwnedByUser) {
-    Object.entries(input).forEach(async ([key, value]) => {
-      if (value) {
-        if (key === "status" && value === "PAID") return;
-        else if (key === "status" && value === "ACCEPTED") {
-          // try to charge the payment here
-          const charge = await stripe.charge.capture(request.chargeId);
-        } else if (key === "status" && value === "DECLINED") {
-          // remove the hold
-          console.log("Remove the charge please!!!");
-        } else if (key === "startDate") {
-          request.startDate = new Date(value);
-        } else if (key === "endDate") {
-          request.endDate = new Date(value);
-        } else {
-          request[key] = value;
+    await Promise.all(
+      Object.entries(input).map(async ([key, value]) => {
+        if (value) {
+          if (key === "status" && value === "PAID") return;
+          else if (key === "status" && value === "ACCEPTED") {
+            // try to charge the payment here
+            console.log("Accepted");
+            const charge = await stripe.charges.capture(request.chargeId);
+            if (charge.status === "failed") {
+              res.status(400);
+            } else {
+              console.log("Status changed");
+              request.status = "PAID";
+            }
+          } else if (key === "status" && value === "DECLINED") {
+            // remove the hold
+            console.log("Remove the charge please!!!");
+          } else if (key === "startDate") {
+            request.startDate = new Date(value);
+          } else if (key === "endDate") {
+            request.endDate = new Date(value);
+          } else {
+            request[key] = value;
+          }
         }
-      }
-    });
+      })
+    );
+
+    console.log(request);
 
     await request.save();
     return res.status(200).json({ request });

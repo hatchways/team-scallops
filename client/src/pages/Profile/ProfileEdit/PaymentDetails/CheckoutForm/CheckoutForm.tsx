@@ -10,8 +10,8 @@ import clsx from 'clsx';
 import { CardDetails } from '../../../../../interface/Payment';
 import { useSnackBar } from '../../../../../context/useSnackbarContext';
 import useStyles from './useStyles';
-import MasterCardImg from '../../../../../Images/Mastercard.png';
-import VisaImg from '../../../../../Images/Visa.png';
+import MasterCardImg from '../../../../../images/Mastercard.png';
+import VisaImg from '../../../../../images/Visa.png';
 import { da } from 'date-fns/locale';
 
 function CheckoutForm() {

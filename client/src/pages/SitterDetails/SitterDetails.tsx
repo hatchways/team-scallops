@@ -82,7 +82,7 @@ function SitterDetails(): JSX.Element {
     const endDate = convertToDateTime(dropOffDate, dropOffTime);
     const selectedUserSitterId = profile?.user || '';
 
-    createRequest(selectedUserSitterId, startDate, endDate).then((data) => {
+    createRequest(selectedUserSitterId, startDate, endDate, 'WALKING', 14).then((data) => {
       if (data.error) {
         console.error({ error: data.error.message });
         updateSnackBarMessage('Please log in and try again!');
