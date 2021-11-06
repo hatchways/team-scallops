@@ -10,6 +10,8 @@ import clsx from 'clsx';
 import { CardDetails } from '../../../../../interface/Payment';
 import { useSnackBar } from '../../../../../context/useSnackbarContext';
 import useStyles from './useStyles';
+import MasterCardImg from '../../../../../Images/Mastercard.png';
+import VisaImg from '../../../../../Images/Visa.png';
 import { da } from 'date-fns/locale';
 
 function CheckoutForm() {
@@ -105,65 +107,71 @@ function CheckoutForm() {
     },
   };
 
+  const logoSelector = (brand: string) => {
+    switch (brand) {
+      case 'Visa':
+        return VisaImg;
+      case 'MasterCard':
+        return MasterCardImg;
+      default:
+        return VisaImg;
+    }
+  };
+
   return (
-    <Box padding="3rem 6rem">
-      <Grid container justify="center" component={Paper} className={classes.container}>
-        <Typography align="center" variant="h5" className={classes.heading} component="h2">
-          Payment Methods
-        </Typography>
-        <Typography align="left" variant="body1" className={classes.subheading}>
-          Saved Payment Profiles:
-        </Typography>
-        <Grid container direction="row" alignItems="center" className={classes.cardContainer}>
-          {cards.length ? (
-            cards.map((card) => (
-              <Box
-                key={card.id}
-                display="flex"
-                flexDirection="column"
-                className={classes.card}
-                onClick={() => changeDefault(card.id)}
-              >
-                <Box display="flex" justifyContent="space-between">
-                  {/* <img
-                    src={cardLogos.find(({ brand }) => brand === method.brand)?.logo || defaultCardLogo}
-                    alt={method.brand}
-                    className={classes.image}
-                  /> */}
-                  {defaultCardId === card.id && <CheckCircle color="primary" />}
-                </Box>
-                <Typography variant="body1" className={classes.bold}>
-                  **** **** **** {card.last4}
-                </Typography>
-                <Typography variant="button" className={clsx(classes.bold, classes.light)}>
-                  {/* Exp. date {formatCardDate(method.expMonth)}/{formatCardDate(method.expYear)} */}
-                </Typography>
-                <Typography variant="h6" className={classes.bold}>
-                  {card.name}
-                </Typography>
+    <Box display="flex" flexDirection="column" justifyContent="center" className={classes.container}>
+      <Typography align="center" variant="h5" className={classes.heading} component="h2">
+        Payment Methods
+      </Typography>
+      <Typography align="left" variant="body1" className={classes.subheading}>
+        Saved Payment Profiles:
+      </Typography>
+      <Box
+        display="flex"
+        justifyContent="flex-start"
+        alignSelf="center"
+        alignItems="center"
+        flexWrap="wrap"
+        className={classes.cardContainer}
+      >
+        {cards.length ? (
+          cards.map((card) => (
+            <Box key={card.id} className={classes.card} onClick={() => changeDefault(card.id)}>
+              <Box display="flex" justifyContent="space-between">
+                <img src={logoSelector(card.brand)} alt={card.brand} className={classes.image} />
+                {defaultCardId === card.id && <CheckCircle color="primary" />}
               </Box>
-            ))
-          ) : (
-            <Typography align="center" variant="h6">
-              No cards to display
-            </Typography>
-          )}
-        </Grid>
-        <Box display="flex" alignContent="flex-start" width="100%">
-          {addCard ? (
-            <form onSubmit={handleSubmit} className={classes.form}>
-              <CardElement options={CardOptions} />
-              <Button type="submit" color="primary" variant="outlined" className={classes.formButton}>
-                {savingCard ? <CircularProgress size="2rem" thickness={1.5} /> : 'Add card'}
-              </Button>
-            </form>
-          ) : (
-            <Button disabled={!stripe} onClick={() => setAddCard(true)} color="primary" variant="outlined" size="large">
-              Add new payment profile
+              <Typography variant="body1" className={classes.bold}>
+                **** **** **** {card.last4}
+              </Typography>
+              <Typography variant="button" className={clsx(classes.bold, classes.light)}>
+                {/* Exp. date {formatCardDate(method.expMonth)}/{formatCardDate(method.expYear)} */}
+              </Typography>
+              <Typography variant="h6" className={classes.bold}>
+                {card.name}
+              </Typography>
+            </Box>
+          ))
+        ) : (
+          <Typography align="center" variant="h6">
+            No cards to display
+          </Typography>
+        )}
+      </Box>
+      <Box display="flex" alignContent="flex-start" width="100%">
+        {addCard ? (
+          <form onSubmit={handleSubmit} className={classes.form}>
+            <CardElement options={CardOptions} />
+            <Button type="submit" color="primary" variant="outlined" className={classes.formButton}>
+              {savingCard ? <CircularProgress size="2rem" thickness={1.5} /> : 'Add card'}
             </Button>
-          )}
-        </Box>
-      </Grid>
+          </form>
+        ) : (
+          <Button disabled={!stripe} onClick={() => setAddCard(true)} color="primary" variant="outlined" size="large">
+            Add new payment profile
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 }

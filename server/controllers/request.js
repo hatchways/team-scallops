@@ -108,7 +108,7 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
   const isOwnedByUser = request.owner == userId || request.sitter == userId;
 
   if (isOwnedByUser) {
-    Object.entries(input).forEach(([key, value]) => {
+    Object.entries(input).forEach(async ([key, value]) => {
       if (value) {
         if (key === "status" && value === "PAID") return;
         else if (key === "status" && value === "ACCEPTED") {
