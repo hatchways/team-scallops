@@ -1,7 +1,11 @@
 const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
+const { convertBufferToString } = require("../middleware/multer");
+const Cloudinary = require("cloudinary");
 
 exports.post = asyncHandler(async (req, res) => {
+  const id = req.user.id;
+  const email = req.user.email;
   const {
     firstName,
     lastName,
@@ -12,12 +16,11 @@ exports.post = asyncHandler(async (req, res) => {
     description,
     availability,
     available,
+    image,
   } = req.body;
-  const id = req.user.id;
-  const email = req.user.email;
   if (!firstName || !lastName || !id) {
     res.status(400);
-    throw new Error("Invalid request");
+    throw new Error("Invalid request," + firstName, lastName, id);
   }
 
   const profile = await Profile.create({
@@ -31,40 +34,17 @@ exports.post = asyncHandler(async (req, res) => {
     description,
     availability,
     available,
+    image,
   });
   res.status(201).json({ profile });
 });
 
 exports.patch = asyncHandler(async (req, res) => {
-  const {
-    firstName,
-    lastName,
-    gender,
-    birthday,
-    phone,
-    address,
-    description,
-    availability,
-    available,
-  } = req.body;
   const id = req.user.id;
   const idExists = await Profile.findOne({ user: id });
 
   if (idExists) {
-    const update = await Profile.updateOne(
-      { user: id },
-      {
-        firstName,
-        lastName,
-        gender,
-        birthday,
-        phone,
-        address,
-        description,
-        availability,
-        available,
-      }
-    );
+    const update = await Profile.updateOne({ user: id }, req.body);
     res.status(200).json({ update: update });
   } else {
     res.status(500);
@@ -73,7 +53,7 @@ exports.patch = asyncHandler(async (req, res) => {
 });
 
 exports.get = asyncHandler(async (req, res) => {
-  const id = req.user.id;
+  const id = req.params.id || req.user.id;
   let profile;
   if (id) {
     profile = await Profile.findOne({ user: id });

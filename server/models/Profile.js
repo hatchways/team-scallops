@@ -4,7 +4,8 @@ const profileSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
-    ref: "User",
+    unique: true,
+    ref: "user",
   },
   firstName: {
     type: String,
@@ -28,6 +29,10 @@ const profileSchema = new mongoose.Schema({
   },
   description: {
     type: String,
+  },
+  image: {
+    url: String,
+    publicId: String,
   },
   availability: {
     monday: {

@@ -21,7 +21,7 @@ exports.secret = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user.id);
 
   const intent = await stripe.setupIntents.create({
-    customer: user.StripeCustomerId,
+    customer: user.stripeCustomerId,
     payment_method_types: ["card"],
   });
   if (!intent.error) {

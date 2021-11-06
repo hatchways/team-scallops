@@ -78,7 +78,7 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
     });
 
     await request.save();
-    res.status(201).json({ request });
+    return res.status(201).json({ request });
   }
 
   res.status(500);
