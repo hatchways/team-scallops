@@ -18,6 +18,8 @@ const profileRouter = require("./routes/profile");
 const messageRouter = require("./routes/message");
 const conversationRouter = require("./routes/conversation");
 const requestRouter = require("./routes/request");
+const paymentRouter = require("./routes/payment");
+
 const reviewsRouter = require("./routes/reviews");
 
 const { cloudinaryConfig } = require("./config/cloudinary");
@@ -38,21 +40,42 @@ const io = socketio(server, {
 io.use(socketAuthVerify);
 
 io.on("connection", (socket) => {
+  if (!onlineUserLog.checkInLog(socket.user)) {
+    const newUser = onlineUserLog.addUser(socket.user, socket.id);
+    if (!newUser) return;
+
+    const allUsersOnline = onlineUserLog.getAll();
+    socket.broadcast.emit("allUsersOnlineRes", allUsersOnline);
+  } else {
+    socket.disconnect();
+    return;
+  }
+
   socket.on("disconnect", () => {
     const deletedUser = onlineUserLog.removeUser(socket.user);
-
     if (!deletedUser) return;
-    socket.to("online").emit("userDisconnected", deletedUser);
+
+    const allUsersOnline = onlineUserLog.getAll();
+    io.emit("allUsersOnlineRes", allUsersOnline);
   });
 
-  socket.on("online", () => {
-    if (!onlineUserLog.checkInLog(socket.user)) {
-      const newUser = onlineUserLog.addUser(socket.user, socket.id);
-      if (!newUser) return;
-      socket.join("online");
-      socket.to("online").emit("newUserOnline", newUser);
-    }
-    return;
+  socket.on("allUsersOnline", () => {
+    const allUsersOnline = onlineUserLog.getAll();
+    io.to(socket.id).emit("allUsersOnlineRes", allUsersOnline);
+  });
+
+  socket.on("sendMessage", (message, receiverId) => {
+    if (
+      !message.conversation ||
+      !message.sender ||
+      !message.text ||
+      !message._id
+    )
+      return;
+
+    const receiverSocket = onlineUserLog.getUserSocket(receiverId);
+    if (!receiverSocket) return;
+    io.to(receiverSocket).emit("newMessage", message);
   });
 });
 
@@ -77,6 +100,7 @@ app.use("/profile", profileRouter);
 app.use("/message", messageRouter);
 app.use("/conversation", conversationRouter);
 app.use("/request", requestRouter);
+app.use("/payment", paymentRouter);
 app.use("/reviews", reviewsRouter);
 
 if (process.env.NODE_ENV === "production") {

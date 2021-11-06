@@ -1,6 +1,7 @@
 const User = require("../models/User");
 const asyncHandler = require("express-async-handler");
 const generateToken = require("../utils/generateToken");
+const { stripeSetup } = require("./payments");
 
 // @route POST /auth/register
 // @desc Register user
@@ -21,13 +22,14 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
     res.status(400);
     throw new Error("A user with that username already exists");
   }
+  const stripeCustomerId = await stripeSetup(email);
 
   const user = await User.create({
     username,
     email,
     password,
+    stripeCustomerId,
   });
-
   if (user) {
     const token = generateToken(user._id);
     const secondsInWeek = 604800;
@@ -43,6 +45,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
           id: user._id,
           username: user.username,
           email: user.email,
+          stripeCustomerId,
         },
       },
     });
@@ -101,6 +104,7 @@ exports.loadUser = asyncHandler(async (req, res, next) => {
         id: user._id,
         username: user.username,
         email: user.email,
+        isSitter: user.isSitter,
       },
     },
   });

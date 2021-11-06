@@ -1,10 +1,10 @@
 import { Grid, Paper, Typography } from '@material-ui/core';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import useStyles from './useStyles';
 import { Route, Switch } from 'react-router-dom';
 import ProfileMenu from '../../components/ProfileMenu/ProfileMenu';
 import ProfileEdit from './ProfileEdit/ProfileEdit';
 import ProfileUploadPhoto from '../../components/ProfileUploadPhoto/UploadPhoto';
+import SitterSignup from '../../components/SitterSignup/SitterSignup';
 
 export default function Profile(): JSX.Element {
   const classes = useStyles();
@@ -24,8 +24,10 @@ export default function Profile(): JSX.Element {
               <Route path="/profile/payment" />
               <Route path="/profile/security" />
               <Route path="/profile/settings" />
+              <Route path="/profile/:id" />
+
               <Route exact path="/profile">
-                <Typography>Profie page(Not implimented)</Typography>
+                <SitterSignup />
               </Route>
             </Switch>
           </Paper>

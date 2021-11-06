@@ -2,18 +2,23 @@ import { useState, useContext, createContext, FunctionComponent, useEffect, useC
 import { useHistory } from 'react-router-dom';
 import { AuthApiData, AuthApiDataSuccess } from '../interface/AuthApiData';
 import { User } from '../interface/User';
+import { Profile } from '../interface/profile/Profile';
+import { ProfileApiData } from '../interface/profile/ProfileApiData';
 import { useSocket } from './useSocketContext';
 import loginWithCookies from '../helpers/APICalls/loginWithCookies';
+import { getMyProfile } from '../helpers/APICalls/getProfilesApi';
 import logoutAPI from '../helpers/APICalls/logout';
 
 interface IAuthContext {
   loggedInUser: User | null | undefined;
+  myProfile: Profile | null | undefined;
   updateLoginContext: (data: AuthApiDataSuccess) => void;
   logout: () => void;
 }
 
 export const AuthContext = createContext<IAuthContext>({
   loggedInUser: undefined,
+  myProfile: undefined,
   updateLoginContext: () => null,
   logout: () => null,
 });
@@ -21,17 +26,20 @@ export const AuthContext = createContext<IAuthContext>({
 export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
   // default undefined before loading, once loaded provide user or null if logged out
   const [loggedInUser, setLoggedInUser] = useState<User | null | undefined>();
+  const [myProfile, setMyProfile] = useState<Profile | null | undefined>();
   const history = useHistory();
-  const { socket, disconnectSocket } = useSocket();
+  const { disconnectSocket } = useSocket();
 
   const updateLoginContext = useCallback(
     (data: AuthApiDataSuccess) => {
       setLoggedInUser(data.user);
-      socket?.emit('online');
       history.push('/dashboard');
     },
-    [history, socket],
+    [history],
   );
+  const updateMyProfile = useCallback((data: ProfileApiData) => {
+    setMyProfile(data.profile);
+  }, []);
 
   const logout = useCallback(async () => {
     // needed to remove token cookie
@@ -54,14 +62,31 @@ export const AuthProvider: FunctionComponent = ({ children }): JSX.Element => {
         } else {
           // don't need to provide error feedback as this just means user doesn't have saved cookies or the cookies have not been authenticated on the backend
           setLoggedInUser(null);
-          history.push('/land');
+          // history.push('/login');
         }
       });
     };
     checkLoginWithCookies();
   }, [updateLoginContext, history]);
 
-  return <AuthContext.Provider value={{ loggedInUser, updateLoginContext, logout }}>{children}</AuthContext.Provider>;
+  useEffect(() => {
+    const fetchMyProfile = async () => {
+      await getMyProfile().then((data: ProfileApiData) => {
+        if (data.profile) {
+          updateMyProfile(data);
+        } else {
+          setLoggedInUser(null);
+        }
+      });
+    };
+    fetchMyProfile();
+  }, [updateMyProfile]);
+
+  return (
+    <AuthContext.Provider value={{ loggedInUser, myProfile, updateLoginContext, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export function useAuth(): IAuthContext {

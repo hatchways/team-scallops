@@ -27,11 +27,17 @@ exports.postMessage = asyncHandler(async (req, res, next) => {
     conversation: conversation._id,
   });
 
+  await lastMessage.populate("sender", "username email").execPopulate();
+
   conversation.set({
     lastMessage: lastMessage._id,
   });
   conversation.save();
 
   res.status(201);
-  res.json(lastMessage);
+  res.json({
+    success: {
+      message: lastMessage,
+    },
+  });
 });

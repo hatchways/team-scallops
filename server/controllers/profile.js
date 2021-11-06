@@ -7,17 +7,6 @@ const User = require("../models/User");
 exports.post = asyncHandler(async (req, res) => {
   const id = req.user.id;
   const email = req.user.email;
-
-  if (req.file) {
-    cloudinaryImg = await Cloudinary.v2.uploader.upload(
-      convertBufferToString(req).content
-    );
-    req.body.image = {
-      url: cloudinaryImg.secure_url,
-      public_id: cloudinaryImg.public_id,
-    };
-  }
-
   const {
     firstName,
     lastName,
@@ -32,7 +21,7 @@ exports.post = asyncHandler(async (req, res) => {
   } = req.body;
   if (!firstName || !lastName || !id) {
     res.status(400);
-    throw new Error("Invalid request");
+    throw new Error("Invalid request," + firstName, lastName, id);
   }
 
   const profile = await Profile.create({
@@ -59,37 +48,12 @@ exports.post = asyncHandler(async (req, res) => {
 });
 
 exports.patch = asyncHandler(async (req, res) => {
-  const {
-    firstName,
-    lastName,
-    gender,
-    birthday,
-    phone,
-    address,
-    description,
-    availability,
-    available,
-  } = req.body;
   const id = req.user.id;
   const idExists = await Profile.findOne({ user: id });
 
   if (idExists) {
-    const update = await Profile.updateOne(
-      { user: id },
-      {
-        firstName,
-        lastName,
-        gender,
-        birthday,
-        phone,
-        address,
-        description,
-        availability,
-        available,
-      }
-    );
+    const update = await Profile.updateOne({ user: id }, req.body);
     res.status(200).json({ update: update });
-    i;
   } else {
     res.status(500);
     throw new Error("Invalid profile update");
@@ -97,7 +61,7 @@ exports.patch = asyncHandler(async (req, res) => {
 });
 
 exports.get = asyncHandler(async (req, res) => {
-  const id = req.user.id;
+  const id = req.params.id || req.user.id;
   let profile;
   if (id) {
     profile = await Profile.findOne({ user: id });
@@ -106,21 +70,6 @@ exports.get = asyncHandler(async (req, res) => {
   if (!id) {
     res.status(404);
     throw new Error("No user found");
-  }
-  res.status(200).json({ profile: profile });
-});
-
-exports.getSittersProfile = asyncHandler(async (req, res) => {
-  const sitterId = req.params.id;
-
-  let profile;
-  if (sitterId) {
-    profile = await Profile.findById(sitterId);
-  }
-
-  if (!sitterId) {
-    res.status(404);
-    throw new Error("No sitter found");
   }
   res.status(200).json({ profile: profile });
 });

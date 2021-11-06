@@ -1,5 +1,4 @@
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -18,14 +17,11 @@ export default function LandingPage(): JSX.Element {
     { where, dropIn, dropOff }: { where: string; dropIn: string; dropOff: string },
     { setSubmitting }: FormikHelpers<{ where: string; dropIn: string; dropOff: string }>,
   ): void => {
-    //TODO here we have all user inputs values(where,dropIn,dropOff) and ready to make a req to server
     setSubmitting(false);
   };
 
   return (
     <Grid container component="main" className={classes.root}>
-      <CssBaseline />
-
       <Grid item xs={12} sm={8} md={6} component={Paper} elevation={0}>
         <Box className={classes.paper}>
           <Typography className={classes.fontBold} variant="h2">
@@ -90,7 +86,7 @@ export default function LandingPage(): JSX.Element {
                 </Grid>
 
                 <Button type="submit" variant="contained" color="secondary" className={classes.submit}>
-                  FIND MY DOG SITTER
+                  Find my dog sitter
                 </Button>
               </form>
             )}

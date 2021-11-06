@@ -1,19 +1,33 @@
-import { Box } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
+import React, { useEffect } from 'react';
+import { Grid, Typography, Paper } from '@material-ui/core';
+import ChatSideBanner from '../../components/Messages/ChatSideBanner/ChatSideBanner';
+import MessageChat from '../../components/Messages/messageChat/MessageChat';
+import { useActiveConversation } from '../../context/useActiveConversationContext';
+import { useConversation } from '../../context/useConversationContext';
+import { useSocket } from '../../context/useSocketContext';
 import useStyles from './useStyles';
-
-const Profile = (): JSX.Element => {
+const Conversations = (): JSX.Element => {
   const classes = useStyles();
+  const { activeConversation } = useActiveConversation();
+  const { updateConversationContext } = useConversation();
+  const { socket } = useSocket();
+
+  useEffect(() => {
+    updateConversationContext();
+  }, [updateConversationContext]);
 
   return (
     <>
-      <Box display="flex" alignItems="center" justifyContent="center">
-        <Typography variant="h5" align="center">
-          Messages Page To be here!!
-        </Typography>
-      </Box>
+      <Grid container className={classes.conversationBody}>
+        <Grid item xs={3} elevation={2} component={Paper} className={classes.sideBar}>
+          <ChatSideBanner />
+        </Grid>
+        <Grid item xs={9} className={activeConversation ? classes.sideBar : classes.sideBarInactive}>
+          {activeConversation ? <MessageChat /> : <Typography>Please select a conversation</Typography>}
+        </Grid>
+      </Grid>
     </>
   );
 };
 
-export default Profile;
+export default Conversations;
