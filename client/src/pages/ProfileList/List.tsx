@@ -1,53 +1,39 @@
-import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useAuth } from '../../context/useAuthContext';
-
+import { useState, useEffect } from 'react';
+import { useTour } from '@reactour/tour';
 import useStyles from './useStyles';
-import DatePicker from '../../components/DateRangePicker/DatePicker';
+import { Grid, Paper, Typography, Box, Button, Input, CircularProgress } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import { Profile } from '../../interface/profile/Profile';
+import { useAuth } from '../../context/useAuthContext';
 import UserCard from '../../components/UserCard/UserCard';
-import { CircularProgress } from '@material-ui/core';
-import profilePhoto from '../../images/women-striped-blouse.png';
-import { format, formatDistance, formatRelative, subDays } from 'date-fns';
+import DatePicker from '../../components/DateRangePicker/DatePicker';
 import * as Moment from 'moment';
 import { extendMoment } from 'moment-range';
-const moment = extendMoment(Moment);
-
-import {
-  Grid,
-  Paper,
-  Typography,
-  Box,
-  Card,
-  Button,
-  CardContent,
-  Divider,
-  CardActionArea,
-  Avatar,
-  Input,
-} from '@material-ui/core';
-
-import { Profile } from '../../interface/profile/Profile';
-import { Filter } from '@material-ui/icons';
 
 export default function List(): JSX.Element {
+  const moment = extendMoment(Moment);
+  const { setIsOpen } = useTour();
+  const { loggedInUser } = useAuth();
+  const [hidden, setHidden] = useState(true);
   const classes = useStyles();
+  const [searchTerm, setSearchTerm] = useState('');
+
   const [state, setState] = useState({
     profiles: [],
   });
+  const profiles = state.profiles;
   const [selection, setSelection] = useState({
     startDate: new Date(),
     endDate: new Date(),
     key: 'selection',
   });
-  const loggedInUser = useAuth();
-  const profiles = state.profiles;
-  const [hidden, setHidden] = useState(true);
 
   const handleSelect = (ranges: any) => {
     setSelection(ranges.selection);
   };
+
   useEffect(() => {
     function fetchProfile() {
       axios.get('profile/all').then((response: any) => {
@@ -56,7 +42,7 @@ export default function List(): JSX.Element {
     }
     fetchProfile();
   }, []);
-  const [searchTerm, setSearchTerm] = useState('');
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
     event.preventDefault();
@@ -98,8 +84,10 @@ export default function List(): JSX.Element {
   } else {
     return (
       <Box>
+        {console.log(loggedInUser)}
+
         <Grid justify="center" container sm>
-          <Grid item className={`${classes.searchContainer}`}>
+          <Grid data-tour="step-1" item className={`${classes.searchContainer}`}>
             <Typography align="center" variant="h4">
               Your search results
             </Typography>
@@ -145,6 +133,7 @@ export default function List(): JSX.Element {
               <UserCard profile={profile} key={key} />
             ))}
         </Grid>
+        {loggedInUser && !loggedInUser.hasFinishedTutorial && setIsOpen(false)}
       </Box>
     );
   }

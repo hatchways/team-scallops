@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  tutorialDone: {
+  hasFinishedTutorial: {
     type: Boolean,
     required: true,
     default: false,
