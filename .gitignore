@@ -25,3 +25,4 @@ __snapshots__
 
 # debug & other vs code settings
 .vscode
+client/junit.xml
