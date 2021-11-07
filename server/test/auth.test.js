@@ -37,7 +37,7 @@ describe("Test for all auth endpoints", () => {
         .post("/auth/register")
         .send(newUser)
         .end((err, res) => {
-          res.should.have.status(409);
+          res.should.have.status(400);
           res.should.have.property("error");
           pass();
         });
