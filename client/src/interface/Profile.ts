@@ -14,7 +14,7 @@ export interface Profile {
   };
 }
 
-interface AvailabilityInDays {
+export interface AvailabilityInDays {
   monday: boolean;
   tuesday: boolean;
   wednesday: boolean;
