@@ -1,8 +1,9 @@
 import { FetchOptions } from '../../interface/FetchOptions';
 import { Profile } from '../../interface/Profile';
 import { Review } from '../../interface/Review';
+import { User } from '../../interface/User';
 
-export async function getSitterProfile(userId?: string): Promise<Profile> {
+export async function getSitterProfile(userId?: string | User): Promise<Profile> {
   const fetchOptions: FetchOptions = {
     method: 'GET',
     credentials: 'include',

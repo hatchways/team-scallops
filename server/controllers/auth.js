@@ -46,6 +46,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
           username: user.username,
           email: user.email,
           stripeCustomerId,
+          isSitter: user.isSitter,
         },
       },
     });
