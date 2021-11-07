@@ -11,17 +11,10 @@ exports.postReview = asyncHandler(async (req, res, next) => {
   const { reviewedProfileId, starRating, text } = req.body;
   const reviewerUserId = req.user.id;
 
-  console.log("Until here 1");
-  console.log(reviewedProfileId);
-
   const reviewedProfile = await Profile.findById(reviewedProfileId);
 
   // find reviewerUserObj
   const reviewerUser = await User.findById(reviewerUserId);
-
-  console.log("reviewerUserId : " + reviewerUserId);
-  // console.log(reviewedProfile);
-  console.log("reviewedProfile.user : " + reviewedProfile.user);
 
   // const reviewerProfile = await Profile.findOne({ user: reviewerUserId });
   // reviewedProfile.user:- 6186c30fa9c6dc15ae3ae99e
@@ -33,9 +26,6 @@ exports.postReview = asyncHandler(async (req, res, next) => {
       { $and: [{ owner: reviewedProfile.user }, { sitter: reviewerUserId }] },
     ],
   });
-
-  console.log("Until here 2");
-  console.log(requestObject);
 
   if (!requestObject) {
     res.status(400);
@@ -54,7 +44,6 @@ exports.postReview = asyncHandler(async (req, res, next) => {
     res.status(400);
     throw new Error("Invalid user profileId");
   }
-  console.log("Until here 3");
   if (
     !(
       (requestObject.sitter.equals(reviewedProfile.user) &&
@@ -68,22 +57,6 @@ exports.postReview = asyncHandler(async (req, res, next) => {
       "Both parties must be part of the Request and have opposite roles"
     );
   }
-  console.log("Until here 4");
-
-  // console.log(reviewerUser);
-
-  // const newReview = {
-  //   reviewerProfileId: reviewerUser.profile,
-  //   reviewedProfileId: reviewedProfile._id,
-  //   requestId: requestObject._id,
-  //   starRating: starRating,
-  //   text: text,
-  // };
-
-  // console.log(newReview);
-
-  console.log("Until here 5");
-  console.log(reviewerUser);
 
   const newReview = await Review.create({
     reviewerProfileId: reviewerUser.profile,
@@ -92,6 +65,20 @@ exports.postReview = asyncHandler(async (req, res, next) => {
     starRating,
     text,
   });
+
+  const allReviews = await Review.find({
+    reviewedProfileId: reviewedProfile._id,
+  });
+
+  const averageStar =
+    allReviews.reduce((total, review) => total + review.starRating, 0) /
+    allReviews.length;
+
+  console.log(averageStar);
+
+  reviewedProfile.averageRating = averageStar;
+
+  await reviewedProfile.save();
 
   return res.status(201).json({ success: { review: newReview } });
 });

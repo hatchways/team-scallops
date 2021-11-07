@@ -75,6 +75,12 @@ const profileSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  averageRating: {
+    type: Number,
+    min: 1,
+    max: 5,
+    default: 5,
+  },
 });
 
 module.exports = Profile = mongoose.model("Profile", profileSchema);

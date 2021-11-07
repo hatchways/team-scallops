@@ -33,11 +33,10 @@ import { createRequest } from '../../helpers/APICalls/requests';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { useSnackBar } from '../../context/useSnackbarContext';
 import { useAuth } from '../../context/useAuthContext';
-import ReviewProfile from '../../components/ReviewProfile/ReviewProfile';
-import ReviewCard from '../../components/ReviewCard/ReviewCard';
-import { getReviews } from '../../helpers/APICalls/Reviews';
+import { getReviews, postReview } from '../../helpers/APICalls/Reviews';
 import { Review } from '../../interface/Reviews';
 import AddReview from '../../components/AddReview/AddReview';
+import ReviewBox from '../../components/ReviewBox/ReviewBox';
 
 interface ParamsProps {
   id: string;
@@ -58,6 +57,7 @@ function SitterDetails(): JSX.Element {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [sitterDetails, setSitterDetails] = useState<Profile>();
   const [avgRating, setAvgRating] = useState<number>(0);
+  const [submittingReview, setSubmittingReview] = useState<boolean>(false);
   const classes = useStyles();
   const { loggedInUser } = useAuth();
   const { id: selectedSitterId }: ParamsProps = useParams();
@@ -120,6 +120,21 @@ function SitterDetails(): JSX.Element {
     });
   };
 
+  const handleClick = (stars: number, reviewText: string) => {
+    console.log(stars + ' + ' + reviewText);
+    if (!sitterDetails) return;
+    setSubmittingReview(true);
+    postReview(sitterDetails?.profile._id, stars, reviewText).then((data) => {
+      if (data.success) {
+        updateSnackBarMessage('Review added!');
+        setSubmittingReview(false);
+      } else if (data.error) {
+        updateSnackBarMessage(data.error);
+        setSubmittingReview(false);
+      }
+    });
+  };
+
   return (
     <>
       <Grid
@@ -164,12 +179,12 @@ function SitterDetails(): JSX.Element {
               </ImageList>
             </CardContent>
           </Card>
-          <Box className={classes.reviewsContainer}>
+          <Box>
             {reviews.map((review) => {
-              return <ReviewCard review={review} key={review._id} />;
+              return <ReviewBox review={review} key={review._id} />;
             })}
           </Box>
-          {loggedInUser && <AddReview profileId={sitterDetails?.profile._id || ''} />}
+          {loggedInUser && <AddReview handleClick={handleClick} />}
         </Grid>
         <Grid item xs={12} sm={5}>
           <Card className={classes.request}>

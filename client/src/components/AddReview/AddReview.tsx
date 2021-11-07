@@ -1,24 +1,10 @@
-import { Grid, Box, Paper, Typography, TextField, Button } from '@material-ui/core';
+import { Box, Paper, Typography, TextField, Button } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-import React, { useState } from 'react';
-import { useSnackBar } from '../../context/useSnackbarContext';
-import { postReview } from '../../helpers/APICalls/Reviews';
+import { useState } from 'react';
 
-const AddReview = ({ profileId }: { profileId: string }): JSX.Element => {
+const AddReview = ({ handleClick }: { handleClick: (stars: number, reviewText: string) => void }): JSX.Element => {
   const [reviewText, setReviewText] = useState<string>('');
-  const [stars, setStars] = useState<number | null>(null);
-  const { updateSnackBarMessage } = useSnackBar();
-
-  const handleClick = () => {
-    console.log(stars + ' + ' + reviewText);
-    postReview(profileId, stars, reviewText).then((data) => {
-      if (data.success) {
-        updateSnackBarMessage('Review added!');
-      } else if (data.error) {
-        updateSnackBarMessage(data.error);
-      }
-    });
-  };
+  const [stars, setStars] = useState<number>(0);
 
   return (
     <>
@@ -45,10 +31,16 @@ const AddReview = ({ profileId }: { profileId: string }): JSX.Element => {
         <Rating
           name="rating-submit"
           value={stars}
-          onChange={(event, newValue) => setStars(newValue)}
+          onChange={(event, newValue) => newValue && setStars(newValue)}
           style={{ marginTop: '1rem' }}
         />
-        <Button onClick={handleClick} size="large" variant="contained" color="secondary" style={{ marginTop: '1rem' }}>
+        <Button
+          onClick={() => handleClick(stars, reviewText)}
+          size="large"
+          variant="contained"
+          color="secondary"
+          style={{ marginTop: '1rem' }}
+        >
           Submit
         </Button>
       </Box>

@@ -66,9 +66,6 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(8),
     textTransform: 'uppercase',
   },
-  reviewsContainer: {
-    marginTop: theme.spacing(2),
-  },
 }));
 
 export default useStyles;
