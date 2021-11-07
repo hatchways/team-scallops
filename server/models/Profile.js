@@ -34,6 +34,7 @@ const profileSchema = new mongoose.Schema({
     url: String,
     publicId: String,
   },
+
   availability: {
     monday: {
       type: Boolean,

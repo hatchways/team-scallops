@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/useAuthContext';
+
 import {
   Toolbar,
   AppBar,
@@ -36,7 +37,7 @@ function LoggedInBar({ classes, loggedInUser }: any): JSX.Element {
         </Typography>
       </Button>
       <Button component={NavLink} to="/messages" className={`${classes.menuBarButton} ${classes.mobileView}`}>
-        <Badge color="primary" variant="dot">
+        <Badge data-tour="step-2" color="primary" variant="dot">
           <Typography variant="h6" color="textPrimary" className={classes.menuBarText}>
             Messages
           </Typography>

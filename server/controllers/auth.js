@@ -46,6 +46,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
           username: user.username,
           email: user.email,
           stripeCustomerId,
+          hasFinishedTutorial: false,
         },
       },
     });
@@ -105,6 +106,7 @@ exports.loadUser = asyncHandler(async (req, res, next) => {
         username: user.username,
         email: user.email,
         isSitter: user.isSitter,
+        hasFinishedTutorial: user.hasFinishedTutorial,
       },
     },
   });

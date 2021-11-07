@@ -29,8 +29,6 @@ export default function SitterSignup(): JSX.Element {
     }
     updateIsSitter();
     setChecked(checked);
-
-    console.log(loggedInUser);
   };
 
   return (

@@ -66,7 +66,7 @@ export default function ProfileEditForm(): JSX.Element {
     };
     return (
       <Grid container justify="center">
-        <Typography display="block" variant="h5" className={`${classes.title}`}>
+        <Typography data-tour="step-2" display="block" variant="h5" className={`${classes.title}`}>
           Edit Profile
         </Typography>
         <Grid item xs={12}>
