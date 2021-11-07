@@ -13,8 +13,6 @@ export async function getReviews(profileId: string): Promise<ReviewsApiData> {
     }));
 }
 
-// const { reviewedProfileId, starRating, text } = req.body;
-
 export async function postReview(profileId: string, stars: number | null, reviewText: string): Promise<ReviewsApiData> {
   const fetchOptions: FetchOptions = {
     method: 'POST',

@@ -1,5 +1,3 @@
-import { User } from './User';
-
 export interface Profile {
   profile: {
     _id: string;
