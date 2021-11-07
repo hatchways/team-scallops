@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Formik, FormikHelpers } from 'formik';
 import {
   Avatar,
@@ -57,23 +57,11 @@ function SitterDetails(): JSX.Element {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [sitterDetails, setSitterDetails] = useState<Profile>();
   const [avgRating, setAvgRating] = useState<number>(0);
-  const [submittingReview, setSubmittingReview] = useState<boolean>(false);
   const classes = useStyles();
   const { loggedInUser } = useAuth();
   const { id: selectedSitterId }: ParamsProps = useParams();
   const { updateSnackBarMessage } = useSnackBar();
-
-  function convertToDateTime(date: number | Date, time: number | Date) {
-    const dateStr = formatISO(date, { representation: 'date' });
-    const timeStr = formatISO(time, { representation: 'time' });
-
-    const dateAndTime = `${dateStr}T${timeStr}`;
-    const newDate = parseISO(dateAndTime);
-
-    return newDate;
-  }
-
-  useEffect(() => {
+  const fetchReviews = useCallback(() => {
     getSitterProfile(selectedSitterId).then((data) => {
       if (!data.profile) return;
 
@@ -95,6 +83,20 @@ function SitterDetails(): JSX.Element {
       });
     });
   }, [selectedSitterId, updateSnackBarMessage]);
+
+  function convertToDateTime(date: number | Date, time: number | Date) {
+    const dateStr = formatISO(date, { representation: 'date' });
+    const timeStr = formatISO(time, { representation: 'time' });
+
+    const dateAndTime = `${dateStr}T${timeStr}`;
+    const newDate = parseISO(dateAndTime);
+
+    return newDate;
+  }
+
+  useEffect(() => {
+    fetchReviews();
+  }, [fetchReviews]);
 
   const profile = sitterDetails?.profile;
 
@@ -123,14 +125,12 @@ function SitterDetails(): JSX.Element {
   const handleClick = (stars: number, reviewText: string) => {
     console.log(stars + ' + ' + reviewText);
     if (!sitterDetails) return;
-    setSubmittingReview(true);
     postReview(sitterDetails?.profile._id, stars, reviewText).then((data) => {
       if (data.success) {
         updateSnackBarMessage('Review added!');
-        setSubmittingReview(false);
+        fetchReviews();
       } else if (data.error) {
         updateSnackBarMessage(data.error);
-        setSubmittingReview(false);
       }
     });
   };

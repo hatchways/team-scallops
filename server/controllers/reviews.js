@@ -9,16 +9,16 @@ const asyncHandler = require("express-async-handler");
 // @access Private
 exports.postReview = asyncHandler(async (req, res, next) => {
   const { reviewedProfileId, starRating, text } = req.body;
-  const reviewerUserId = req.user.id;
-
   const reviewedProfile = await Profile.findById(reviewedProfileId);
-
-  // find reviewerUserObj
+  const reviewerUserId = req.user.id;
   const reviewerUser = await User.findById(reviewerUserId);
 
-  // const reviewerProfile = await Profile.findOne({ user: reviewerUserId });
-  // reviewedProfile.user:- 6186c30fa9c6dc15ae3ae99e
-  // reviewerUserId:- 6186c30fa9c6dc15ae3ae99e
+  const prevReview = await Review.findOne({
+    $and: [
+      { reviewerProfileId: reviewerUser.profile },
+      { reviewedProfileId: reviewedProfile._id },
+    ],
+  });
 
   const requestObject = await Request.findOne({
     $or: [
@@ -26,6 +26,11 @@ exports.postReview = asyncHandler(async (req, res, next) => {
       { $and: [{ owner: reviewedProfile.user }, { sitter: reviewerUserId }] },
     ],
   });
+
+  if (!!prevReview) {
+    res.status(400);
+    throw new Error("Review already posted for this profile!");
+  }
 
   if (!requestObject) {
     res.status(400);
@@ -74,10 +79,7 @@ exports.postReview = asyncHandler(async (req, res, next) => {
     allReviews.reduce((total, review) => total + review.starRating, 0) /
     allReviews.length;
 
-  console.log(averageStar);
-
   reviewedProfile.averageRating = averageStar;
-
   await reviewedProfile.save();
 
   return res.status(201).json({ success: { review: newReview } });
