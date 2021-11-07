@@ -13,7 +13,6 @@ import {
   Typography,
   CardActionArea,
   CircularProgress,
-  Paper,
 } from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import Rating from '@material-ui/lab/Rating';
@@ -66,7 +65,6 @@ function SitterDetails(): JSX.Element {
       if (!data.profile) return;
 
       getReviews(data?.profile._id).then((reviewData) => {
-        console.log(reviewData);
         if (!!reviewData.error) {
           updateSnackBarMessage('Encountered Error while fetching reviews data');
           return;
@@ -123,7 +121,6 @@ function SitterDetails(): JSX.Element {
   };
 
   const handleClick = (stars: number, reviewText: string) => {
-    console.log(stars + ' + ' + reviewText);
     if (!sitterDetails) return;
     postReview(sitterDetails?.profile._id, stars, reviewText).then((data) => {
       if (data.success) {
@@ -145,7 +142,7 @@ function SitterDetails(): JSX.Element {
         alignItems="flex-start"
         className={classes.root}
       >
-        <Grid item xs={12} sm={7} style={{ backgroundColor: 'red' }}>
+        <Grid item xs={12} sm={7}>
           <Card>
             <CardActionArea className={classes.media}>
               {/* TODO: Add coverPhoto and profilePhoto to the Profile Model, adjust to profile?.coverPhoto and profile?.profilePhoto accordingly. */}
@@ -191,7 +188,7 @@ function SitterDetails(): JSX.Element {
             <Box>
               {/* TODO: Add rate to the Profile Model, adjust to profile.rate. */}
               <Typography variant="h6" align="center" className={classes.title}>
-                $14/hr
+                $22/hr
               </Typography>
               {/* TODO: Create Rating Model and add the value. */}
               <Rating name="size-large" value={avgRating} size="large" className={classes.rating} readOnly />
