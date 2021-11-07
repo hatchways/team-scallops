@@ -16,13 +16,14 @@ import { Rating } from '@material-ui/lab';
 const Reviews = (): JSX.Element => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [profile, setProfile] = useState<Profile>();
+  const { myProfile } = useAuth();
   const [avgRating, setAvgRating] = useState<number>(0);
   const classes = useStyles();
   const { updateSnackBarMessage } = useSnackBar();
   // const { profileId } = useParams<{ profileId: string }>();
 
   useEffect(() => {
-    getReviews('617e1f43613a79778c086127').then((data) => {
+    getReviews('6186f80a8e26672c03e60518').then((data) => {
       console.log(data);
       if (!!data.error) {
         updateSnackBarMessage('Encountered Error while fetching reviews data');
@@ -38,7 +39,7 @@ const Reviews = (): JSX.Element => {
       }
     });
 
-    getSitterProfile('617e1f43613a79778c086127').then((data) => {
+    getSitterProfile('6186f7f88e26672c03e60512').then((data) => {
       console.log(data);
       if (!data) {
         updateSnackBarMessage('Encountered Error while fetching profile data');
@@ -46,7 +47,7 @@ const Reviews = (): JSX.Element => {
       }
       setProfile(data);
     });
-  }, [updateSnackBarMessage]);
+  }, [myProfile, updateSnackBarMessage]);
 
   const AddReview = (): JSX.Element => {
     const [reviewText, setReviewText] = useState<string>('');
@@ -54,7 +55,14 @@ const Reviews = (): JSX.Element => {
 
     const handleClick = () => {
       console.log(stars + ' + ' + reviewText);
-      postReview('617e1f43613a79778c086127', stars, reviewText);
+      if (!myProfile) return;
+      postReview('6186f80a8e26672c03e60518', stars, reviewText).then((data) => {
+        if (data.success) {
+          updateSnackBarMessage('Review added!');
+        } else if (data.error) {
+          updateSnackBarMessage(data.error);
+        }
+      });
     };
 
     return (
@@ -99,7 +107,7 @@ const Reviews = (): JSX.Element => {
     );
   };
 
-  if (!reviews.length || !profile) return <CircularProgress />;
+  // if (!reviews.length || !profile) return <CircularProgress />;
 
   return (
     <Grid container className={classes.root}>

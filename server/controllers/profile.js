@@ -38,12 +38,16 @@ exports.post = asyncHandler(async (req, res) => {
     image,
   });
 
+  console.log("Until here 1");
+
   const user = await User.findById(id);
   user.set({
-    profile: profile._id,
+    profile: profile,
   });
-  user.save();
 
+  await user.save();
+
+  console.log("Until there 1 !!");
   res.status(201).json({ profile });
 });
 

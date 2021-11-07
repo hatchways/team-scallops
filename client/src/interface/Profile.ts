@@ -12,7 +12,7 @@ export interface Profile {
     description?: string;
     availability: AvailabilityInDays;
     available: boolean;
-    user: User;
+    user: string;
   };
 }
 

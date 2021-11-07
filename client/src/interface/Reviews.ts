@@ -16,6 +16,6 @@ export interface ReviewsApiDataSuccess {
 }
 
 export interface ReviewsApiData {
-  error?: { message: string };
+  error?: string;
   success?: ReviewsApiDataSuccess;
 }

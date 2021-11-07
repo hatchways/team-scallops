@@ -12,7 +12,7 @@ interface Props {
 export default function ReviewProfile({ profile, avgRating }: Props): JSX.Element {
   const classes = useStyles();
   // temp as profile.profile is where data is
-  const userProfile = profile?.profile;
+  const userProfile = profile;
 
   return (
     <Grid item xs={8} className={classes.profileWrapper} component={Paper}>

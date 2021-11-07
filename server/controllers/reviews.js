@@ -12,6 +12,7 @@ exports.postReview = asyncHandler(async (req, res, next) => {
   const reviewerUserId = req.user.id;
 
   console.log("Until here 1");
+  console.log(reviewedProfileId);
 
   const reviewedProfile = await Profile.findById(reviewedProfileId);
 
@@ -19,9 +20,13 @@ exports.postReview = asyncHandler(async (req, res, next) => {
   const reviewerUser = await User.findById(reviewerUserId);
 
   console.log("reviewerUserId : " + reviewerUserId);
+  // console.log(reviewedProfile);
   console.log("reviewedProfile.user : " + reviewedProfile.user);
 
   // const reviewerProfile = await Profile.findOne({ user: reviewerUserId });
+  // reviewedProfile.user:- 6186c30fa9c6dc15ae3ae99e
+  // reviewerUserId:- 6186c30fa9c6dc15ae3ae99e
+
   const requestObject = await Request.findOne({
     $or: [
       { $and: [{ owner: reviewerUserId }, { sitter: reviewedProfile.user }] },
@@ -76,6 +81,9 @@ exports.postReview = asyncHandler(async (req, res, next) => {
   // };
 
   // console.log(newReview);
+
+  console.log("Until here 5");
+  console.log(reviewerUser);
 
   const newReview = await Review.create({
     reviewerProfileId: reviewerUser.profile,
