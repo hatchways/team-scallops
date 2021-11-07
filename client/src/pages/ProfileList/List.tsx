@@ -133,6 +133,7 @@ export default function List(): JSX.Element {
             </Box>
           </Grid>
         </Grid>
+        {/* Old Changes */}
         <Grid container spacing={10} className={`${classes.root}`} sm>
           {profiles
             .filter((profile: Profile) => {
@@ -144,6 +145,49 @@ export default function List(): JSX.Element {
             .map((profile, key) => (
               <UserCard profile={profile} key={key} />
             ))}
+          {/* New Changes */}
+          {/* <Grid container justify="center" spacing={6} className={`${classes.root}`}>
+          {profiles.map((profile, key) => {
+            const { firstName, lastName, user, description } = profile;
+            return (
+              user && (
+                <Grid item key={user}>
+                  <Card style={{ height: '100%' }} variant="outlined" key={key}>
+                    <CardActionArea component={Link} to={`profile/${user}`}>
+                      <Grid
+                        justify="center"
+                        alignItems="center"
+                        direction="column"
+                        container
+                        className={`${classes.card}`}
+                      >
+                        <Avatar src={profilePhoto} className={classes.avatar} />
+
+                        <CardContent>
+                          <Typography className={classes.fullName} variant="h6">
+                            {firstName} {lastName}
+                          </Typography>
+                          <Rating name="read-only" value={placeholder.rating} readOnly />
+
+                          <Typography>{description ? description : defaultDescription}</Typography>
+                        </CardContent>
+                      </Grid>
+                    </CardActionArea>
+                    <Divider light />
+                    <Grid container className={`${classes.bottom}`} spacing={2}>
+                      <Grid item>
+                        <Typography className={classes.location}>{placeholder.location}</Typography>
+                      </Grid>
+                      <Grid item>
+                        <Typography className={classes.price}>${placeholder.price}/day</Typography>
+                      </Grid>
+                    </Grid>
+                  </Card>
+                </Grid>
+              )
+            );
+          })} */}
+          {/* till here */}
         </Grid>
       </Box>
     );

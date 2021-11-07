@@ -17,6 +17,7 @@ exports.post = asyncHandler(async (req, res) => {
     availability,
     available,
     image,
+    ratePerDay,
   } = req.body;
   if (!firstName || !lastName || !id) {
     res.status(400);
@@ -35,16 +36,43 @@ exports.post = asyncHandler(async (req, res) => {
     availability,
     available,
     image,
+    ratePerDay,
   });
   res.status(201).json({ profile });
 });
 
 exports.patch = asyncHandler(async (req, res) => {
+  const {
+    firstName,
+    lastName,
+    gender,
+    birthday,
+    phone,
+    address,
+    description,
+    availability,
+    available,
+    ratePerDay,
+  } = req.body;
   const id = req.user.id;
   const idExists = await Profile.findOne({ user: id });
 
   if (idExists) {
-    const update = await Profile.updateOne({ user: id }, req.body);
+    const update = await Profile.updateOne(
+      { user: id },
+      {
+        firstName,
+        lastName,
+        gender,
+        birthday,
+        phone,
+        address,
+        description,
+        availability,
+        available,
+        ratePerDay,
+      }
+    );
     res.status(200).json({ update: update });
   } else {
     res.status(500);

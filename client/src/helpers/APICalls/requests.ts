@@ -16,13 +16,13 @@ export async function createRequest(
   sitterId: string,
   startDate: Date,
   endDate: Date,
-  serviceType?: string,
   totalPrice?: number,
+  serviceType?: string,
 ): Promise<RequestApiData> {
   const fetchOptions: FetchOptions = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sitterId, startDate, endDate, serviceType, totalPrice }),
+    body: JSON.stringify({ sitterId, startDate, endDate, totalPrice, serviceType }),
     credentials: 'include',
   };
   return await fetch('/request/', fetchOptions)
