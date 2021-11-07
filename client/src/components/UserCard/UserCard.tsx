@@ -21,7 +21,6 @@ import { Link } from 'react-router-dom';
 import useStyles from './useStyles';
 const profileImg = 'placeholderImage.png';
 const placeholder = {
-  rating: 5,
   price: 15,
   location: 'Toronto, Ontario',
 };
@@ -29,7 +28,7 @@ const defaultDescription = 'New pet sitter!';
 
 export default function UserCard(props: any): JSX.Element {
   const classes = useStyles();
-  const { firstName, lastName, user, description, address } = props.profile;
+  const { firstName, lastName, user, description, address, averageRating } = props.profile;
   return (
     <Grid item>
       <Card style={{ height: '100%' }} variant="outlined">
@@ -41,7 +40,7 @@ export default function UserCard(props: any): JSX.Element {
               <Typography className={classes.fullName} variant="h6">
                 {firstName} {lastName}
               </Typography>
-              <Rating name="read-only" value={placeholder.rating} readOnly />
+              <Rating name="read-only" value={averageRating} readOnly />
 
               <Typography>{description || defaultDescription}</Typography>
             </CardContent>

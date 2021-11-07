@@ -13,6 +13,7 @@ export interface Profile {
     availability: AvailabilityInDays;
     available: boolean;
     user: string;
+    averageRating?: number;
   };
 }
 

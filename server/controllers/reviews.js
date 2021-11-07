@@ -28,7 +28,7 @@ exports.postReview = asyncHandler(async (req, res, next) => {
   });
 
   if (!!prevReview) {
-    res.status(400);
+    res.status(401);
     throw new Error("Review already posted for this profile!");
   }
 
