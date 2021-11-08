@@ -13,6 +13,7 @@ export interface Profile {
     user: string;
     ratePerDay: number;
     image: Image;
+    averageRating?: number;
   };
 }
 

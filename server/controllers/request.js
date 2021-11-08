@@ -27,7 +27,7 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
   const ownerId = req.user.id;
   const { sitterId, startDate, endDate, serviceType, totalPrice } = req.body;
 
-  if (!sitterId || !startDate || !endDate) {
+  if (!sitterId || !startDate || !endDate || !serviceType || !totalPrice) {
     res.status(400);
     throw new Error("One of the required fields hasn't been completed");
   }
@@ -55,7 +55,6 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
 // @route POST /request/:id
 // @desc Update request dates, satus, serviceType and rating
 // @access Private
-
 exports.updateRequest = asyncHandler(async (req, res, next) => {
   const userId = req.user.id;
   const requestId = req.params.id;

@@ -2,6 +2,7 @@ const Profile = require("../models/Profile");
 const asyncHandler = require("express-async-handler");
 const { convertBufferToString } = require("../middleware/multer");
 const Cloudinary = require("cloudinary");
+const User = require("../models/User");
 
 exports.post = asyncHandler(async (req, res) => {
   const id = req.user.id;
@@ -38,6 +39,13 @@ exports.post = asyncHandler(async (req, res) => {
     image,
     ratePerDay,
   });
+
+  const user = await User.findById(id);
+  user.set({
+    profile: profile,
+  });
+
+  await user.save();
   res.status(201).json({ profile });
 });
 

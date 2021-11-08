@@ -80,6 +80,12 @@ const profileSchema = new mongoose.Schema({
     required: true,
     default: 40,
   },
+  averageRating: {
+    type: Number,
+    min: 1,
+    max: 5,
+    default: 5,
+  },
 });
 
 module.exports = Profile = mongoose.model("Profile", profileSchema);

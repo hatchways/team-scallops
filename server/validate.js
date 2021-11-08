@@ -39,7 +39,6 @@ exports.validatePostReview = [
     .notEmpty()
     .isInt({ min: 1, max: 5 }),
   check("reviewedProfileId", "reviewedProfileId is required").notEmpty(),
-  check("requestId", "requestId is required").notEmpty(),
   check("text", "text is required").isString().notEmpty(),
   (req, res, next) => {
     const errors = validationResult(req);
