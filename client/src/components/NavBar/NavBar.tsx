@@ -28,7 +28,7 @@ function LoggedInBar({ classes, loggedInUser }: any): JSX.Element {
       </Button>
       <Button
         component={NavLink}
-        to={loggedInUser.isSitter ? '/my-jobs' : 'my-sitters'}
+        to={loggedInUser.isSitter ? '/my-jobs' : '/my-sitters'}
         className={`${classes.menuBarButton} ${classes.mobileView}`}
       >
         <Typography variant="h6" color="textPrimary" className={classes.menuBarText}>
