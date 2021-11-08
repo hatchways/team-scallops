@@ -13,11 +13,13 @@ import {
   Typography,
   CardActionArea,
   CircularProgress,
+  InputAdornment,
 } from '@material-ui/core';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import Rating from '@material-ui/lab/Rating';
 
-import { TimePicker, KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { TimePicker, DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
 import dog from '../../images/shiba-inu.jpeg';
@@ -26,11 +28,12 @@ import person from '../../images/woman-green-jacket.png';
 import useStyles from './useStyles';
 import { useParams } from 'react-router-dom';
 import { Profile } from '../../interface/Profile';
-import { getSitterProfile } from '../../helpers/APICalls/profile';
-import { format, formatISO, parseISO } from 'date-fns';
+import { getSitterProfile, getSitterReviews } from '../../helpers/APICalls/profile';
+import { eachDayOfInterval, format, formatISO, parseISO } from 'date-fns';
 import { createRequest } from '../../helpers/APICalls/requests';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { useSnackBar } from '../../context/useSnackbarContext';
+import { Review, ReviewsApiData } from '../../interface/Review';
 
 interface ParamsProps {
   id: string;
@@ -52,6 +55,8 @@ function SitterDetails(): JSX.Element {
   const { id: selectedSitterId }: ParamsProps = useParams();
 
   const [sitterDetails, setSitterDetails] = useState<Profile>();
+  const [reviews, setReviews] = useState<Review[]>();
+  const [ratings, setRatings] = useState<number>();
 
   function convertToDateTime(date: number | Date, time: number | Date) {
     const dateStr = formatISO(date, { representation: 'date' });
@@ -67,9 +72,25 @@ function SitterDetails(): JSX.Element {
     async function getSitterDetails() {
       const sitterProfile = await getSitterProfile(selectedSitterId);
       setSitterDetails(sitterProfile);
+
+      const reviewsData = (await getSitterReviews(sitterProfile.profile?._id)) as ReviewsApiData;
+      if (reviewsData.error) {
+        console.error({ error: reviewsData.error.message });
+        return;
+      }
+      setReviews(reviewsData?.success?.reviews);
     }
+
     getSitterDetails();
   }, [selectedSitterId]);
+
+  useEffect(() => {
+    if (reviews?.length) {
+      const starRatings = reviews?.map((review) => review?.starRating);
+      const ratingAvg = starRatings?.reduce((prev, current) => Number(prev) + Number(current), 0) / starRatings.length;
+      setRatings(ratingAvg);
+    }
+  }, [reviews]);
 
   const profile = sitterDetails?.profile;
 
@@ -82,7 +103,14 @@ function SitterDetails(): JSX.Element {
     const endDate = convertToDateTime(dropOffDate, dropOffTime);
     const selectedUserSitterId = profile?.user || '';
 
-    createRequest(selectedUserSitterId, startDate, endDate).then((data) => {
+    const numberOfDays = eachDayOfInterval({
+      start: startDate,
+      end: endDate,
+    }).length;
+
+    const totalPrice = profile?.ratePerDay ? numberOfDays * Number(profile?.ratePerDay) : numberOfDays * 40;
+
+    createRequest(selectedUserSitterId, startDate, endDate, totalPrice).then((data) => {
       if (data.error) {
         console.error({ error: data.error.message });
         updateSnackBarMessage('Please log in and try again!');
@@ -144,12 +172,12 @@ function SitterDetails(): JSX.Element {
         <Grid item xs={12} sm={5}>
           <Card className={classes.request}>
             <Box>
-              {/* TODO: Add rate to the Profile Model, adjust to profile.rate. */}
               <Typography variant="h6" align="center" className={classes.title}>
-                $14/hr
+                {profile?.ratePerDay}/day
               </Typography>
-              {/* TODO: Create Rating Model and add the value. */}
-              <Rating name="size-large" defaultValue={4} size="large" className={classes.rating} readOnly />
+              {ratings !== undefined && (
+                <Rating name="size-large" defaultValue={ratings} size="large" className={classes.rating} readOnly />
+              )}
             </Box>
             <Formik
               initialValues={{
@@ -165,14 +193,20 @@ function SitterDetails(): JSX.Element {
                   <Box className={classes.datesBox}>
                     <Typography className={classes.datesTitle}>drop in</Typography>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
+                      <DatePicker
                         autoOk
                         disablePast
                         variant="inline"
                         inputVariant="outlined"
                         format="dd MMMM yyyy"
                         value={values.dropInDate}
-                        InputAdornmentProps={{ position: 'start' }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <CalendarTodayIcon />
+                            </InputAdornment>
+                          ),
+                        }}
                         onChange={(date: MaterialUiPickersDate) => setFieldValue('dropInDate', date)}
                       />
                       <TimePicker
@@ -187,7 +221,7 @@ function SitterDetails(): JSX.Element {
                   <Box className={classes.datesBox}>
                     <Typography className={classes.datesTitle}>drop off</Typography>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                      <KeyboardDatePicker
+                      <DatePicker
                         autoOk
                         disablePast
                         variant="inline"
@@ -195,7 +229,13 @@ function SitterDetails(): JSX.Element {
                         label=""
                         format="dd MMMM yyyy"
                         value={values.dropOffDate}
-                        InputAdornmentProps={{ position: 'start' }}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <CalendarTodayIcon />
+                            </InputAdornment>
+                          ),
+                        }}
                         onChange={(date: MaterialUiPickersDate) => setFieldValue('dropOffDate', date)}
                       />
                       <TimePicker

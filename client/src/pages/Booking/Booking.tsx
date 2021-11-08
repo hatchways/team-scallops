@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { DatePicker, Day, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { MuiThemeProvider } from '@material-ui/core';
-import { createMuiTheme } from '@material-ui/core';
+import { createTheme } from '@material-ui/core';
 import { isPast, isWithinInterval, isFuture, eachDayOfInterval, getDate, getMonth } from 'date-fns';
 import DateFnsUtils from '@date-io/date-fns';
 import Grid from '@material-ui/core/Grid';
@@ -21,7 +21,7 @@ import AlertTitle from '@material-ui/lab/AlertTitle';
 interface RequestsPerMonth {
   [key: number]: Array<number>;
 }
-const materialTheme = createMuiTheme({
+const materialTheme = createTheme({
   overrides: {
     MuiPickersCalendarHeader: {
       switchHeader: {

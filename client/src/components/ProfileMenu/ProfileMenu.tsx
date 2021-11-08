@@ -7,7 +7,7 @@ export default function ProfileMenu(): JSX.Element {
   const classes = useStyles();
 
   const { loggedInUser } = useAuth();
-
+  if (!loggedInUser) return <></>;
   return (
     <Box>
       <Grid item className={classes.menu}>
@@ -17,7 +17,7 @@ export default function ProfileMenu(): JSX.Element {
         <NavLink activeClassName={classes.active} className={classes.link} to="/profile/photo">
           Profile photo
         </NavLink>
-        {loggedInUser?.isSitter && (
+        {loggedInUser.isSitter && (
           <NavLink activeClassName={classes.active} className={classes.link} to="/profile/availability">
             Availability
           </NavLink>
