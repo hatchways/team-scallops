@@ -17,7 +17,6 @@ export default function ProfileMenu(): JSX.Element {
         <NavLink activeClassName={classes.active} className={classes.link} to="/profile/photo">
           Profile photo
         </NavLink>
-        {console.log(loggedInUser)}
         {loggedInUser.isSitter && (
           <NavLink activeClassName={classes.active} className={classes.link} to="/profile/availability">
             Availability
