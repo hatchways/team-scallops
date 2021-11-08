@@ -33,7 +33,7 @@ import { eachDayOfInterval, format, formatISO, parseISO } from 'date-fns';
 import { createRequest } from '../../helpers/APICalls/requests';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { useSnackBar } from '../../context/useSnackbarContext';
-import { Review, ReviewsApiData } from '../../interface/Review';
+import { Review, ReviewsApiData } from '../../interface/Reviews';
 import { useAuth } from '../../context/useAuthContext';
 import { getReviews, postReview } from '../../helpers/APICalls/Reviews';
 import AddReview from '../../components/AddReview/AddReview';
@@ -72,7 +72,7 @@ function SitterDetails(): JSX.Element {
         }
         if (!!reviewData.success) {
           setSitterDetails(data);
-          setReviews(reviewData.success?.reviews);
+          setReviews(reviewData.success.reviews);
         }
       });
     });
