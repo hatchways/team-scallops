@@ -23,4 +23,4 @@ COPY /client/ ./
 WORKDIR /app
 
 RUN ls
-CMD ["node", "/bin/www"]
+CMD ["node", "./bin/www"]
