@@ -27,10 +27,10 @@ function App(): JSX.Element {
       <CssBaseline />
       <BrowserRouter>
         <SnackBarProvider>
-          <AuthProvider>
-            <ActiveConversationProvider>
-              <ConversationProvider>
-                <SocketProvider>
+          <SocketProvider>
+            <AuthProvider>
+              <ActiveConversationProvider>
+                <ConversationProvider>
                   <NavBar />
                   <Switch>
                     <Route path="/search" component={List} />
@@ -51,10 +51,10 @@ function App(): JSX.Element {
                       <Redirect to="/login" />
                     </Route>
                   </Switch>
-                </SocketProvider>
-              </ConversationProvider>
-            </ActiveConversationProvider>
-          </AuthProvider>
+                </ConversationProvider>
+              </ActiveConversationProvider>
+            </AuthProvider>
+          </SocketProvider>
         </SnackBarProvider>
       </BrowserRouter>
     </MuiThemeProvider>
