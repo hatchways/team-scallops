@@ -38,6 +38,7 @@ import { useAuth } from '../../context/useAuthContext';
 import { getReviews, postReview } from '../../helpers/APICalls/Reviews';
 import AddReview from '../../components/AddReview/AddReview';
 import ReviewBox from '../../components/ReviewBox/ReviewBox';
+import postConversations from '../../helpers/APICalls/postConversation';
 
 interface ParamsProps {
   id: string;
@@ -114,6 +115,7 @@ function SitterDetails(): JSX.Element {
         console.error({ error: data.error.message });
         updateSnackBarMessage('Please log in and try again!');
       } else if (data.request) {
+        postConversations(selectedUserSitterId);
         updateSnackBarMessage('Your request was sent, please wait for the sitter to accept it.');
       } else {
         console.error({ data });

@@ -1,6 +1,8 @@
+require("dotenv").config();
 const Request = require("../models/Request");
 const asyncHandler = require("express-async-handler");
 const mongoose = require("mongoose");
+const stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 // @route GET /request/
 // @desc List of requests for logged in user
@@ -34,6 +36,32 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
   const ownerExists = await User.findById(ownerId);
   const sitterExists = await User.findById(sitterId);
 
+  const cards = await stripe.customers.listSources(
+    ownerExists.stripeCustomerId,
+    {
+      object: "card",
+      limit: 5,
+    }
+  );
+
+  if (!cards.data.length) {
+    res
+      .status(400)
+      .json({ error: { message: "No cards are there in User profile" } });
+  }
+
+  const charge = await stripe.charges.create({
+    amount: totalPrice * 100,
+    currency: "cad",
+    description: "Charge for dog sitting",
+    customer: ownerExists.stripeCustomerId,
+    capture: false,
+  });
+
+  if (charge.status === "failed") {
+    return res.status(400).json({ error: { message: "Cards was declined" } });
+  }
+
   if (ownerExists && sitterExists && ownerId !== sitterId) {
     const request = new Request({
       owner: ownerId,
@@ -42,6 +70,7 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
       endDate,
       serviceType,
       totalPrice,
+      chargeId: charge.id,
     });
 
     await request.save();
@@ -74,18 +103,36 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
   const isOwnedByUser = request.owner == userId || request.sitter == userId;
 
   if (isOwnedByUser) {
-    Object.entries(input).forEach(([key, value]) => {
-      if (value) {
-        if (key === "startDate") {
-          request.startDate = new Date(value);
+    await Promise.all(
+      Object.entries(input).map(async ([key, value]) => {
+        if (value) {
+          if (key === "status" && value === "PAID") return;
+          else if (key === "status" && value === "ACCEPTED") {
+            const charge = await stripe.charges.capture(request.chargeId);
+            if (charge.status === "failed") {
+              res.status(400);
+            } else {
+              request.status = "PAID";
+            }
+          } else if (key === "status" && value === "DECLINED") {
+            if (!request.chargeId) {
+              res.status(400);
+            }
+            await stripe.refunds.create({
+              charge: request.chargeId,
+            });
+            request.status = "DECLINED";
+            request.chargeId = null;
+          } else if (key === "startDate") {
+            request.startDate = new Date(value);
+          } else if (key === "endDate") {
+            request.endDate = new Date(value);
+          } else {
+            request[key] = value;
+          }
         }
-        if (key === "endDate") {
-          request.endDate = new Date(value);
-        } else {
-          request[key] = value;
-        }
-      }
-    });
+      })
+    );
 
     await request.save();
     return res.status(200).json({ request });

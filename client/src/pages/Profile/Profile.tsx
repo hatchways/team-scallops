@@ -3,6 +3,7 @@ import useStyles from './useStyles';
 import { Route, Switch } from 'react-router-dom';
 import ProfileMenu from '../../components/ProfileMenu/ProfileMenu';
 import ProfileEdit from './ProfileEdit/ProfileEdit';
+import PaymentDetails from './ProfileEdit/PaymentDetails/PaymentDetails';
 import ProfileUploadPhoto from '../../components/ProfileUploadPhoto/UploadPhoto';
 import SitterSignup from '../../components/SitterSignup/SitterSignup';
 import ProfileAvailability from './ProfileAvailability/ProfileAvailability';
@@ -22,7 +23,7 @@ export default function Profile(): JSX.Element {
               <Route path="/profile/edit" component={ProfileEdit} />
               <Route path="/profile/photo" component={ProfileUploadPhoto} />
               <Route path="/profile/availability" component={ProfileAvailability} />
-              <Route path="/profile/payment" />
+              <Route path="/profile/payment" component={PaymentDetails} />
               <Route path="/profile/security" />
               <Route path="/profile/settings" />
               <Route path="/profile/:id" />
