@@ -3,47 +3,49 @@ import { makeStyles } from '@material-ui/core';
 const useStyles = makeStyles((theme) => ({
   container: {
     width: '100%',
-    // backgroundColor: 'blue',
   },
   heading: {
-    fontWeight: 900,
+    fontWeight: theme.typography.fontWeightBold,
     width: '100%',
     margin: '1rem 0',
   },
   subheading: {
     marginTop: '1rem',
+    marginLeft: '2rem',
     width: '100%',
     fontWeight: theme.typography.fontWeightBold,
-    color: theme.palette.grey[400],
+    color: '#BEBEBE',
   },
   cardContainer: {
-    // backgroundColor: 'red',
     margin: '2rem 0',
     borderRadius: theme.shape.borderRadius,
     width: '75%',
-    height: '350px',
-    overflow: 'auto',
+    minHeight: '350px',
   },
   card: {
-    border: `1px solid gray`,
-    margin: '0.5rem',
+    border: `1px solid #E4E4E4`,
+    padding: '0.5rem',
+    margin: '1rem',
     width: '300px',
     height: '200px',
-    // backgroundColor: 'green',
     '&:hover': { cursor: 'pointer' },
     borderRadius: theme.shape.borderRadius,
-  },
-  bold: {
-    marginTop: theme.spacing(1),
-    fontWeight: theme.typography.fontWeightBold,
-  },
-  light: {
-    color: theme.palette.grey[400],
   },
   image: {
     height: '80px',
     width: '80px',
     objectFit: 'contain',
+  },
+  cardNumber: {
+    marginTop: theme.spacing(1),
+    fontWeight: theme.typography.fontWeightBold,
+  },
+  expDate: {
+    color: '#BEBEBE',
+  },
+  cardName: {
+    marginTop: theme.spacing(1),
+    fontWeight: theme.typography.fontWeightBold,
   },
   form: {
     width: '50%',
@@ -52,8 +54,12 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
     },
   },
+  cardHolder: {
+    marginBottom: '1rem',
+  },
   formButton: {
-    marginTop: theme.spacing(2),
+    marginTop: '1rem',
+    marginLeft: '2rem',
   },
 }));
 

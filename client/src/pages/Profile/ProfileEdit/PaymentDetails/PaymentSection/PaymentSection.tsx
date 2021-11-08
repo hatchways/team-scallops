@@ -1,20 +1,15 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
-
-import CardSection from './CardSection/CardSection';
-import { CheckCircle, ContactsOutlined } from '@material-ui/icons';
-import { Box, Button, CircularProgress, Grid, Paper, Typography } from '@material-ui/core';
-
+import { CheckCircle } from '@material-ui/icons';
+import { Box, Button, CircularProgress, Grid, Paper, TextField, Typography } from '@material-ui/core';
 import { addCardApi, getCards, updateDefaultCard } from '../../../../../helpers/APICalls/paymentApi';
-import clsx from 'clsx';
 import { CardDetails } from '../../../../../interface/Payment';
 import { useSnackBar } from '../../../../../context/useSnackbarContext';
 import useStyles from './useStyles';
 import MasterCardImg from '../../../../../images/Mastercard.png';
 import VisaImg from '../../../../../images/Visa.png';
-import { da } from 'date-fns/locale';
 
-function CheckoutForm() {
+function PaymentSection() {
   const stripe = useStripe();
   const elements = useElements();
   const classes = useStyles();
@@ -24,18 +19,18 @@ function CheckoutForm() {
   const [defaultCardId, setDefaultCardId] = useState<string>('');
   const [addCard, setAddCard] = useState(false);
   const [savingCard, setSavingCard] = useState(false);
+  const [name, setName] = useState<string>('');
 
   const fetchNewCards = useCallback(() => {
     getCards().then((result) => {
       if (!!result.success) {
-        console.log(result.success);
         setCards(result.success?.cards);
         setDefaultCardId(result.success?.defaultCardId);
-      } else {
-        // Some error here with snackBar
+      } else if (result.error) {
+        updateSnackBarMessage(result.error?.message);
       }
     });
-  }, []);
+  }, [updateSnackBarMessage]);
 
   useEffect(() => {
     fetchNewCards();
@@ -51,10 +46,10 @@ function CheckoutForm() {
 
     const card = elements.getElement(CardElement);
     if (!card) return;
-    const result = await stripe.createToken(card);
+    const result = await stripe.createToken(card, { name: name });
 
-    if (result.error) {
-      console.log(result.error.message);
+    if (result?.error?.message) {
+      updateSnackBarMessage(result?.error.message);
     } else {
       addCardApi(result.token).then((data) => {
         if (!!data.success) {
@@ -64,17 +59,6 @@ function CheckoutForm() {
         }
       });
     }
-
-    // const card = elements.getElement(CardElement);
-    // if (!card) return;
-    // const result = await stripe.createToken(card);
-
-    // if (result.error) {
-    //   console.log(result.error.message);
-    // } else {
-    //   sendStripeToken(result.token);
-    //   console.log('Do something with result.token');
-    // }
   };
 
   const changeDefault = (cardId: string) => {
@@ -123,7 +107,7 @@ function CheckoutForm() {
       <Typography align="center" variant="h5" className={classes.heading} component="h2">
         Payment Methods
       </Typography>
-      <Typography align="left" variant="body1" className={classes.subheading}>
+      <Typography align="left" variant="h6" className={classes.subheading}>
         Saved Payment Profiles:
       </Typography>
       <Box
@@ -139,15 +123,15 @@ function CheckoutForm() {
             <Box key={card.id} className={classes.card} onClick={() => changeDefault(card.id)}>
               <Box display="flex" justifyContent="space-between">
                 <img src={logoSelector(card.brand)} alt={card.brand} className={classes.image} />
-                {defaultCardId === card.id && <CheckCircle color="primary" />}
+                {defaultCardId === card.id && <CheckCircle color="secondary" />}
               </Box>
-              <Typography variant="body1" className={classes.bold}>
+              <Typography variant="body1" className={classes.cardNumber}>
                 **** **** **** {card.last4}
               </Typography>
-              <Typography variant="button" className={clsx(classes.bold, classes.light)}>
-                {/* Exp. date {formatCardDate(method.expMonth)}/{formatCardDate(method.expYear)} */}
+              <Typography variant="button" className={classes.expDate}>
+                Exp. date {card.expMonth} / {card.expYear}
               </Typography>
-              <Typography variant="h6" className={classes.bold}>
+              <Typography variant="h6" className={classes.cardName}>
                 {card.name}
               </Typography>
             </Box>
@@ -161,14 +145,29 @@ function CheckoutForm() {
       <Box display="flex" alignContent="flex-start" width="100%">
         {addCard ? (
           <form onSubmit={handleSubmit} className={classes.form}>
+            <TextField
+              fullWidth
+              placeholder="CardHolder Name"
+              onChange={(event) => setName(event.target.value)}
+              className={classes.cardHolder}
+            />
             <CardElement options={CardOptions} />
-            <Button type="submit" color="primary" variant="outlined" className={classes.formButton}>
-              {savingCard ? <CircularProgress size="2rem" thickness={1.5} /> : 'Add card'}
+            <Button type="submit" color="secondary" variant="outlined" size="large" className={classes.formButton}>
+              {savingCard ? <CircularProgress size="2rem" thickness={1.5} /> : 'Add Card'}
+            </Button>
+            <Button
+              onClick={() => setAddCard(false)}
+              color="secondary"
+              variant="outlined"
+              size="large"
+              className={classes.formButton}
+            >
+              Cancel
             </Button>
           </form>
         ) : (
-          <Button disabled={!stripe} onClick={() => setAddCard(true)} color="primary" variant="outlined" size="large">
-            Add new payment profile
+          <Button disabled={!stripe} onClick={() => setAddCard(true)} color="secondary" variant="outlined" size="large">
+            Add new Payment Profiles
           </Button>
         )}
       </Box>
@@ -176,4 +175,4 @@ function CheckoutForm() {
   );
 }
 
-export default CheckoutForm;
+export default PaymentSection;
