@@ -36,9 +36,6 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
   const ownerExists = await User.findById(ownerId);
   const sitterExists = await User.findById(sitterId);
 
-  console.log("Until here!");
-
-  // check if the payment mehtod exist for the owner
   const cards = await stripe.customers.listSources(
     ownerExists.stripeCustomerId,
     {
@@ -46,16 +43,13 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
       limit: 5,
     }
   );
-  console.log("Until here too!");
 
   if (!cards.data.length) {
     res
       .status(400)
       .json({ error: { message: "No cards are there in User profile" } });
   }
-  console.log("Until here 3!");
 
-  // add a hold if the payment method exists
   const charge = await stripe.charges.create({
     amount: totalPrice * 100,
     currency: "cad",
@@ -63,8 +57,6 @@ exports.createRequest = asyncHandler(async (req, res, next) => {
     customer: ownerExists.stripeCustomerId,
     capture: false,
   });
-
-  console.log(charge.status);
 
   if (charge.status === "failed") {
     return res.status(400).json({ error: { message: "Cards was declined" } });
@@ -117,8 +109,6 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
         if (value) {
           if (key === "status" && value === "PAID") return;
           else if (key === "status" && value === "ACCEPTED") {
-            // try to charge the payment here
-            console.log("Accepted");
             const charge = await stripe.charges.capture(request.chargeId);
             if (charge.status === "failed") {
               res.status(400);
@@ -127,8 +117,13 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
               request.status = "PAID";
             }
           } else if (key === "status" && value === "DECLINED") {
-            // remove the hold
-            console.log("Remove the charge please!!!");
+            if (!request.chargeId) {
+              res.status(400);
+            }
+            await stripe.refunds.create({
+              charge: request.chargeId,
+            });
+            request.chargeId = null;
           } else if (key === "startDate") {
             request.startDate = new Date(value);
           } else if (key === "endDate") {
@@ -139,8 +134,6 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
         }
       })
     );
-
-    console.log(request);
 
     await request.save();
     return res.status(200).json({ request });
