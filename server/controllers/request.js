@@ -113,7 +113,6 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
             if (charge.status === "failed") {
               res.status(400);
             } else {
-              console.log("Status changed");
               request.status = "PAID";
             }
           } else if (key === "status" && value === "DECLINED") {
@@ -123,6 +122,7 @@ exports.updateRequest = asyncHandler(async (req, res, next) => {
             await stripe.refunds.create({
               charge: request.chargeId,
             });
+            request.status = "DECLINED";
             request.chargeId = null;
           } else if (key === "startDate") {
             request.startDate = new Date(value);

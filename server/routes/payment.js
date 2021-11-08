@@ -9,8 +9,6 @@ const {
   UpdateDefaultCard,
 } = require("../controllers/payments");
 
-router.route("/secret").post(protect, secret);
-router.route("/pay").post(protect, processPayment);
 router.route("/add").post(protect, addCard);
 router.route("/").get(protect, getCards);
 router.route("/:cardId").patch(protect, UpdateDefaultCard);
