@@ -16,22 +16,24 @@ import UnauthorizedError from './components/UnauthorizedError/UnauthorizedError'
 import { AuthProvider } from './context/useAuthContext';
 import { SocketProvider } from './context/useSocketContext';
 import { SnackBarProvider } from './context/useSnackbarContext';
+import { NotificationProvider } from './context/useNotificationContext';
 import { ActiveConversationProvider } from './context/useActiveConversationContext';
 import { ConversationProvider } from './context/useConversationContext';
-
 import './App.css';
 
 function App(): JSX.Element {
   return (
     <MuiThemeProvider theme={theme}>
       <CssBaseline />
-      <BrowserRouter>
+      <Router>
         <SnackBarProvider>
           <AuthProvider>
             <ActiveConversationProvider>
               <ConversationProvider>
                 <SocketProvider>
-                  <NavBar />
+                  <NotificationProvider>
+                    <NavBar />
+                  </NotificationProvider>
                   <Switch>
                     <Route path="/search" component={List} />
 
@@ -56,7 +58,7 @@ function App(): JSX.Element {
             </ActiveConversationProvider>
           </AuthProvider>
         </SnackBarProvider>
-      </BrowserRouter>
+      </Router>
     </MuiThemeProvider>
   );
 }
