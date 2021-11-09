@@ -17,6 +17,7 @@ import BookingItem from '../../components/BookingItem/BookingItem';
 import useStyles from './useStyles';
 import Alert from '@material-ui/lab/Alert';
 import AlertTitle from '@material-ui/lab/AlertTitle';
+import { useAuth } from '../../context/useAuthContext';
 
 interface RequestsPerMonth {
   [key: number]: Array<number>;
@@ -52,6 +53,7 @@ const materialTheme = createTheme({
 
 function Booking(): JSX.Element {
   const classes = useStyles();
+  const { loggedInUser } = useAuth();
 
   const [requests, setRequests] = useState<RequestsList>();
   const [selectedDate, setDate] = useState<MaterialUiPickersDate>(new Date());
@@ -65,18 +67,19 @@ function Booking(): JSX.Element {
     getRequestsAndSave();
   }, []);
 
-  const requestsReceived = requests?.requestsReceived;
+  const requestsToDisplay = loggedInUser?.isSitter ? requests?.requestsReceived : requests?.requestsSend;
   const today = new Date();
-  const pastBookings = requestsReceived?.filter((request) => isPast(new Date(request.endDate)));
-  const currentBookings = requestsReceived?.filter((request) =>
+  const pastBookings = requestsToDisplay?.filter((request) => isPast(new Date(request.endDate)));
+  const currentBookings = requestsToDisplay?.filter((request) =>
     isWithinInterval(today, {
       start: new Date(request.startDate),
       end: new Date(request.endDate),
     }),
   );
-  const upcomingBookings = requestsReceived?.filter((request) => isFuture(new Date(request.startDate)));
+  const upcomingBookings = requestsToDisplay?.filter((request) => isFuture(new Date(request.startDate)));
+
   const requestsDayPerMonth: RequestsPerMonth = {};
-  requestsReceived
+  requestsToDisplay
     ?.map((request) => eachDayOfInterval({ start: new Date(request.startDate), end: new Date(request.endDate) }))
     .map((interval) => {
       interval.map((date) => {
@@ -138,15 +141,22 @@ function Booking(): JSX.Element {
                     requestId={request._id}
                     from={request.startDate}
                     to={request.endDate}
+                    owner={request.owner}
+                    sitter={request.sitter}
                     status={request.status}
                     upcoming
                   />
                 ))
-              ) : (
+              ) : loggedInUser?.isSitter ? (
                 <Alert severity="info">
                   <AlertTitle>Info</AlertTitle>
                   You will not have pet visits in the near future 🔮
                   <strong className={classes.title}>be patient!</strong>
+                </Alert>
+              ) : (
+                <Alert severity="info">
+                  <AlertTitle>Info</AlertTitle>
+                  No travel plans in the near future. 🔮
                 </Alert>
               )}
             </Card>
@@ -180,13 +190,20 @@ function Booking(): JSX.Element {
                     requestId={request._id}
                     from={request.startDate}
                     to={request.endDate}
+                    owner={request.owner}
+                    sitter={request.sitter}
                     status={request.status}
                   />
                 ))
-              ) : (
+              ) : loggedInUser?.isSitter ? (
                 <Alert severity="info">
                   <AlertTitle>Info</AlertTitle>
                   You are not taking care of any pets for now 🛀 <strong className={classes.title}>relax!</strong>
+                </Alert>
+              ) : (
+                <Alert severity="info">
+                  <AlertTitle>Info</AlertTitle>
+                  Enjoy your pet today, it is time to play! 🐾
                 </Alert>
               )}
               <Typography variant="h6" className={classes.title}>
@@ -199,14 +216,22 @@ function Booking(): JSX.Element {
                     requestId={request._id}
                     from={request.startDate}
                     to={request.endDate}
+                    owner={request.owner}
+                    sitter={request.sitter}
                     status={request.status}
+                    past
                   />
                 ))
-              ) : (
+              ) : loggedInUser?.isSitter ? (
                 <Alert severity="info">
                   <AlertTitle>Info</AlertTitle>
                   Do not worry, you will be able to see your memories 🐾
                   <strong className={classes.title}>soon!</strong>
+                </Alert>
+              ) : (
+                <Alert severity="info">
+                  <AlertTitle>Info</AlertTitle>
+                  Book today, so we can have something to show you here. 🧾
                 </Alert>
               )}
             </Card>
