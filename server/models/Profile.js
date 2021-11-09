@@ -38,42 +38,42 @@ const profileSchema = new mongoose.Schema({
     monday: {
       type: Boolean,
       required: true,
-      default: false,
+      default: true,
     },
     tuesday: {
       type: Boolean,
       required: true,
-      default: false,
+      default: true,
     },
     wednesday: {
       type: Boolean,
       required: true,
-      default: false,
+      default: true,
     },
     thursday: {
       type: Boolean,
       required: true,
-      default: false,
+      default: true,
     },
     friday: {
       type: Boolean,
       required: true,
-      default: false,
+      default: true,
     },
     saturday: {
       type: Boolean,
       required: true,
-      default: false,
+      default: true,
     },
     sunday: {
       type: Boolean,
       required: true,
-      default: false,
+      default: true,
     },
   },
   available: {
     type: Boolean,
-    default: false,
+    default: true,
   },
 });
 
