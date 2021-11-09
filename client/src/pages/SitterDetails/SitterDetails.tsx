@@ -31,6 +31,7 @@ import { format, formatISO, parseISO } from 'date-fns';
 import { createRequest } from '../../helpers/APICalls/requests';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { useSnackBar } from '../../context/useSnackbarContext';
+import postConversations from '../../helpers/APICalls/postConversation';
 
 interface ParamsProps {
   id: string;
@@ -82,11 +83,12 @@ function SitterDetails(): JSX.Element {
     const endDate = convertToDateTime(dropOffDate, dropOffTime);
     const selectedUserSitterId = profile?.user || '';
 
-    createRequest(selectedUserSitterId, startDate, endDate).then((data) => {
+    createRequest(selectedUserSitterId, startDate, endDate, 'WALKING', 14).then((data) => {
       if (data.error) {
         console.error({ error: data.error.message });
         updateSnackBarMessage('Please log in and try again!');
       } else if (data.request) {
+        postConversations(selectedUserSitterId);
         updateSnackBarMessage('Your request was sent, please wait for the sitter to accept it.');
       } else {
         console.error({ data });

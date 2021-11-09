@@ -37,7 +37,7 @@ const SideBannerItem = ({ conversation, onlineUsers }: Props): JSX.Element => {
       }
     };
 
-    SetLastMessage((prev) => (prev?.text === conversation.lastMessage.text ? prev : conversation.lastMessage));
+    SetLastMessage((prev) => (prev?.text === conversation?.lastMessage?.text ? prev : conversation.lastMessage));
     socket?.on('newMessage', lastMessageListener);
     return () => {
       socket?.off('newMessage', lastMessageListener);
