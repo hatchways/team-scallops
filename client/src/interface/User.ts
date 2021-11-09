@@ -1,4 +1,7 @@
+import { Profile } from './Profile';
+
 export interface User {
+  profile?: Profile;
   _id?: string;
   id?: string;
   email: string;
