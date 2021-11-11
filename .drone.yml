@@ -19,5 +19,5 @@ steps:
       dockerfile: Dockerfile
       tags:
         - latest
-        - 1.1.0
+        - 0.0.4
         - DRONE_BUILD_NUMBER
