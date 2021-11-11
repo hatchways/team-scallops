@@ -1,13 +1,35 @@
 kind: pipeline
 type: docker
-name: CI_CD
+name: build and test
+#Here we are installing and testing the code
+steps:
+  - name: backend
+    image: node
+    commands:
+      - cd ./client/
+      - npm ci
+      - npm test
 
+  - name: frontend
+    image: node
+    commands:
+      - cd ./server/
+      - npm ci
+      - npm test
+
+---
+kind: pipeline
+type: docker
+name: CD
+#here we are continuously delivering a version to docker hub, even if it's breaking.
 steps:
   - name: build
     image: plugins/docker
     settings:
       enviroment:
         NODE_ENV: development
+      registry:
+        from secret: local_registry
       repo:
         from_secret: local_docker_repo
       username:
@@ -16,29 +38,6 @@ steps:
         from_secret: local_docker_password
       dockerfile: Dockerfile
       tags:
-        - "latest"
-        - ["1.1.", DRONE_BUILD_NUMBER]
-
-  - name: test
-    image: node
-    commands:
-      - npm install
-      - npm test
-
-  - name: push_local
-    image: plugins/docker
-    settings:
-      repo:
-        from_secret: local_docker_repo
-      registry:
-        from secret: local_registry
-      target: production
-      enviroment:
-        NODE_ENV: development
-      tags:
-        - "latest"
-        - ["1.1.", DRONE_BUILD_NUMBER]
-      username:
-        from_secret: local_registry_username
-      password:
-        from_secret: local_docker_password
+        - DRONE_BUILD_NUMBER
+        - latest
+        - 1.1.0

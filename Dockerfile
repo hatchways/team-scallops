@@ -1,7 +1,6 @@
 FROM node:16.11-alpine3.13
 EXPOSE 3001
 ENV NODE_ENV=development
-ARG NODE_ENV
 
 WORKDIR /app
 
@@ -18,7 +17,6 @@ COPY /client/package-lock.json ./
 RUN ls 
 RUN npm ci
 COPY /client/ ./
-RUN echo ${NODE_ENV}
 RUN npm run build --if-present
 COPY /client/ ./
 
