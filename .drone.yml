@@ -5,6 +5,9 @@ name: CD
 steps:
   - name: build
     image: plugins/docker
+    volumes:
+      - name: docker_socket
+        path: /var/run/docker.sock
     settings:
       enviroment:
         NODE_ENV: development
@@ -20,4 +23,8 @@ steps:
       tags:
         - latest
         - 0.0.4
-        - ${DRONE_BUILD_NUMBER}
+
+volumes:
+  - name: docker_socket
+    host:
+      path: /var/run/docker.sock
