@@ -1,25 +1,5 @@
 kind: pipeline
 type: docker
-name: build and test
-#Here we are installing and testing the code
-steps:
-  - name: backend
-    image: node
-    commands:
-      - cd ./client/
-      - npm ci
-      - npm test
-
-  - name: frontend
-    image: node
-    commands:
-      - cd ./server/
-      - npm ci
-      - npm test
-
----
-kind: pipeline
-type: docker
 name: CD
 #here we are continuously delivering a version to docker hub, even if it's breaking.
 steps:
@@ -38,6 +18,6 @@ steps:
         from_secret: local_docker_password
       dockerfile: Dockerfile
       tags:
-        - DRONE_BUILD_NUMBER
         - latest
         - 1.1.0
+        - DRONE_BUILD_NUMBER
