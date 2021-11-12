@@ -1,6 +1,8 @@
 FROM node:16.13-alpine3.13
 EXPOSE 3001
 ENV NODE_ENV=development
+#Note, NODE_ENV must be set to development when building to include dev dependencies for linting purposes.
+# NODE_ENV=production should also be set in a .env variable to enable express to statically route the /client/build folder.
 
 WORKDIR /app
 
@@ -11,7 +13,6 @@ RUN npm ci
 COPY /server/ .
 
 WORKDIR /app/client/
-ENV NODE_ENV=production
 
 COPY /client/package.json ./
 COPY /client/package-lock.json ./ 
