@@ -75,6 +75,11 @@ const profileSchema = new mongoose.Schema({
     type: Boolean,
     default: true,
   },
+  ratePerDay: {
+    type: Number,
+    required: true,
+    default: 40,
+  },
 });
 
 module.exports = Profile = mongoose.model("Profile", profileSchema);

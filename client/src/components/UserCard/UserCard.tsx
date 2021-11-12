@@ -1,22 +1,8 @@
-import {
-  Grid,
-  Paper,
-  Typography,
-  Box,
-  Card,
-  TextField,
-  Button,
-  CardActions,
-  CardContent,
-  Divider,
-  CardMedia,
-  CardActionArea,
-  Avatar,
-  Input,
-} from '@material-ui/core';
+import { Grid, Typography, Card, CardContent, Divider, CardActionArea, Avatar } from '@material-ui/core';
 import { Rating } from '@material-ui/lab';
-
+import { Key } from 'react';
 import { Link } from 'react-router-dom';
+import { Profile } from '../../interface/profile/Profile';
 
 import useStyles from './useStyles';
 const profileImg = 'placeholderImage.png';
@@ -27,9 +13,9 @@ const placeholder = {
 };
 const defaultDescription = 'New pet sitter!';
 
-export default function UserCard(props: any): JSX.Element {
+export default function UserCard(props: { profile: Profile; key: number }): JSX.Element {
   const classes = useStyles();
-  const { firstName, lastName, user, description, address } = props.profile;
+  const { firstName, lastName, user, description, address, ratePerDay } = props.profile;
   return (
     <Grid item>
       <Card style={{ height: '100%' }} variant="outlined">
@@ -53,7 +39,7 @@ export default function UserCard(props: any): JSX.Element {
             <Typography className={classes.location}>{address}</Typography>
           </Grid>
           <Grid item>
-            <Typography className={classes.price}>${placeholder.price}/hr</Typography>
+            <Typography className={classes.price}>${ratePerDay || placeholder.price}/hr</Typography>
           </Grid>
         </Grid>
       </Card>
