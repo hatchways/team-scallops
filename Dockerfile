@@ -1,6 +1,6 @@
 FROM node:16.13-alpine3.13
 EXPOSE 3001
-ENV NODE_ENV=production
+ENV NODE_ENV=development
 
 WORKDIR /app
 
@@ -11,6 +11,7 @@ RUN npm ci
 COPY /server/ .
 
 WORKDIR /app/client/
+ENV NODE_ENV=production
 
 COPY /client/package.json ./
 COPY /client/package-lock.json ./ 
