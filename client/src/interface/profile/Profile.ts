@@ -16,7 +16,8 @@ export interface Profile {
   available: boolean;
   user: string;
   image: image;
-  averageRating: number;
+  averageRating?: number;
+  ratePerDay?: number;
 }
 
 interface AvailabilityInDays {
