@@ -11,7 +11,6 @@ RUN npm ci
 COPY /server/ .
 
 WORKDIR /app/client/
-ENV NODE_ENV=production
 
 COPY /client/package.json ./
 COPY /client/package-lock.json ./ 
