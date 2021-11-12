@@ -141,7 +141,7 @@ export default function List(): JSX.Element {
             .filter((profile: Profile) => {
               return locationFilter(profile);
             })
-            .map((profile, key) => (
+            .map((profile: Profile, key) => (
               <UserCard profile={profile} key={key} />
             ))}
         </Grid>
