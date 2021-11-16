@@ -31,8 +31,8 @@ steps:
         from_secret: kube_server
       kubernetes_token:
         from_secret: kube_token
-      namespace: lovingsitter
-      deployment: lovingsitter
+      namespace: lovingsitter-staging
+      deployment: lovingsitter-staging
       repo:
         from_secret: docker_repo
       tag: latest
