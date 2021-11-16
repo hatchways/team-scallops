@@ -32,7 +32,6 @@ import { Profile } from '../../interface/profile/Profile';
 import { Filter } from '@material-ui/icons';
 
 export default function List(): JSX.Element {
-  console.log('updated');
   const classes = useStyles();
   const [state, setState] = useState({
     profiles: [],
