@@ -5,14 +5,11 @@ name: CD
 steps:
   - name: build
     image: plugins/docker
-    volumes:
-      - name: docker_socket
-        path: /var/run/docker.sock
     settings:
       enviroment:
         NODE_ENV: development
-      #      registry:
-      #        from secret: registry
+      registry:
+        from secret: registry
       repo: destintech/petsitter
       #        from_secret: docker_repo
       username: destintech
@@ -22,9 +19,4 @@ steps:
       dockerfile: Dockerfile
       tags:
         - latest
-        - 0.0.4
-
-volumes:
-  - name: docker_socket
-    host:
-      path: /var/run/docker.sock
+        - 0.0.5
