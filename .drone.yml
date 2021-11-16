@@ -3,7 +3,7 @@ type: docker
 name: CD
 #here we are continuously delivering a version to docker hub, even if it's breaking.
 steps:
-  - name: publish
+  - name: CI
     image: plugins/docker
     settings:
       enviroment:
@@ -21,7 +21,7 @@ steps:
         - latest
         - 0.0.5
 
-  - name: publish
+  - name: CD
     image: quay.io/honestbee/drone-kubernetes
     settings:
       kubernetes_server:
