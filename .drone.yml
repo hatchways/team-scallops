@@ -24,6 +24,8 @@ steps:
   - name: CD
     image: quay.io/honestbee/drone-kubernetes
     settings:
+      kubernetes_cert:
+        from_secret: kubernetes_cert
       kubernetes_server:
         from_secret: kube_server
       kubernetes_token:
