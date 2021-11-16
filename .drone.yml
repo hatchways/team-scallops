@@ -2,6 +2,7 @@ kind: pipeline
 type: docker
 name: CD
 #here we are continuously delivering a version to docker hub, even if it's breaking.
+
 steps:
   - name: CI
     image: plugins/docker
