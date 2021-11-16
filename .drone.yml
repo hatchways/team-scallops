@@ -1,0 +1,38 @@
+kind: pipeline
+type: docker
+name: CD
+#here we are continuously delivering a version to docker hub, even if it's breaking.
+
+steps:
+  - name: CI
+    image: plugins/docker
+    settings:
+      enviroment:
+        NODE_ENV: development
+      registry:
+        from_secret: registry
+      repo:
+        from_secret: docker_repo
+      username: destintech
+      #        from_secret: registry_username
+      password:
+        from_secret: registry_password
+      dockerfile: Dockerfile
+      tags:
+        - latest
+        - 0.0.5
+
+  - name: CD
+    image: quay.io/honestbee/drone-kubernetes
+    settings:
+      kubernetes_cert:
+        from_secret: kubernetes_cert
+      kubernetes_server:
+        from_secret: kube_server
+      kubernetes_token:
+        from_secret: kube_token
+      namespace: lovingsitter-staging
+      deployment: lovingsitter-staging
+      repo:
+        from_secret: docker_repo
+      tag: latest

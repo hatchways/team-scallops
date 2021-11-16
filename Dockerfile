@@ -1,4 +1,4 @@
-FROM node:16.13-alpine3.13
+FROM node:16.11-alpine3.13
 EXPOSE 3001
 ENV NODE_ENV=development
 #Note, NODE_ENV must be set to development when building to include dev dependencies for linting purposes.
