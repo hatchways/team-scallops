@@ -3,15 +3,15 @@ type: docker
 name: CD
 #here we are continuously delivering a version to docker hub, even if it's breaking.
 steps:
-  - name: build
+  - name: publish
     image: plugins/docker
     settings:
       enviroment:
         NODE_ENV: development
       registry:
         from_secret: registry
-      repo: destintech/petsitter
-      #        from_secret: docker_repo
+      repo:
+        from_secret: docker_repo
       username: destintech
       #        from_secret: registry_username
       password:
