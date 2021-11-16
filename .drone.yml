@@ -20,3 +20,23 @@ steps:
       tags:
         - latest
         - 0.0.5
+
+---
+kind: pipeline
+type: kubernetes
+name: publish
+steps:
+  - name: publish
+    image: quay.io/honestbee/drone-kubernetes
+    settings:
+      kubernetes_server:
+        from_secret: kube_server
+      kubernetes_token:
+        from_secret: kube_token
+      namespace: lovingsitter
+      deployment: lovingsitter
+      repo:
+        from_secret: docker_repo
+      tag: latest
+depends_on:
+  - CD
