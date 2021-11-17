@@ -23,6 +23,16 @@ steps:
         - 0.0.5
         - ${DRONE_BUILD_NUMBER}
 
+  - name: Security scan
+    image: plugins/docker
+    settings:
+      enviroment:
+        - SNYK_TOKEN:
+          from_secet: SNYK_TOKEN
+      run:
+        - npm install snyk@latest -g
+        - snyk monitor
+
   - name: CD
     image: quay.io/honestbee/drone-kubernetes
     settings:
