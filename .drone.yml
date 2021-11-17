@@ -1,7 +1,9 @@
+---
 kind: pipeline
 type: docker
+name: Security Scan
 steps:
-  - name: Security scan
+  - name: scan
     image: plugins/docker
     settings:
       enviroment:
