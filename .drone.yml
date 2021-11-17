@@ -47,6 +47,7 @@ name: Promote to production
 steps:
   - name: Deploy Production
     image: quay.io/honestbee/drone-kubernetes
+    run: echo deploying build ${DRONE_BUILD_NUMBER} to production.
     settings:
       kubernetes_cert:
         from_secret: kubernetes_cert
