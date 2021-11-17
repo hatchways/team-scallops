@@ -62,5 +62,5 @@ steps:
 trigger:
   event:
     - promote
-  target:
-    - production
+  depends_on:
+    - CD
