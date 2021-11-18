@@ -8,7 +8,7 @@ steps:
     settings:
       enviroment:
         SNYK_TOKEN:
-          from_secret: SNYK_TOKEN
+          from_secret: SNYK_TOKEN_VAR
     commands:
       - echo ${SNYK_TOKEN:0:4}
       - cd client
