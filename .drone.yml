@@ -13,6 +13,7 @@ steps:
       - cd client
       - npm ci
       - npm install snyk -g
+      - snyk auth
       - snyk test
 
   - name: Frontend
@@ -27,7 +28,8 @@ steps:
     image: node:14
     failure: ignore
     commands:
-      - cd build
+      - ls
+      - cd ../build
       - npm ci
       - npm run test
 
