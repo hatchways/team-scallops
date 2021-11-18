@@ -29,7 +29,7 @@ steps:
     failure: ignore
     commands:
       - ls
-      - cd ../build
+      - cd server
       - npm ci
       - npm run test
 
