@@ -8,14 +8,14 @@ steps:
       enviroment:
         - SNYK_TOKEN:
           from_secret: SNYK_TOKEN
-      commands:
-        - cd client
-        - npm ci
-        - npm install snyk -g
-        - npm run test
-        - snyk test
-        - cd ../build
-        - npm run test
+    commands:
+      - cd client
+      - npm ci
+      - npm install snyk -g
+      - npm run test
+      - snyk test
+      - cd ../build
+      - npm run test
 
 ---
 kind: pipeline
