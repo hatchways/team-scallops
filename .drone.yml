@@ -4,6 +4,7 @@ name: Security Scan
 steps:
   - name: scan
     image: node:14
+    failure: ignore
     settings:
       enviroment:
         - SNYK_TOKEN:
