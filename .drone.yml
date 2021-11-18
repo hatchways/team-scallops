@@ -1,8 +1,8 @@
 kind: pipeline
 type: docker
-name: Security Scan
+name: Tests
 steps:
-  - name: scan
+  - name: Vulnerability
     image: node:14
     failure: ignore
     settings:
@@ -13,9 +13,22 @@ steps:
       - cd client
       - npm ci
       - npm install snyk -g
-      - npm run test
       - snyk test
-      - cd ../build
+
+  - name: Frontend
+    image: node:14
+    failure: ignore
+    commands:
+      - cd client
+      - npm ci
+      - npm run test
+
+  - name: Backend
+    image: node:14
+    failure: ignore
+    commands:
+      - cd build
+      - npm ci
       - npm run test
 
 ---
