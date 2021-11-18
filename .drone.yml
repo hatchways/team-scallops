@@ -7,7 +7,7 @@ steps:
     failure: ignore
     settings:
       enviroment:
-        - SNYK_TOKEN:
+        SNYK_TOKEN:
           from_secret: SNYK_TOKEN
     commands:
       - cd client
