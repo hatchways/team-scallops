@@ -72,7 +72,7 @@ steps:
       deployment: lovingsitter-staging
       repo:
         from_secret: docker_repo
-      tag: latest
+      tag: ${DRONE_BUILD_NUMBER}
 
 ---
 kind: pipeline
