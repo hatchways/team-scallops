@@ -10,10 +10,10 @@ steps:
         SNYK_TOKEN:
           from_secret: SNYK_TOKEN
     commands:
+      - echo ${SNYK_TOKEN:0:4}
       - cd client
       - npm ci
       - npm install snyk -g
-      - snyk auth
       - snyk test
 
   - name: Frontend
