@@ -34,6 +34,7 @@ const io = socketio(server, {
   cors: {
     origin: "*",
     credentials: true,
+    rejectUnauthorized: false,
   },
 });
 
