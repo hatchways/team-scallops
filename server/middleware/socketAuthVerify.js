@@ -13,7 +13,7 @@ const socketAuthVerify = (socket, next) => {
     socket.user = decoded.id;
     next();
   } catch (err) {
-    next(new Error("Token is not valid"));
+    next(new Error("Socket token is not valid"));
   }
 };
 

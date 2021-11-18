@@ -1,5 +1,41 @@
 kind: pipeline
 type: docker
+name: Tests
+steps:
+  - name: Vulnerability
+    image: node:14
+    failure: ignore
+    settings:
+      enviroment:
+        SNYK_TOKEN:
+          from_secret: SNYK_TOKEN_VAR
+    commands:
+      - echo ${SNYK_TOKEN:0:4}
+      - cd client
+      - npm ci
+      - npm install snyk -g
+      - snyk test
+
+  - name: Frontend
+    image: node:14
+    failure: ignore
+    commands:
+      - cd client
+      - npm ci
+      - npm run test
+
+  - name: Backend
+    image: node:14
+    failure: ignore
+    commands:
+      - ls
+      - cd server
+      - npm ci
+      - npm run test
+
+---
+kind: pipeline
+type: docker
 name: CD
 #here we are continuously delivering a version to docker hub, even if it's breaking.
 
@@ -21,6 +57,7 @@ steps:
       tags:
         - latest
         - 0.0.5
+        - ${DRONE_BUILD_NUMBER}
 
   - name: CD
     image: quay.io/honestbee/drone-kubernetes
@@ -36,3 +73,31 @@ steps:
       repo:
         from_secret: docker_repo
       tag: latest
+
+---
+kind: pipeline
+type: docker
+name: Promote to production
+#here we are continuously delivering a version to docker hub, even if it's breaking.
+
+steps:
+  - name: Deploy Production
+    image: quay.io/honestbee/drone-kubernetes
+    run: echo deploying build ${DRONE_BUILD_NUMBER} to production.
+    settings:
+      kubernetes_cert:
+        from_secret: kubernetes_cert
+      kubernetes_server:
+        from_secret: kube_server
+      kubernetes_token:
+        from_secret: kube_token
+      namespace: lovingsitter
+      deployment: lovingsitter
+      repo:
+        from_secret: docker_repo
+      tag: ${DRONE_BUILD_NUMBER}
+trigger:
+  event:
+    - promote
+  depends_on:
+    - CD
