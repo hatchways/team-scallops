@@ -10,7 +10,7 @@ steps:
           from_secret: SNYK_TOKEN
       commands:
         - npm install snyk -g
-        - snyk monitor
+        - snyk test
 
 ---
 kind: pipeline
