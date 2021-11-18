@@ -1,16 +1,15 @@
----
 kind: pipeline
 type: docker
 name: Security Scan
 steps:
   - name: scan
-    image: plugins/docker
+    image: node:6
     settings:
       enviroment:
         - SNYK_TOKEN:
           from_secret: SNYK_TOKEN
-      run:
-        - npm install snyk@latest -g
+      commands:
+        - npm install snyk -g
         - snyk monitor
 
 ---
