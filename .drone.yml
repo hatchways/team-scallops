@@ -3,14 +3,19 @@ type: docker
 name: Security Scan
 steps:
   - name: scan
-    image: node:6
+    image: node:14
     settings:
       enviroment:
         - SNYK_TOKEN:
           from_secret: SNYK_TOKEN
       commands:
+        - cd client
+        - npm ci
         - npm install snyk -g
+        - npm run test
         - snyk test
+        - cd ../build
+        - npm run test
 
 ---
 kind: pipeline
