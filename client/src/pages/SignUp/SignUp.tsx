@@ -20,9 +20,8 @@ export default function Register(): JSX.Element {
   ) => {
     register(username, email, password).then((data) => {
       if (data.error) {
-        console.error({ error: data.error.message });
         setSubmitting(false);
-        updateSnackBarMessage(data.error.message);
+        updateSnackBarMessage(data.error);
       } else if (data.success) {
         updateLoginContext(data.success);
       } else {
