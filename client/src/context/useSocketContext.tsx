@@ -20,7 +20,7 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
 
   const initSocket = useCallback(() => {
     if (!!socket) return;
-    const newSocket = io(`wss://localhost:${location.protocol === 'https:' ? 443 : 80}/`, {
+    const newSocket = io('/', {
       withCredentials: true,
     });
 
