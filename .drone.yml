@@ -59,20 +59,17 @@ steps:
         - 0.0.5
         - ${DRONE_BUILD_NUMBER}
 
-  - name: CD
-    image: quay.io/honestbee/drone-kubernetes
+  - name: Deploy Staging
+    image: sinlead/drone-kubectl
     settings:
-      kubernetes_cert:
-        from_secret: kubernetes_cert
       kubernetes_server:
         from_secret: kube_server
+      kubernetes_cert:
+        from_secret: kubernetes_cert
       kubernetes_token:
         from_secret: kube_token
-      namespace: lovingsitter-staging
-      deployment: lovingsitter-staging
-      repo:
-        from_secret: docker_repo
-      tag: latest
+    commands:
+      - kubectl rolling-update lovingsitter-staging --image=${docker_repo}${DRONE_BUILD_NUMBER}  -n lovingsitter-staging
 
 ---
 kind: pipeline
@@ -82,20 +79,16 @@ name: Promote to production
 
 steps:
   - name: Deploy Production
-    image: quay.io/honestbee/drone-kubernetes
-    run: echo deploying build ${DRONE_BUILD_NUMBER} to production.
+    image: sinlead/drone-kubectl
     settings:
-      kubernetes_cert:
-        from_secret: kubernetes_cert
       kubernetes_server:
         from_secret: kube_server
+      kubernetes_cert:
+        from_secret: kubernetes_cert
       kubernetes_token:
         from_secret: kube_token
-      namespace: lovingsitter
-      deployment: lovingsitter
-      repo:
-        from_secret: docker_repo
-      tag: ${DRONE_BUILD_NUMBER}
+    commands:
+      - kubectl rolling-update lovingsitter-staging --image=${docker_repo}${DRONE_BUILD_NUMBER}  -n lovingsitter-staging
 trigger:
   event:
     - promote
