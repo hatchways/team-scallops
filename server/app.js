@@ -37,10 +37,6 @@ const io = socketio(server, {
   },
 });
 
-io.configure(function () {
-  io.set("transports", ["websocket"]);
-});
-
 io.use(socketAuthVerify);
 
 io.on("connection", (socket) => {
