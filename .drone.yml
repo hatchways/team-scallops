@@ -56,7 +56,6 @@ steps:
       dockerfile: Dockerfile
       tags:
         - latest
-        - 0.0.5
         - ${DRONE_BUILD_NUMBER}
 
   - name: CD
@@ -72,7 +71,7 @@ steps:
       deployment: lovingsitter-staging
       repo:
         from_secret: docker_repo
-      tag: latest
+      tag: ${DRONE_BUILD_NUMBER}
 
 ---
 kind: pipeline
