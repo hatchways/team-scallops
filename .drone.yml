@@ -56,7 +56,6 @@ steps:
       dockerfile: Dockerfile
       tags:
         - latest
-        - 0.0.5
         - ${DRONE_BUILD_NUMBER}
 
   - name: CD

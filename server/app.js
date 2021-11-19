@@ -34,8 +34,11 @@ const io = socketio(server, {
   cors: {
     origin: "*",
     credentials: true,
-    rejectUnauthorized: false,
   },
+});
+
+io.configure(function () {
+  io.set("transports", ["websocket"]);
 });
 
 io.use(socketAuthVerify);
