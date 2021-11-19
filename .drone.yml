@@ -69,8 +69,7 @@ steps:
       kubernetes_token:
         from_secret: kube_token
     commands:
-      - kubectl rolling-update lovingsitter-staging --image=registry.destin.dev/destintech/petsitter:latest  -n lovingsitter-staging
-
+      - kubectl set image -n lovingsitter-staging deployment/lovingsitter-staging lovingsitter-staging=registry.destin.dev/destintech/petsitter:${DRONE_BUILD_NUMBER}
 ---
 kind: pipeline
 type: docker
@@ -88,7 +87,7 @@ steps:
       kubernetes_token:
         from_secret: kube_token
     commands:
-      - kubectl rolling-update lovingsitter --image=registry.destin.dev/destintech/petsitter:${DRONE_BUILD_NUMBER}  -n lovingsitter
+      - kubectl set image -n lovingsitter deployment/lovingsitter lovingsitter=registry.destin.dev/destintech/petsitter:${DRONE_BUILD_NUMBER}
 trigger:
   event:
     - promote
