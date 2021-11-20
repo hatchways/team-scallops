@@ -54,6 +54,7 @@ exports.patch = asyncHandler(async (req, res) => {
   Object.keys(sentParams).forEach(
     (k) => sentParams[k] == null && delete sentParams[k]
   );
+
   const {
     firstName,
     lastName,
