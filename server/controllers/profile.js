@@ -54,7 +54,6 @@ exports.patch = asyncHandler(async (req, res) => {
   Object.keys(sentParams).forEach(
     (k) => sentParams[k] == null && delete sentParams[k]
   );
-
   const {
     firstName,
     lastName,
@@ -72,21 +71,7 @@ exports.patch = asyncHandler(async (req, res) => {
   const idExists = await Profile.findOne({ user: id });
 
   if (idExists) {
-    const update = await Profile.updateOne(
-      { user: id },
-      {
-        firstName,
-        lastName,
-        gender,
-        birthday,
-        phone,
-        address,
-        description,
-        availability,
-        available,
-        ratePerDay,
-      }
-    );
+    const update = await Profile.updateOne({ user: id }, { sentParams });
     res.status(200).json({ update: update });
   } else {
     res.status(500);
