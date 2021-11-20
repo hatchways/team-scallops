@@ -71,7 +71,7 @@ steps:
       deployment: lovingsitter-staging
       repo:
         from_secret: docker_repo
-      tag: ${DRONE_BUILD_NUMBER}
+      tags: ${DRONE_BUILD_NUMBER}
 
 ---
 kind: pipeline
@@ -94,7 +94,7 @@ steps:
       deployment: lovingsitter
       repo:
         from_secret: docker_repo
-      tag: ${DRONE_BUILD_NUMBER}
+      tags: ${DRONE_BUILD_NUMBER}
 trigger:
   event:
     - promote
