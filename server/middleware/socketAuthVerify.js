@@ -2,7 +2,8 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 const socketAuthVerify = (socket, next) => {
-  const cookieString = socket.handshake.headers.cookie;
+  let cookieString = socket.handshake.headers.cookie;
+  cookieString = str.replace(/\s+/g, "");
   const cookies = cookieString.split(/[=;]/); // regex
   const tokenIndex = cookies.indexOf("token") + 1;
   const token = cookies[tokenIndex];
