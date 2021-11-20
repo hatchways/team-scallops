@@ -50,6 +50,11 @@ exports.post = asyncHandler(async (req, res) => {
 });
 
 exports.patch = asyncHandler(async (req, res) => {
+  const sentParams = { ...req.body };
+  Object.keys(sentParams).forEach(
+    (k) => sentParams[k] == null && delete sentParams[k]
+  );
+
   const {
     firstName,
     lastName,
@@ -61,7 +66,8 @@ exports.patch = asyncHandler(async (req, res) => {
     availability,
     available,
     ratePerDay,
-  } = req.body;
+  } = sentParams;
+
   const id = req.user.id;
   const idExists = await Profile.findOne({ user: id });
 

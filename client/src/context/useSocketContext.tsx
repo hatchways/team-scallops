@@ -22,7 +22,6 @@ export const SocketProvider: FunctionComponent = ({ children }): JSX.Element => 
     if (!!socket) return;
     const newSocket = io('/', {
       withCredentials: true,
-      transports: ['websocket'],
     });
 
     newSocket.on('connect_error', (error) => {
