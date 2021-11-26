@@ -1,5 +1,8 @@
 ## Project Name
 
+[![Build Status](https://drone.host.destin.dev/api/badges/destintech/team-scallops/status.svg?ref=staging
+)](https://drone.host.destin.dev/destintech/team-scallops)
+
 This is a little description about your project.
 
 **Tech Stack:** MongoDB, Express.js, React.js, Node.js, Typescript
